@@ -27,7 +27,7 @@
                     @endif
                 </a>
             @endforeach
-            <a href="#kontak" class="px-5 py-2 rounded-full bg-[#f5eaea] text-[#0d0d0d] text-sm shadow">Hubungi Kami</a>
+            <a href="{{ route('login') }}" class="px-5 py-2 rounded-full bg-[#FEDA60] text-[#2E2E2E] text-sm shadow transition hover:bg-[#e2c24f]">Sign In</a>
         </nav>
     </div>
     <div class="hidden lg:hidden" id="nav-menu">
@@ -37,7 +37,7 @@
                     {{ $item['label'] }}
                 </a>
             @endforeach
-            <a href="#kontak" class="px-4 py-2 rounded-full bg-[#2E2E2E] text-white text-center text-sm">Hubungi Kami</a>
+            <a href="{{ route('login') }}" class="px-4 py-2 rounded-full bg-[#FEDA60] text-[#2E2E2E] text-center text-sm transition hover:bg-[#e2c24f]">Sign In</a>
         </div>
     </div>
 </header>

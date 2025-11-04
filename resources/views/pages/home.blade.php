@@ -17,19 +17,19 @@
                     <a href="#jadwal" class="px-6 py-3 rounded-full text-[#E2B136] border-2 border-[#FEDA60] text-sm font-semibold">Lihat Produk</a>
                 </div>
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4">
-                    <div class="rounded-2xl bg-white border border-[#FEDA60]/40 p-4 shadow-sm text-center">
+                    <div class="rounded-2xl backdrop-blur-xl bg-white/40  border p-4 shadow-sm text-center">
                         <p class="text-2xl font-bold text-[#E2B136]">12+</p>
                         <p class="text-xs text-[#E2B136] uppercase tracking-[0.3em]">Tahun Eksis</p>
                     </div>
-                    <div class="rounded-2xl bg-white border border-[#FEDA60]/40 p-4 shadow-sm text-center">
+                    <div class="rounded-2xl bg-white/40 border border-[#FEDA60]/40 p-4 shadow-sm text-center">
                         <p class="text-2xl font-bold text-[#E2B136]">35+</p>
                         <p class="text-xs text-[#E2B136] uppercase tracking-[0.3em]">Koreografi</p>
                     </div>
-                    <div class="rounded-2xl bg-white border border-[#FEDA60]/40 p-4 shadow-sm text-center">
+                    <div class="rounded-2xl bg-white/40 border border-[#FEDA60]/40 p-4 shadow-sm text-center">
                         <p class="text-2xl font-bold text-[#E2B136]">120+</p>
                         <p class="text-xs text-[#E2B136] uppercase tracking-[0.3em]">Siswa Aktif</p>
                     </div>
-                    <div class="rounded-2xl bg-white border border-[#FEDA60]/40 p-4 shadow-sm text-center">
+                    <div class="rounded-2xl bg-white/40 border border-[#FEDA60]/40 p-4 shadow-sm text-center">
                         <p class="text-2xl font-bold text-[#E2B136]">28</p>
                         <p class="text-xs text-[#E2B136] uppercase tracking-[0.3em]">Penghargaan</p>
                     </div>
