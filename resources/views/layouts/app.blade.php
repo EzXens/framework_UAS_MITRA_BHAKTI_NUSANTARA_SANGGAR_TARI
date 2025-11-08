@@ -9,7 +9,7 @@
     <link href="https://fonts.bunny.net/css?family=poppins:400,500,600,700" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-[#FAFCFA] text-[#2E2E2E] font-sans">
+<body class="bg-[#2E2E2E] text-[#2E2E2E] font-sans">
     <div class="min-h-screen flex flex-col">
         @include('components.layout.navbar')
         <main class="flex-1">
