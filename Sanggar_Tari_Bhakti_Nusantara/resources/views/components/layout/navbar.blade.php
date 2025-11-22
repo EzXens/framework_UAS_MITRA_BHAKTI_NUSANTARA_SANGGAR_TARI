@@ -1,0 +1,321 @@
+@php
+    $menu = [
+        ['label' => 'Beranda', 'route' => 'home'],
+        ['label' => 'Tentang', 'route' => 'about'],
+        ['label' => 'Produk', 'route' => 'products'],
+        ['label' => 'Kelas', 'route' => 'classes.public'],
+        ['label' => 'Galeri', 'route' => 'gallery'],
+    ];
+@endphp
+
+<header id="main-header" class="sticky top-0 z-50">
+  <style>
+    :root{
+      /* 🎨 Warna navbar hitam dengan aksen emas */
+      --glass: linear-gradient(135deg, rgba(30, 30, 30, 0.98), rgba(46, 46, 46, 0.95));
+      --border: rgba(254, 218, 96, 0.15);
+      --text-primary: #FEDA60;
+      --text-secondary: #E2B136;
+      --text-white: #ffffff;
+      --accent: #FEDA60;
+      --accent-strong: #2E2E2E;
+      --link-default: #E2B136;
+      --nav-shadow: 0 4px 24px rgba(0,0,0,0.4), 0 0 0 1px rgba(254, 218, 96, 0.1);
+      /* --radius: 18px; */
+    }
+
+    /* Header glass wrapper */
+    #main-header .glass {
+      position: relative;
+      background: var(--glass);
+      backdrop-filter: blur(14px) saturate(160%);
+      -webkit-backdrop-filter: blur(14px) saturate(160%);
+      border-bottom: 1px solid var(--border);
+      box-shadow: var(--nav-shadow);
+      border-radius: var(--radius);
+      isolation: isolate;
+    }
+
+    /* Brand */
+    #main-header .brand-title { 
+      color: var(--text-primary);
+      letter-spacing: 0.08em;
+      text-shadow: 0 0 20px rgba(254, 218, 96, 0.3);
+    }
+
+    /* Nav links */
+    #main-header .nav-link {
+      position: relative;
+      color: var(--link-default);
+      transition: color .2s ease, transform .18s ease;
+    }
+    #main-header .nav-link:hover { 
+      color: var(--text-primary);
+      transform: translateY(-1px);
+    }
+    #main-header .nav-link.active { 
+      color: var(--text-primary);
+      text-shadow: 0 0 10px rgba(254, 218, 96, 0.5);
+    }
+
+    #main-header .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -0.65rem;
+      width: 100%;
+      height: 3px;
+      border-radius: 999px;
+      background: var(--accent);
+      transform: scale3d(0, 1, 1);
+      transform-origin: center;
+      transition: transform .22s ease;
+      opacity: 0.95;
+    }
+    #main-header .nav-link:hover::after,
+    #main-header .nav-link.active::after {
+      transform: scale3d(1, 1, 1);
+    }
+
+    /* Sign-in button */
+    #main-header .btn-sign {
+      background-color: var(--accent);
+      color: var(--accent-strong);
+      border-radius: 15px;
+      box-shadow: 0 12px 18px rgba(0,0,0,0.18);
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    #main-header .btn-sign:hover { 
+      filter: brightness(.98);
+      transform: translateY(-2px);
+      box-shadow: 0 18px 28px rgba(0,0,0,0.2);
+    }
+
+    /* Mobile menu overlay */
+    #main-header .nav-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      opacity: 0;
+      transition: opacity .24s ease;
+      pointer-events: none;
+      z-index: -1;
+    }
+    #main-header .nav-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+      z-index: 40;
+    }
+
+    /* Mobile nav menu */
+    #main-header #nav-menu {
+      position: absolute;
+      top: calc(100% + 0.75rem);
+      left: 0;
+      right: 0;
+      transform: translateY(-8px);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform .24s ease, opacity .24s ease;
+      z-index: 50;
+    }
+    #main-header #nav-menu.active {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    #main-header #nav-menu .mobile-surface {
+      background: linear-gradient(180deg, rgba(30, 30, 30, 0.98), rgba(46, 46, 46, 0.95));
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: calc(var(--radius) - 6px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+    }
+
+    /* Mobile hamburger */
+    #main-header .nav-toggle-line {
+      display: block;
+      width: 20px;
+      height: 2px;
+      margin: 4px auto;
+      background: var(--accent);
+      border-radius: 999px;
+      transition: transform .2s ease, opacity .2s ease;
+    }
+
+    #main-header .nav-toggle.is-active .nav-toggle-line:nth-child(1) {
+      transform: translateY(6px) rotate(45deg);
+    }
+    #main-header .nav-toggle.is-active .nav-toggle-line:nth-child(2) {
+      opacity: 0;
+    }
+    #main-header .nav-toggle.is-active .nav-toggle-line:nth-child(3) {
+      transform: translateY(-6px) rotate(-45deg);
+    }
+
+    @media (min-width: 1024px) {
+      #main-header .glass { margin-top: 0; }
+      #main-header nav ul { gap: 2.5rem; }
+    }
+    @media (max-width: 1023px) {
+      #main-header #nav-menu .nav-link::after { display: none; }
+    }
+  </style>
+
+  <div class="glass px-6 lg:px-10 lg:py-5">
+      <!-- Container with 3-column layout for desktop -->
+      <div class="flex items-center justify-between lg:grid lg:grid-cols-3 lg:gap-8">
+          <!-- Logo - Left -->
+          <a href="{{ route('home') }}" class="flex items-center gap-3">
+              <img src="{{ asset('images/logo/logo.png') }}" alt="Bhakti Nusantara" class="h-15 w-15 object-contain drop-shadow-lg">
+              <span class="brand-title text-lg font-semibold">Bhakti Nusantara</span>
+          </a>
+
+          <!-- Desktop Nav - Center -->
+          <nav aria-label="Primary navigation" class="hidden lg:flex justify-center font-medium text-sm">
+              <ul class="flex items-center gap-8">
+                  @foreach ($menu as $item)
+                      <li>
+                          <a href="{{ route($item['route']) }}"
+                             class="nav-link {{ request()->routeIs($item['route']) ? 'active' : '' }}">
+                              {{ $item['label'] }}
+                          </a>
+                      </li>
+                  @endforeach
+              </ul>
+          </nav>
+
+          <!-- Auth Actions - Right -->
+          <div class="hidden lg:flex items-center justify-end gap-4 font-medium text-sm">
+              @auth
+                  <span class="text-sm text-[#FEDA60] font-bold">{{ auth()->user()->name }}</span>
+                  @if(auth()->user()->role === 'admin')
+                      <a href="{{ route('admin.dashboard') }}" class="px-6 py-2.5 rounded-2xl bg-gradient-to-r from-[#FEDA60] to-[#F5B347] text-[#2E2E2E] text-sm font-bold shadow-lg shadow-[#FEDA60]/40 hover:shadow-xl hover:scale-[1.05] transition-all flex items-center gap-2 {{ request()->routeIs('admin.dashboard') ? 'ring-2 ring-[#FEDA60] ring-offset-2' : '' }}">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+                          </svg>
+                          Dashboard
+                      </a>
+                  @endif
+                  <form action="{{ route('logout') }}" method="POST" class="inline">
+                      @csrf
+                      <button type="submit" class="px-6 py-2.5 btn-sign cursor-pointer text-sm font-semibold">Logout</button>
+                  </form>
+              @else
+                  <a href="{{ route('login') }}" class="px-6 py-2.5 btn-sign text-sm font-semibold">Sign In</a>
+              @endauth
+          </div>
+
+          <!-- Mobile toggle -->
+          <button id="nav-toggle" class="nav-toggle lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-full btn-sign" aria-label="Toggle navigation" aria-expanded="false">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="nav-toggle-line"></span>
+              <span class="nav-toggle-line"></span>
+              <span class="nav-toggle-line"></span>
+          </button>
+      </div>
+  </div>
+
+  <div id="nav-overlay" class="nav-overlay hidden lg:hidden" aria-hidden="true"></div>
+
+  <!-- Mobile Nav -->
+  <div class="hidden lg:hidden" id="nav-menu" aria-hidden="true">
+      <div class="mobile-surface mx-4 px-6 py-5 flex flex-col gap-3 text-sm font-medium">
+          @foreach ($menu as $item)
+              <a href="{{ route($item['route']) }}" class="py-2 border-b border-[#FEDA60]/20 nav-link {{ request()->routeIs($item['route']) ? 'active' : '' }}">
+                  {{ $item['label'] }}
+              </a>
+          @endforeach
+          
+          @auth
+              @if(auth()->user()->role === 'admin')
+                  <a href="{{ route('admin.dashboard') }}" class="py-3 px-4 rounded-2xl bg-gradient-to-r from-[#FEDA60] to-[#F5B347] text-[#2E2E2E] text-center font-bold shadow-lg flex items-center justify-center gap-2 {{ request()->routeIs('admin.dashboard') ? 'ring-2 ring-[#FEDA60]' : '' }}">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+                      </svg>
+                      Dashboard
+                  </a>
+                  <a href="{{ route('products.index') }}" class="py-2 border-b border-[#FEDA60]/20 nav-link {{ request()->routeIs('products.*') ? 'active' : '' }}">Kelola Produk</a>
+                  <a href="{{ route('classes.index') }}" class="py-2 border-b border-[#FEDA60]/20 nav-link {{ request()->routeIs('classes.*') ? 'active' : '' }}">Kelola Kelas</a>
+              @endif
+              <div class="py-2 border-b border-[#FEDA60]/20 text-[#FEDA60] font-medium">Hai, {{ auth()->user()->name }}</div>
+              <form action="{{ route('logout') }}" method="POST">
+                  @csrf
+                  <button type="submit" class="w-full mt-2 px-4 py-2 btn-sign text-center text-sm font-semibold">Logout</button>
+              </form>
+          @else
+              <a href="{{ route('login') }}" class="mt-2 px-4 py-2 btn-sign text-center text-sm font-semibold">Sign In</a>
+          @endauth
+      </div>
+  </div>
+
+  <script>
+    (function(){
+      const btn = document.getElementById('nav-toggle');
+      const menu = document.getElementById('nav-menu');
+      const overlay = document.getElementById('nav-overlay');
+      const ANIMATION_DELAY = 240;
+      let closingTimeout;
+
+      if (!btn || !menu) return;
+
+      const openMenu = () => {
+        if (closingTimeout) {
+          clearTimeout(closingTimeout);
+          closingTimeout = undefined;
+        }
+        menu.classList.remove('hidden');
+        overlay && overlay.classList.remove('hidden');
+        requestAnimationFrame(() => {
+          menu.classList.add('active');
+          btn.classList.add('is-active');
+          overlay && overlay.classList.add('active');
+        });
+        btn.setAttribute('aria-expanded', 'true');
+        menu.setAttribute('aria-hidden', 'false');
+        overlay && overlay.setAttribute('aria-hidden', 'false');
+      };
+
+      const closeMenu = (immediate = false) => {
+        if (closingTimeout) {
+          clearTimeout(closingTimeout);
+          closingTimeout = undefined;
+        }
+        menu.classList.remove('active');
+        btn.classList.remove('is-active');
+        overlay && overlay.classList.remove('active');
+
+        const finish = () => {
+          menu.classList.add('hidden');
+          overlay && overlay.classList.add('hidden');
+        };
+
+        if (immediate) finish();
+        else closingTimeout = setTimeout(() => { finish(); closingTimeout = undefined; }, ANIMATION_DELAY);
+
+        btn.setAttribute('aria-expanded', 'false');
+        menu.setAttribute('aria-hidden', 'true');
+        overlay && overlay.setAttribute('aria-hidden', 'true');
+      };
+
+      btn.addEventListener('click', () => {
+        if (menu.classList.contains('hidden')) openMenu();
+        else closeMenu();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !menu.classList.contains('hidden')) closeMenu();
+      });
+
+      overlay && overlay.addEventListener('click', () => closeMenu());
+
+      window.addEventListener('resize', () => {
+        if (window.innerWidth >= 1024 && !menu.classList.contains('hidden')) closeMenu(true);
+      });
+    })();
+  </script>
+</header>
