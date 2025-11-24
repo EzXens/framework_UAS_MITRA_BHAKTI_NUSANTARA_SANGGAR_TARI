@@ -18,6 +18,11 @@ class ClassEnrollment extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function class()
+    {
+        return $this->belongsTo(ClassModel::class, 'class_id');
+    }
+
     public function classModel()
     {
         return $this->belongsTo(ClassModel::class, 'class_id');
