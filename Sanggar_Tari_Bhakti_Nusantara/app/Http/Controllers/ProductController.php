@@ -7,7 +7,13 @@ use App\Models\Product;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
-{
+{ 
+    public function publicIndex()
+    {
+        $products = Product::latest()->paginate(12);
+        return view('pages.products', compact('products'));
+    }
+
     public function index()
     {
         $products = Product::latest()->paginate(10);
