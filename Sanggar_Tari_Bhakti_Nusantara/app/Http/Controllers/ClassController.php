@@ -65,13 +65,21 @@ class ClassController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'instructor' => 'required|string|max:255',
-            'schedule' => 'required|string|max:255',
+            'days' => 'required|array|min:1',
+            'days.*' => 'in:Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i|after:start_time',
             'capacity' => 'required|integer|min:1',
             'price' => 'required|numeric|min:0',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $data = $request->all();
+        $data = $request->except(['days', 'start_time', 'end_time']);
+        
+        // format schedule: "Senin & Rabu, 16:00-18:00"
+        $daysString = implode(' & ', $request->days);
+        $timeString = $request->start_time . '-' . $request->end_time;
+        $data['schedule'] = $daysString . ', ' . $timeString;
 
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('classes', 'public');
@@ -98,13 +106,21 @@ class ClassController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'instructor' => 'required|string|max:255',
-            'schedule' => 'required|string|max:255',
+            'days' => 'required|array|min:1',
+            'days.*' => 'in:Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i|after:start_time',
             'capacity' => 'required|integer|min:1',
             'price' => 'required|numeric|min:0',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $data = $request->all();
+        $data = $request->except(['days', 'start_time', 'end_time']);
+        
+        // Format schedule: "Senin & Rabu, 16:00-18:00"
+        $daysString = implode(' & ', $request->days);
+        $timeString = $request->start_time . '-' . $request->end_time;
+        $data['schedule'] = $daysString . ', ' . $timeString;
 
         if ($request->hasFile('image')) {
             if ($class->image) {
