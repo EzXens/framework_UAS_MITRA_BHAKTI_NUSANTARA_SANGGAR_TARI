@@ -28,7 +28,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                     </svg>
                     <!-- reminder: sesuaikan sama alamat euy, lupa alamat mitra dimana -->
-                    <span>Jl. Budaya No. 18, Kota Bandung</span> 
+                    <span>Jl. PM. Noor Perum Bumi Sempaja Blok AB No.17 RT.001 Kec. Samarinda Utara Samarinda Kalimantan Timur </span> 
                 </li>
                 <li class="flex items-center gap-2">
                     <svg class="w-5 h-5 text-[#FEDA60] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -60,16 +60,7 @@
             <h3 class="text-base font-semibold text-[#FEDA60]">Lokasi Kami</h3>
             <div class="rounded-2xl overflow-hidden border border-[#FEDA60]/20 shadow-lg h-64">
                 <!-- reminder: sesuaikan sama alamat euy, lupa alamat mitra dimana -->
-                <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.9003724317837!2d107.60981097499658!3d-6.902464993097439!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e6398252477f%3A0x146a1f93d3e815b2!2sBandung%2C%20Bandung%20City%2C%20West%20Java!5e0!3m2!1sen!2sid!4v1732462800000!5m2!1sen!2sid" 
-                    width="100%" 
-                    height="100%" 
-                    style="border:0;" 
-                    allowfullscreen="" 
-                    loading="lazy" 
-                    referrerpolicy="no-referrer-when-downgrade"
-                    class="grayscale hover:grayscale-0 transition-all duration-300">
-                </iframe>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d249.35596618350016!2d117.16697866561252!3d-0.44964516427457385!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2df67898ceb57753%3A0x75cb9190cbb6058b!2sBlk.%20AH%20No.6%2C%20Sempaja%20Sel.%2C%20Kec.%20Samarinda%20Utara%2C%20Kota%20Samarinda%2C%20Kalimantan%20Timur%2075242!5e0!3m2!1sid!2sid!4v1764147841206!5m2!1sid!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
         </div>
     </div>

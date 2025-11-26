@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <section class="relative overflow-hidden bg-gradient-to-br from-[#1a1a1a] via-[#2E2E2E] to-[#1a1a1a]">
+    <section class="relative overflow-hidden " style="background-image: var(--bg2); background-size: cover;">
         <!-- Efek Cahaya Background -->
         <div class="absolute inset-0 overflow-hidden">
             <div class="absolute top-0 right-1/4 w-[500px] h-[500px] rounded-full bg-gradient-to-br from-[#FEDA60]/20 via-[#F5B347]/10 to-transparent blur-3xl"></div>
@@ -9,38 +9,47 @@
         </div>
         
         <div class="relative max-w-7xl mx-auto px-6 py-16 lg:py-14 grid gap-12 lg:grid-cols-[1.1fr_0.9fr] items-center">
-            <div class="space-y-6">
-                <span class="inline-flex px-4 py-1 rounded-full bg-[#FEDA60]/20 border border-[#FEDA60]/40 text-[#FEDA60] text-xs font-semibold uppercase tracking-[0.2em]">Sanggar Tari</span>
-                <h1 class="text-3xl lg:text-5xl font-bold text-[#FEDA60] leading-tight">
-                    Bhakti Nusantara<br class="hidden lg:block"> 
-                    <span class="text-[#E2B136]">Ruang Ekspresi Tari Tradisional Indonesia</span>
-                </h1>
-                <p class="text-sm lg:text-base text-gray-300 max-w-xl leading-relaxed">
-                    Menghidupkan warisan budaya melalui gerak, irama, dan kreativitas. Kami menghadirkan pelatihan terpadu untuk anak hingga dewasa dengan kurikulum seni tari yang modern namun berakar kuat pada tradisi Nusantara.
-                </p>
-                <div class="flex flex-col sm:flex-row gap-4">
-                    <a href="{{ route('register') }}" class="px-6 py-3 rounded-full bg-gradient-to-r from-[#FEDA60] to-[#F5B347] text-[#2E2E2E] text-sm font-bold shadow-lg shadow-[#FEDA60]/40 hover:shadow-xl hover:scale-[1.05] transition-all">Daftar Sekarang</a>
-                    <a href="{{ route(name: 'products') }}" class="px-6 py-3 rounded-full text-[#FEDA60] border-2 border-[#FEDA60] text-sm font-semibold hover:bg-[#FEDA60]/10 transition-all">Lihat Produk</a>
-                </div>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4">
-                    <div class="rounded-2xl backdrop-blur-xl bg-white/5 border border-[#FEDA60]/20 p-4 shadow-lg text-center hover:bg-white/10 transition-all">
-                        <p class="text-2xl font-bold text-[#FEDA60]">12+</p>
-                        <p class="text-xs text-gray-400 uppercase tracking-[0.3em]">Tahun Eksis</p>
-                    </div>
-                    <div class="rounded-2xl bg-white/5 border border-[#FEDA60]/20 p-4 shadow-lg text-center hover:bg-white/10 transition-all">
-                        <p class="text-2xl font-bold text-[#FEDA60]">35+</p>
-                        <p class="text-xs text-gray-400 uppercase tracking-[0.3em]">Koreografi</p>
-                    </div>
-                    <div class="rounded-2xl bg-white/5 border border-[#FEDA60]/20 p-4 shadow-lg text-center hover:bg-white/10 transition-all">
-                        <p class="text-2xl font-bold text-[#FEDA60]">120+</p>
-                        <p class="text-xs text-gray-400 uppercase tracking-[0.3em]">Siswa Aktif</p>
-                    </div>
-                    <div class="rounded-2xl bg-white/5 border border-[#FEDA60]/20 p-4 shadow-lg text-center hover:bg-white/10 transition-all">
-                        <p class="text-2xl font-bold text-[#FEDA60]">28</p>
-                        <p class="text-xs text-gray-400 uppercase tracking-[0.3em]">Penghargaan</p>
-                    </div>
-                </div>
-            </div>
+           <div class="space-y-6 rounded-3xl p-8 backdrop-blur-xl bg-white/5 border border-[#FEDA60]/20 shadow-[0_0_25px_rgba(254,218,96,0.3)]">
+
+    <span class="inline-flex px-4 py-1 rounded-full bg-[#FEDA60]/20 border border-[#FEDA60]/40 text-[#FEDA60] text-xs font-semibold uppercase tracking-[0.2em]">
+        Sanggar Tari
+    </span>
+
+    <h1 class="text-3xl lg:text-5xl font-bold text-[#FEDA60] leading-tight">
+        Bhakti Nusantara<br class="hidden lg:block"> 
+        <span class="text-[#E2B136]">Ruang Ekspresi Tari Tradisional Indonesia</span>
+    </h1>
+
+    <p class="text-sm lg:text-base text-gray-300 max-w-xl leading-relaxed">
+        Menghidupkan warisan budaya melalui gerak, irama, dan kreativitas. Kami menghadirkan pelatihan terpadu untuk anak hingga dewasa dengan kurikulum seni tari yang modern namun berakar kuat pada tradisi Nusantara.
+    </p>
+
+    <div class="flex flex-col sm:flex-row gap-4">
+        <a href="{{ route('register') }}" class="px-6 py-3 rounded-full bg-gradient-to-r from-[#FEDA60] to-[#F5B347] text-[#2E2E2E] text-sm font-bold shadow-lg shadow-[#FEDA60]/40 hover:shadow-xl hover:scale-[1.05] transition-all">Daftar Sekarang</a>
+        <a href="{{ route(name: 'products') }}" class="px-6 py-3 rounded-full text-[#FEDA60] border-2 border-[#FEDA60] text-sm font-semibold hover:bg-[#FEDA60]/10 transition-all">Lihat Produk</a>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4">
+        <div class="rounded-2xl backdrop-blur-xl bg-white/5 border border-[#FEDA60]/20 p-4 shadow-lg text-center hover:bg-white/10 transition-all">
+            <p class="text-2xl font-bold text-[#FEDA60]">12+</p>
+            <p class="text-xs text-gray-400 uppercase tracking-[0.3em]">Tahun Eksis</p>
+        </div>
+        <div class="rounded-2xl bg-white/5 border border-[#FEDA60]/20 p-4 shadow-lg text-center hover:bg-white/10 transition-all">
+            <p class="text-2xl font-bold text-[#FEDA60]">35+</p>
+            <p class="text-xs text-gray-400 uppercase tracking-[0.3em]">Koreografi</p>
+        </div>
+        <div class="rounded-2xl bg-white/5 border border-[#FEDA60]/20 p-4 shadow-lg text-center hover:bg-white/10 transition-all">
+            <p class="text-2xl font-bold text-[#FEDA60]">120+</p>
+            <p class="text-xs text-gray-400 uppercase tracking-[0.3em]">Siswa Aktif</p>
+        </div>
+        <div class="rounded-2xl bg-white/5 border border-[#FEDA60]/20 p-4 shadow-lg text-center hover:bg-white/10 transition-all">
+            <p class="text-2xl font-bold text-[#FEDA60]">28</p>
+            <p class="text-xs text-gray-400 uppercase tracking-[0.3em]">Penghargaan</p>
+        </div>
+    </div>
+
+  </div>
+
             {{-- <div class="relative">
                 <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_#FEDA60_0%,_transparent_65%)] blur-3xl"></div>
                 <div class="relative rounded-[36px] border border-[#FEDA60]/60 bg-white shadow-2xl overflow-hidden">
@@ -83,7 +92,7 @@
     <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_#FEDA60_0%,_transparent_65%)] blur-3xl"></div>
 
     <!-- Card utama -->
-    <div class="relative rounded-[36px] border border-[#FEDA60]/60 bg-white shadow-2xl overflow-hidden">
+    {{-- <div class="relative rounded-[36px] border border-[#FEDA60]/60 bg-white shadow-2xl overflow-hidden">
         <!-- Ornamen dekoratif -->
         <div class="absolute -top-16 -left-24 h-52 w-52 rounded-full bg-gradient-to-br from-[#FFE184] via-[#FBCF6E] to-[#F5B347] opacity-60"></div>
         <div class="absolute bottom-[-20%] right-[-10%] h-56 w-56 rounded-full bg-[conic-gradient(from_120deg,_#FFF3B8,_#FEDA60,_#F4BD4D,_#FFF3B8)] opacity-70"></div>
@@ -108,16 +117,16 @@
                 </p>
             </div>
         </div>
-    </div>
+    </div> --}}
 </div>
 
         </div>
     </section>
 
-    <section class="bg-white py-16 lg:py-24" id="tentang">
+    <section class=" py-16 lg:py-24 " id="tentang " style="background-image: var(--bgbatik2); background-size: cover;">
         <div class="max-w-7xl mx-auto px-6 grid gap-12 lg:grid-cols-[0.9fr_1.1fr] items-center">
         <div class="relative">
-            <div class="absolute -inset-6 rounded-[36px] bg-[#FFF3B8]/60 -z-10"></div>
+            {{-- <div class="absolute -inset-6 rounded-[36px] bg-[#FFF3B8]/60 -z-10"></div>
             <div class="relative rounded-[32px] border border-[#FEDA60]/60 bg-white shadow-xl overflow-hidden p-8 space-y-6">
                 <div class="absolute -top-14 right-10 h-40 w-40 rounded-full bg-[radial-gradient(circle_at_center,_#FFE9A9,_#F6B643)] opacity-70"></div>
                 <div class="absolute bottom-[-20%] left-10 h-48 w-48 rounded-full bg-[conic-gradient(from_45deg,_#FFF3C4,_#FEDA60,_#F4BD4D,_#FFF3C4)] opacity-70"></div>
@@ -140,7 +149,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
         <div class="space-y-8">
             @include('components.ui.section-heading', [
