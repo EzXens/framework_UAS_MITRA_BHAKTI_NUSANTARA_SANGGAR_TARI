@@ -51,12 +51,14 @@
         </div>
     </section>
 
-    <section class="max-w-6xl mx-auto px-6 py-16 lg:py-24 space-y-12">
-        @include('components.ui.section-heading', [
-            'subtitle' => 'Nilai Utama',
-            'title' => 'Budaya, Kreativitas, dan Karakter',
-            'description' => 'Setiap latihan dikemas untuk menanamkan rasa cinta terhadap budaya, kepekaan terhadap detail, serta sikap disiplin.'
-        ])
+    <section class="bg-gradient-to-br from-[#1a1a1a] via-[#2E2E2E] to-[#1a1a1a]">
+        <div class="max-w-6xl mx-auto px-6 py-16 lg:py-24 space-y-12">
+            @include('components.ui.section-heading', [
+                'dark' => true,
+                'subtitle' => 'Nilai Utama',
+                'title' => 'Budaya, Kreativitas, dan Karakter',
+                'description' => 'Setiap latihan dikemas untuk menanamkan rasa cinta terhadap budaya, kepekaan terhadap detail, serta sikap disiplin.'
+            ])
         <div class="grid gap-6 lg:grid-cols-3">
             @foreach ([
                 ['title' => 'Pelestarian Budaya', 'desc' => 'Mempelajari filosofi di balik setiap gerak dan musik tradisi sebagai wujud penghargaan pada leluhur.'],
@@ -68,26 +70,28 @@
                     <p class="text-sm text-[#4F4F4F] leading-relaxed">{{ $item['desc'] }}</p>
                 </article>
             @endforeach
+            </div>
         </div>
     </section>
 
-    <section class="bg-[#2E2E2E] text-white">
-        <div class="max-w-6xl mx-auto px-6 py-16 lg:py-24 grid gap-12 lg:grid-cols-2 items-center">
-            <div class="space-y-5">
-                <h2 class="text-3xl lg:text-4xl font-semibold">Tim Pengajar</h2>
-                <p class="text-sm lg:text-base text-white/70 leading-relaxed">Pelatih Bhakti Nusantara merupakan seniman aktif yang rutin tampil di festival Nusantara dan mendapat sertifikasi dari lembaga tari nasional.</p>
-            </div>
-            <div class="grid gap-6 sm:grid-cols-2">
+    <section class="bg-gradient-to-br from-white via-[#FFF6D5] to-[#FEDA60]/20">
+        <div class="max-w-6xl mx-auto px-6 py-16 lg:py-24 space-y-12">
+            @include('components.ui.section-heading', [
+                'subtitle' => 'Instruktur Profesional',
+                'title' => 'Tim Pengajar',
+                'description' => 'Pelatih Bhakti Nusantara merupakan seniman aktif yang rutin tampil di festival Nusantara dan mendapat sertifikasi dari lembaga tari nasional.'
+            ])
+            <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
                 @foreach ([
                     ['name' => 'Ratna Widyasari', 'role' => 'Direktur Artistik'],
                     ['name' => 'Taufik Nugraha', 'role' => 'Pelatih Koreografi'],
                     ['name' => 'Mita Arindya', 'role' => 'Pelatih Teknik'],
                     ['name' => 'Adi Wibowo', 'role' => 'Pelatih Musik & Iringan'],
                 ] as $coach)
-                    <article class="rounded-3xl bg-white/10 p-6 space-y-3 border border-white/20">
-                        <p class="text-lg font-semibold">{{ $coach['name'] }}</p>
-                        <p class="text-xs uppercase tracking-[0.3em] text-[#FEDA60]">{{ $coach['role'] }}</p>
-                        <p class="text-sm text-white/70 leading-relaxed">Pengalaman 10+ tahun dalam pertunjukan dan pendidikan tari tradisi.</p>
+                    <article class="rounded-3xl bg-white border border-[#FEDA60]/40 p-6 space-y-3 shadow-lg shadow-[#FEDA60]/10 hover:shadow-xl hover:scale-[1.02] transition-all">
+                        <p class="text-lg font-semibold text-[#2E2E2E]">{{ $coach['name'] }}</p>
+                        <p class="text-xs uppercase tracking-[0.3em] text-[#8C6A08]">{{ $coach['role'] }}</p>
+                        <p class="text-sm text-[#4F4F4F] leading-relaxed">Pengalaman 10+ tahun dalam pertunjukan dan pendidikan tari tradisi.</p>
                     </article>
                 @endforeach
             </div>

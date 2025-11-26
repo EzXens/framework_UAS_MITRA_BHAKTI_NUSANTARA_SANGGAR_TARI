@@ -34,17 +34,68 @@
                         class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">{{ old('description') }}</textarea>
                 </div>
 
-                <div class="grid grid-cols-2 gap-4 mb-4">
-                    <div>
-                        <label for="instructor" class="block text-sm font-medium text-gray-700 mb-2">Instruktur</label>
-                        <input type="text" name="instructor" id="instructor" value="{{ old('instructor') }}" required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-                    </div>
+                <div class="mb-4">
+                    <label for="instructor" class="block text-sm font-medium text-gray-700 mb-2">Instruktur</label>
+                    <input type="text" name="instructor" id="instructor" value="{{ old('instructor') }}" required
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
 
-                    <div>
-                        <label for="schedule" class="block text-sm font-medium text-gray-700 mb-2">Jadwal</label>
-                        <input type="text" name="schedule" id="schedule" value="{{ old('schedule') }}" placeholder="Senin & Rabu, 16:00-18:00" required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-3">Jadwal Kelas</label>
+                    <div class="mb-4">
+                        <label class="block text-xs text-gray-600 mb-2">Hari</label>
+                        <div class="grid grid-cols-4 gap-3">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" name="days[]" value="Senin" {{ in_array('Senin', old('days', [])) ? 'checked' : '' }}
+                                    class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                                <span class="text-sm text-gray-700">Senin</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" name="days[]" value="Selasa" {{ in_array('Selasa', old('days', [])) ? 'checked' : '' }}
+                                    class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                                <span class="text-sm text-gray-700">Selasa</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" name="days[]" value="Rabu" {{ in_array('Rabu', old('days', [])) ? 'checked' : '' }}
+                                    class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                                <span class="text-sm text-gray-700">Rabu</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" name="days[]" value="Kamis" {{ in_array('Kamis', old('days', [])) ? 'checked' : '' }}
+                                    class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                                <span class="text-sm text-gray-700">Kamis</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" name="days[]" value="Jumat" {{ in_array('Jumat', old('days', [])) ? 'checked' : '' }}
+                                    class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                                <span class="text-sm text-gray-700">Jumat</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" name="days[]" value="Sabtu" {{ in_array('Sabtu', old('days', [])) ? 'checked' : '' }}
+                                    class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                                <span class="text-sm text-gray-700">Sabtu</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" name="days[]" value="Minggu" {{ in_array('Minggu', old('days', [])) ? 'checked' : '' }}
+                                    class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                                <span class="text-sm text-gray-700">Minggu</span>
+                            </label>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-2">Pilih satu atau beberapa hari</p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="start_time" class="block text-xs text-gray-600 mb-1">Waktu Mulai (24 Jam)</label>
+                            <input type="time" name="start_time" id="start_time" value="{{ old('start_time') }}" required
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                            <p class="text-xs text-gray-500 mt-1">Format: HH:MM (contoh: 14:00)</p>
+                        </div>
+                        <div>
+                            <label for="end_time" class="block text-xs text-gray-600 mb-1">Waktu Selesai (24 Jam)</label>
+                            <input type="time" name="end_time" id="end_time" value="{{ old('end_time') }}" required
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                            <p class="text-xs text-gray-500 mt-1">Format: HH:MM (contoh: 16:00)</p>
+                        </div>
                     </div>
                 </div>
 

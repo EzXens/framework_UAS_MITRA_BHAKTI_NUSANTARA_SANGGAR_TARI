@@ -4,10 +4,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ClassController;
+use App\Http\Controllers\UserDashboardController;
 
 Route::view('/', 'pages.home')->name('home');
 Route::view('/tentang', 'pages.about')->name('about');
-Route::view('/produk', 'pages.products')->name('products');
+Route::get('/produk', [ProductController::class, 'publicIndex'])->name('products');
 Route::view('/galeri', 'pages.gallery')->name('gallery');
 
 Route::get('/kelas', [ClassController::class, 'publicIndex'])->name('classes.public');
@@ -21,6 +22,11 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('admin.dashboard');
-    Route::resource('products', ProductController::class);
-    Route::resource('classes', ClassController::class);
+    Route::resource('products', ProductController::class)->except(['show']);
+    Route::resource('classes', ClassController::class)->except(['show']);
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
+    Route::post('/dashboard/profile-picture', [UserDashboardController::class, 'updateProfilePicture'])->name('user.updateProfilePicture');
 });

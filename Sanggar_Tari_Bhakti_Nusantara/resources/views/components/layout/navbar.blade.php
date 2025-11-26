@@ -189,22 +189,73 @@
               </ul>
           </nav>
 
-          <!-- Auth Actions - Right -->
+          <!-- kalo sudah auth, display active user -->
           <div class="hidden lg:flex items-center justify-end gap-4 font-medium text-sm">
               @auth
-                  <span class="text-sm text-[#FEDA60] font-bold">{{ auth()->user()->name }}</span>
-                  @if(auth()->user()->role === 'admin')
-                      <a href="{{ route('admin.dashboard') }}" class="px-6 py-2.5 rounded-2xl bg-gradient-to-r from-[#FEDA60] to-[#F5B347] text-[#2E2E2E] text-sm font-bold shadow-lg shadow-[#FEDA60]/40 hover:shadow-xl hover:scale-[1.05] transition-all flex items-center gap-2 {{ request()->routeIs('admin.dashboard') ? 'ring-2 ring-[#FEDA60] ring-offset-2' : '' }}">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+                  <div class="relative group">
+                      <button class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 transition-all">
+                          @if(auth()->user()->profile_picture)
+                              <img src="{{ asset('storage/' . auth()->user()->profile_picture) }}" alt="{{ auth()->user()->name }}" class="w-8 h-8 rounded-full object-cover">
+                          @else
+                              <div class="w-8 h-8 rounded-full bg-gradient-to-br from-[#FEDA60] to-[#F5B347] flex items-center justify-center text-[#2E2E2E] font-bold text-sm">
+                                  {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                              </div>
+                          @endif
+                          <span class="text-sm text-[#FEDA60] font-bold">{{ auth()->user()->name }}</span>
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-[#FEDA60] group-hover:rotate-180 transition-transform">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                           </svg>
-                          Dashboard
-                      </a>
-                  @endif
-                  <form action="{{ route('logout') }}" method="POST" class="inline">
-                      @csrf
-                      <button type="submit" class="px-6 py-2.5 btn-sign cursor-pointer text-sm font-semibold">Logout</button>
-                  </form>
+                      </button>
+                      
+                      <!-- dropdown menu, imo lebih prof daripada button -->
+                      <div class="absolute right-0 top-full mt-2 w-56 rounded-2xl bg-[#1E1E1E] border border-[#FEDA60]/20 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                          <div class="p-3 border-b border-[#FEDA60]/20">
+                              <p class="text-xs text-gray-400 uppercase tracking-wider">Akun</p>
+                              <p class="text-sm text-white font-semibold">{{ auth()->user()->name }}</p>
+                              <p class="text-xs text-gray-400">{{ auth()->user()->email }}</p>
+                          </div>
+                          <div class="p-2">
+                              @if(auth()->user()->role === 'admin')
+                                  <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm text-gray-300 hover:bg-[#FEDA60]/10 hover:text-[#FEDA60] transition-all {{ request()->routeIs('admin.dashboard') ? 'bg-[#FEDA60]/10 text-[#FEDA60]' : '' }}">
+                                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+                                      </svg>
+                                      Dashboard Admin
+                                  </a>
+                                  <a href="{{ route('products.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm text-gray-300 hover:bg-[#FEDA60]/10 hover:text-[#FEDA60] transition-all">
+                                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                          <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
+                                      </svg>
+                                      Kelola Produk
+                                  </a>
+                                  <a href="{{ route('classes.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm text-gray-300 hover:bg-[#FEDA60]/10 hover:text-[#FEDA60] transition-all">
+                                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                          <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" />
+                                      </svg>
+                                      Kelola Kelas
+                                  </a>
+                              @else
+                                  <a href="{{ route('user.dashboard') }}" class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm text-gray-300 hover:bg-[#FEDA60]/10 hover:text-[#FEDA60] transition-all {{ request()->routeIs('user.dashboard') ? 'bg-[#FEDA60]/10 text-[#FEDA60]' : '' }}">
+                                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+                                      </svg>
+                                      Dashboard Saya
+                                  </a>
+                              @endif
+                          </div>
+                          <div class="p-2 border-t border-[#FEDA60]/20">
+                              <form action="{{ route('logout') }}" method="POST">
+                                  @csrf
+                                  <button type="submit" class="flex items-center gap-3 w-full px-3 py-2 rounded-xl text-sm text-gray-300 hover:bg-red-500/10 hover:text-red-400 transition-all">
+                                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+                                      </svg>
+                                      Logout
+                                  </button>
+                              </form>
+                          </div>
+                      </div>
+                  </div>
               @else
                   <a href="{{ route('login') }}" class="px-6 py-2.5 btn-sign text-sm font-semibold">Sign In</a>
               @endauth
@@ -232,17 +283,24 @@
           @endforeach
           
           @auth
+              <div class="py-2 border-b border-[#FEDA60]/20 text-[#FEDA60] font-medium">Hai, {{ auth()->user()->name }}</div>
               @if(auth()->user()->role === 'admin')
                   <a href="{{ route('admin.dashboard') }}" class="py-3 px-4 rounded-2xl bg-gradient-to-r from-[#FEDA60] to-[#F5B347] text-[#2E2E2E] text-center font-bold shadow-lg flex items-center justify-center gap-2 {{ request()->routeIs('admin.dashboard') ? 'ring-2 ring-[#FEDA60]' : '' }}">
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
                       </svg>
-                      Dashboard
+                      Dashboard Admin
                   </a>
                   <a href="{{ route('products.index') }}" class="py-2 border-b border-[#FEDA60]/20 nav-link {{ request()->routeIs('products.*') ? 'active' : '' }}">Kelola Produk</a>
                   <a href="{{ route('classes.index') }}" class="py-2 border-b border-[#FEDA60]/20 nav-link {{ request()->routeIs('classes.*') ? 'active' : '' }}">Kelola Kelas</a>
+              @else
+                  <a href="{{ route('user.dashboard') }}" class="py-3 px-4 rounded-2xl bg-gradient-to-r from-[#FEDA60] to-[#F5B347] text-[#2E2E2E] text-center font-bold shadow-lg flex items-center justify-center gap-2 {{ request()->routeIs('user.dashboard') ? 'ring-2 ring-[#FEDA60]' : '' }}">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+                      </svg>
+                      Dashboard Saya
+                  </a>
               @endif
-              <div class="py-2 border-b border-[#FEDA60]/20 text-[#FEDA60] font-medium">Hai, {{ auth()->user()->name }}</div>
               <form action="{{ route('logout') }}" method="POST">
                   @csrf
                   <button type="submit" class="w-full mt-2 px-4 py-2 btn-sign text-center text-sm font-semibold">Logout</button>
