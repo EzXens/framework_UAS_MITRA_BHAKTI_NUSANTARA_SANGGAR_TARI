@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Sanggar Tari Bhakti Nusantara">
+    <title>{{ $title ?? 'Bhakti Nusantara' }}</title>
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=poppins:400,500,600,700" rel="stylesheet" />
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+<body class="min-h-screen bg-gradient-to-br from-[#C0D3FF] via-[#F6C4E0] to-[#FEE6B3] text-[#2E2E2E] font-sans">
+    <main class="flex min-h-screen items-center justify-center px-4 py-10">
+        {{ $slot ?? '' }}
+        @yield('content')
+    </main>
+</body>
+</html>
