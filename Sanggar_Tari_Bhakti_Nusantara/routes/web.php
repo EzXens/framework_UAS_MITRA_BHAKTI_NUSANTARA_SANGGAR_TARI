@@ -5,11 +5,14 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ClassController;
 use App\Http\Controllers\UserDashboardController;
+use App\Http\Controllers\ContactController;
 
 Route::view('/', 'pages.home')->name('home');
 Route::view('/tentang', 'pages.about')->name('about');
 Route::get('/produk', [ProductController::class, 'publicIndex'])->name('products');
 Route::view('/galeri', 'pages.gallery')->name('gallery');
+Route::get('/kontak', [ContactController::class, 'index'])->name('contact');
+Route::post('/kontak', [ContactController::class, 'submit'])->name('contact.submit');
 
 Route::get('/kelas', [ClassController::class, 'publicIndex'])->name('classes.public');
 Route::post('/kelas/{class}/daftar', [ClassController::class, 'enroll'])->name('classes.enroll');

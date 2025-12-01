@@ -19,6 +19,7 @@
             @yield('content')
         </main>
         @include('components.layout.footer')
+        <x-layout.fab/>
     </div>
 
 

@@ -5,7 +5,7 @@
     ['label' => 'Produk', 'route' => 'products'],
     ['label' => 'Kelas', 'route' => 'classes.public'],
     ['label' => 'Galeri', 'route' => 'gallery'],
-    ['label' => 'Kontak', 'route' => null, 'anchor' => '#kontak'],
+    ['label' => 'Kontak', 'route' => 'contact'],
   ];
 @endphp
 

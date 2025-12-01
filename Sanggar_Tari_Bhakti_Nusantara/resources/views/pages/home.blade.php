@@ -299,7 +299,7 @@
 
     <!-- Schedule Section -->
     <section class="min-h-screen flex items-center bg-white py-16 lg:py-24 relative" id="jadwal">
-        <div class="absolute inset-0 opacity-5" style="background-image: url('{{ asset('images/bgbatik1.png') }}'); background-size: cover;"></div>
+        <div class="absolute inset-0 opacity-5"></div>
         <div class="relative max-w-7xl mx-auto px-6 space-y-10 w-full">
             <div class="rounded-3xl glass-dark border-gold-soft p-8 shadow-[0_0_20px_rgba(254,218,96,0.15)] animate-fade-up">
                 @include('components.ui.section-heading', [
@@ -329,47 +329,48 @@
         </div>
     </section>
 
-    <section class="bg-[#FFF6D5] py-16 lg:py-24" id="galeri">
-        <div class="max-w-7xl mx-auto px-6 space-y-12">
-            <div class="rounded-3xl glass-dark-soft backdrop-blur-sm border-gold-soft p-8 shadow-[0_0_20px_rgba(254,218,96,0.15)]">
+    <section id="galeri_kegiatan" class="bg-gradient-to-br from-[#ffffff] via-[#FFF1C7]/80 to-[#FFF1C7] pointer-events-none z-0 py-16 lg:py-24" id="galeri" style="background-image: url('{{ asset('images/bgbatik2.png') }}'); background-size: cover; background-position: center;">
+        <div class="max-w-7xl mx-auto px-6 space-y-12 ">
+            <div class="bg-white/60 backdrop-blur-xl text-center rounded-2xl p-8 shadow-[0_0_20px_rgba(254,218,96,0.15)]">
                 @include('components.ui.section-heading', [
                     'subtitle' => 'Galeri Kegiatan',
                     'title' => 'Momen Terbaik di Panggung dan Studio',
                     'description' => 'Dokumentasi perjalanan Bhakti Nusantara dalam berbagai festival, pentas sekolah, hingga kolaborasi lintas budaya.',
-                    'dark' => true
+                    'dark' => false,
+                    'descWhite' => false
                 ])
             </div>
             <div class="grid gap-6 lg:grid-cols-3">
-            <div class="lg:col-span-2 rounded-[28px] overflow-hidden shadow-xl border border-[#FEDA60]/50 glass-dark relative">
+            <div class="lg:col-span-2 rounded-[28px] overflow-hidden shadow-xl border border-[#FEDA60]/50 bg-gradient-to-br from-[#ffffff] via-[#FFF1C7]/80 to-[#FFF1C7] text-black relative">
                 <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,_#FFF3C4,_#FEDA60_55%,_#F5B347_100%)] opacity-80"></div>
                 <div class="relative p-8 lg:p-12 h-full">
                     <div class="grid gap-6 lg:grid-cols-2 h-full">
-                        <div class="rounded-3xl glass-dark-soft border border-[#FEDA60]/40 p-6 shadow flex flex-col justify-between">
+                        <div class="rounded-3xl border border-[#FEDA60]/40 p-6 shadow flex flex-col justify-between bg-gradient-to-br from-[#ffffff] via-[#FFF1C7]/80 to-[#FFF1C7] text-black">
                             <div>
-                                <p class="text-xs uppercase tracking-[0.3em] text-[#8C6A08]">Highlight</p>
-                                <h3 class="text-xl font-semibold text-[#E2B136] mt-2">Panggung Kolaborasi</h3>
-                                <p class="text-sm muted-on-glass leading-relaxed opacity-90 mt-3">Kolaborasi lintas daerah dengan koreografi yang memadukan gerak kontemporer dan tradisi Bali.</p>
+                                <p class="text-xs uppercase tracking-[0.3em] text-black font-normal">Highlight</p>
+                                <h3 class="text-xl font-bold text-black mt-2">Panggung Kolaborasi</h3>
+                                <p class="text-sm text-black leading-relaxed opacity-90 mt-3">Kolaborasi lintas daerah dengan koreografi yang memadukan gerak kontemporer dan tradisi Bali.</p>
                             </div>
-                            <div class="flex items-center justify-between text-xs uppercase tracking-[0.3em] text-[#8C6A08] mt-6">
+                            <div class="flex items-center justify-between text-xs uppercase tracking-[0.3em] text-black mt-6">
                                 <span>Backstage</span>
                                 <span>2024</span>
                             </div>
                         </div>
                         <div class="grid gap-4">
-                            <div class="rounded-3xl glass-dark-soft border border-[#FEDA60]/40 p-5 shadow-sm space-y-2">
-                                <p class="text-xs uppercase tracking-[0.3em] text-[#8C6A08]">Ekspresi</p>
-                                <p class="text-sm font-semibold text-on-glass">Detail Kostum</p>
-                                <p class="text-xs muted-on-glass leading-relaxed opacity-90">Eksplorasi motif nusantara untuk generasi muda.</p>
+                            <div class="rounded-3xl border border-[#FEDA60]/40 p-5 shadow-sm bg-gradient-to-br from-[#ffffff] via-[#FFF1C7]/80 to-[#FFF1C7] text-black space-y-2">
+                                <p class="text-xs uppercase tracking-[0.3em] text-black font-normal">Ekspresi</p>
+                                <p class="text-sm font-bold text-black">Detail Kostum</p>
+                                <p class="text-xs text-black leading-relaxed opacity-90">Eksplorasi motif nusantara untuk generasi muda.</p>
                             </div>
-                            <div class="rounded-3xl glass-dark-soft border border-[#FEDA60]/40 p-5 shadow-sm space-y-2">
-                                <p class="text-xs uppercase tracking-[0.3em] text-[#8C6A08]">Momentum</p>
-                                <p class="text-sm font-semibold text-on-glass">Latihan Akhir</p>
-                                <p class="text-xs muted-on-glass leading-relaxed opacity-90">Intensif menjelang pertunjukan nasional.</p>
+                            <div class="rounded-3xl border border-[#FEDA60]/40 p-5 shadow-sm bg-gradient-to-br from-[#ffffff] via-[#FFF1C7]/80 to-[#FFF1C7] text-black space-y-2">
+                                <p class="text-xs uppercase tracking-[0.3em] text-black font-normal">Momentum</p>
+                                <p class="text-sm font-bold text-black">Latihan Akhir</p>
+                                <p class="text-xs text-black leading-relaxed opacity-90">Intensif menjelang pertunjukan nasional.</p>
                             </div>
-                            <div class="rounded-3xl glass-dark-soft border border-[#FEDA60]/40 p-5 shadow-sm space-y-2">
-                                <p class="text-xs uppercase tracking-[0.3em] text-[#8C6A08]">Komunitas</p>
-                                <p class="text-sm font-semibold text-on-glass">Forum Alumni</p>
-                                <p class="text-xs muted-on-glass leading-relaxed opacity-90">Berbagi pengalaman dan peluang kolaborasi.</p>
+                            <div class="rounded-3xl border border-[#FEDA60]/40 p-5 shadow-sm bg-gradient-to-br from-[#ffffff] via-[#FFF1C7]/80 to-[#FFF1C7] text-black space-y-2">
+                                <p class="text-xs uppercase tracking-[0.3em] text-black font-normal">Komunitas</p>
+                                <p class="text-sm font-bold text-black">Forum Alumni</p>
+                                <p class="text-xs text-black leading-relaxed opacity-90">Berbagi pengalaman dan peluang kolaborasi.</p>
                             </div>
                         </div>
                     </div>
@@ -381,9 +382,9 @@
                         ['title' => 'Kelas Master Workshop', 'desc' => 'Latihan intensif dengan koreografer tamu dari Bali dan Yogyakarta.'],
                         ['title' => 'Tur Sekolah & Komunitas', 'desc' => 'Program edukasi tari untuk siswa sekolah dasar dan menengah.'],
                     ] as $item)
-                        <article class="rounded-2xl glass-dark-soft border border-[#E2B136]/30 p-6 space-y-2 shadow-lg shadow-[#FEDA60]/10">
-                            <h3 class="text-lg font-semibold text-on-glass">{{ $item['title'] }}</h3>
-                            <p class="text-sm muted-on-glass leading-relaxed">{{ $item['desc'] }}</p>
+                        <article class="rounded-2xl border border-[#E2B136]/30 p-6 space-y-2 shadow-lg shadow-[#FEDA60]/10 bg-gradient-to-br from-[#ffffff] via-[#FFF1C7]/80 to-[#FFF1C7] text-black">
+                            <h3 class="text-lg font-bold text-black">{{ $item['title'] }}</h3>
+                            <p class="text-sm text-black leading-relaxed">{{ $item['desc'] }}</p>
                         </article>
                     @endforeach
                 </div>
@@ -391,12 +392,14 @@
         </div>
     </section>
 
-    <section id="testimoni" class="bg-white py-16 lg:py-24">
+    <section id="testimoni" class="bg-white py-16 lg:py-15">
         <div class="max-w-6xl mx-auto px-6 space-y-10">
         @include('components.ui.section-heading', [
             'subtitle' => 'Testimoni',
             'title' => 'Cerita Para Penari dan Orang Tua',
-            'description' => 'Pengalaman nyata belajar di Bhakti Nusantara yang membawa perubahan positif pada percaya diri, disiplin, dan apresiasi budaya.'
+            'description' => 'Pengalaman nyata belajar di Bhakti Nusantara yang membawa perubahan positif pada percaya diri, disiplin, dan apresiasi budaya.',
+            'dark' => true,
+            'descWhite' => true,
         ])
         <div class="grid gap-6 lg:grid-cols-3">
             @foreach ([
@@ -416,14 +419,14 @@
         </div>
     </section>
 
-    <section id="cta" class="bg-white pb-20">
-        <div class="max-w-5xl mx-auto px-6">
+    <section id="cta" class="bg-white  pb-20">
+        <div class="max-w-6xl mx-auto px-6">
         <div class="rounded-[32px] bg-gradient-to-br from-[#2E2E2E] via-[#1a1a1a] to-[#2E2E2E] text-white px-8 py-12 lg:px-16 lg:py-16 flex flex-col lg:flex-row items-start lg:items-center gap-8 shadow-2xl border border-[#FEDA60]/20 relative overflow-hidden">
             <!-- Efek cahaya -->
             <div class="absolute top-0 right-0 w-64 h-64 bg-[#FEDA60]/10 rounded-full blur-3xl"></div>
             <div class="absolute bottom-0 left-0 w-64 h-64 bg-[#F5B347]/10 rounded-full blur-3xl"></div>
 
-            <div class="relative space-y-3 flex-1">
+            <div class="relative space-y-3  flex-1">
                 <h2 class="text-2xl lg:text-4xl font-bold title-on-glass">Siap Bergabung dengan Bhakti Nusantara?</h2>
                 <p class="text-sm lg:text-base text-on-glass leading-relaxed">Daftarkan diri Anda untuk sesi trial gratis dan rasakan atmosfer latihan di studio kami. Tim kami siap membantu menentukan kelas terbaik.</p>
             </div>
