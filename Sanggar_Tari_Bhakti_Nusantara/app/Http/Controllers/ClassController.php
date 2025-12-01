@@ -57,15 +57,23 @@ class ClassController extends Controller
         return back()->with('success', 'Pendaftaran kelas berhasil! Silakan tunggu konfirmasi admin.');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $classes = ClassModel::latest()->paginate(10);
-        return view('classes.index', compact('classes'));
+        $classes = ClassModel::latest()->paginate(25);
+        
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'html' => view('admin.classes.table', compact('classes'))->render(),
+                'pagination' => view('components.pagination', ['paginator' => $classes])->render()
+            ]);
+        }
+        
+        return view('admin.classes.index', compact('classes'));
     }
 
     public function create()
     {
-        return view('classes.create');
+        return view('admin.classes.create');
     }
 
     public function store(Request $request)
@@ -106,7 +114,7 @@ class ClassController extends Controller
 
     public function edit(ClassModel $class)
     {
-        return view('classes.edit', compact('class'));
+        return view('admin.classes.edit', compact('class'));
     }
 
     public function update(Request $request, ClassModel $class)

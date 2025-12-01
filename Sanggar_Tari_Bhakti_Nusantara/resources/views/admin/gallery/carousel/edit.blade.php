@@ -14,13 +14,21 @@
             <p class="text-[#4F4F4F] mt-2">Perbarui informasi carousel</p>
         </div>
 
-        @if($errors->any())
-            <div class="mb-6 p-4 rounded-xl bg-red-100 border border-red-200 text-red-800">
-                <ul class="list-disc list-inside">
-                    @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+        @if ($errors->any())
+            <div class="mb-6 rounded-xl bg-red-50 border border-red-200 p-4">
+                <div class="flex items-start gap-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                    </svg>
+                    <div class="flex-1">
+                        <h3 class="text-sm font-semibold text-red-800 mb-1">Terjadi Kesalahan</h3>
+                        <ul class="list-disc list-inside text-sm text-red-700 space-y-1">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
             </div>
         @endif
 
@@ -32,13 +40,19 @@
                 <div>
                     <label for="title" class="block text-sm font-semibold text-[#2E2E2E] mb-2">Judul <span class="text-red-500">*</span></label>
                     <input type="text" id="title" name="title" value="{{ old('title', $carousel->title) }}" required
-                        class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[#FEDA60] focus:ring-2 focus:ring-[#FEDA60]/20 transition-all">
+                        class="w-full px-4 py-3 rounded-xl border @error('title') border-red-500 @else border-gray-300 @enderror focus:border-[#FEDA60] focus:ring-2 focus:ring-[#FEDA60]/20 text-gray-900 placeholder-gray-400 transition-all">
+                    @error('title')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div>
                     <label for="description" class="block text-sm font-semibold text-[#2E2E2E] mb-2">Deskripsi <span class="text-red-500">*</span></label>
                     <textarea id="description" name="description" rows="4" required
-                        class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[#FEDA60] focus:ring-2 focus:ring-[#FEDA60]/20 transition-all">{{ old('description', $carousel->description) }}</textarea>
+                        class="w-full px-4 py-3 rounded-xl border @error('description') border-red-500 @else border-gray-300 @enderror focus:border-[#FEDA60] focus:ring-2 focus:ring-[#FEDA60]/20 text-gray-900 placeholder-gray-400 transition-all">{{ old('description', $carousel->description) }}</textarea>
+                    @error('description')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div>
@@ -48,15 +62,21 @@
                     </div>
                     <label for="image" class="block text-sm font-semibold text-[#2E2E2E] mb-2">Ganti Gambar (Opsional)</label>
                     <input type="file" id="image" name="image" accept="image/*"
-                        class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[#FEDA60] focus:ring-2 focus:ring-[#FEDA60]/20 transition-all">
+                        class="w-full px-4 py-3 rounded-xl border @error('image') border-red-500 @else border-gray-300 @enderror focus:border-[#FEDA60] text-gray-900 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#FEDA60] file:text-white hover:file:bg-[#F5B347] transition-all">
                     <p class="text-xs text-gray-500 mt-1">Format: JPG, PNG, GIF. Maksimal 2MB. Kosongkan jika tidak ingin mengubah gambar.</p>
+                    @error('image')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div>
                     <label for="order" class="block text-sm font-semibold text-[#2E2E2E] mb-2">Urutan Tampil <span class="text-red-500">*</span></label>
                     <input type="number" id="order" name="order" value="{{ old('order', $carousel->order) }}" min="0" required
-                        class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[#FEDA60] focus:ring-2 focus:ring-[#FEDA60]/20 transition-all">
+                        class="w-full px-4 py-3 rounded-xl border @error('order') border-red-500 @else border-gray-300 @enderror focus:border-[#FEDA60] focus:ring-2 focus:ring-[#FEDA60]/20 text-gray-900 placeholder-gray-400 transition-all">
                     <p class="text-xs text-gray-500 mt-1">Semakin kecil angka, semakin awal ditampilkan.</p>
+                    @error('order')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div class="flex items-center gap-3">

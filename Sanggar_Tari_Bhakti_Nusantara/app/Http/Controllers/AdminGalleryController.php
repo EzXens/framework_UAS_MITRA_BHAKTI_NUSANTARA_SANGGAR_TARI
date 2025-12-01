@@ -12,9 +12,17 @@ use Illuminate\Support\Facades\Storage;
 class AdminGalleryController extends Controller
 {
     // Carousel Management
-    public function carouselIndex()
+    public function carouselIndex(Request $request)
     {
-        $carousels = GalleryCarousel::ordered()->get();
+        $carousels = GalleryCarousel::ordered()->paginate(25);
+        
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'html' => view('admin.gallery.carousel.table', compact('carousels'))->render(),
+                'pagination' => view('components.pagination', ['paginator' => $carousels])->render()
+            ]);
+        }
+        
         return view('admin.gallery.carousel.index', compact('carousels'));
     }
 
@@ -94,9 +102,17 @@ class AdminGalleryController extends Controller
     }
 
     // Image Gallery Management
-    public function imageIndex()
+    public function imageIndex(Request $request)
     {
-        $images = GalleryImage::latest()->paginate(9);
+        $images = GalleryImage::latest()->paginate(25);
+        
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'html' => view('admin.gallery.image.table', compact('images'))->render(),
+                'pagination' => view('components.pagination', ['paginator' => $images])->render()
+            ]);
+        }
+        
         return view('admin.gallery.image.index', compact('images'));
     }
 
@@ -174,9 +190,17 @@ class AdminGalleryController extends Controller
     }
 
     // Video Gallery Management
-    public function videoIndex()
+    public function videoIndex(Request $request)
     {
-        $videos = GalleryVideo::latest()->paginate(9);
+        $videos = GalleryVideo::latest()->paginate(25);
+        
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'html' => view('admin.gallery.video.table', compact('videos'))->render(),
+                'pagination' => view('components.pagination', ['paginator' => $videos])->render()
+            ]);
+        }
+        
         return view('admin.gallery.video.index', compact('videos'));
     }
 
@@ -256,9 +280,17 @@ class AdminGalleryController extends Controller
     }
 
     // Music Gallery Management
-    public function musicIndex()
+    public function musicIndex(Request $request)
     {
-        $music = GalleryMusic::latest()->paginate(9);
+        $music = GalleryMusic::latest()->paginate(25);
+        
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'html' => view('admin.gallery.music.table', compact('music'))->render(),
+                'pagination' => view('components.pagination', ['paginator' => $music])->render()
+            ]);
+        }
+        
         return view('admin.gallery.music.index', compact('music'));
     }
 
