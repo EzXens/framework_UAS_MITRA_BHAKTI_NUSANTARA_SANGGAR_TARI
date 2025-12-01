@@ -30,6 +30,15 @@ class ClassController extends Controller
             return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu untuk mendaftar kelas.');
         }
 
+        // cek kapasitas kelas
+        $currentEnrollments = ClassEnrollment::where('class_id', $class->id)
+            ->whereIn('status', ['pending', 'approved'])
+            ->count();
+
+        if ($currentEnrollments >= $class->capacity) {
+            return back()->with('error', 'Kapasitas kelas sudah penuh.');
+        }
+
         $existingEnrollment = ClassEnrollment::where('user_id', Auth::id())
             ->where('class_id', $class->id)
             ->first();

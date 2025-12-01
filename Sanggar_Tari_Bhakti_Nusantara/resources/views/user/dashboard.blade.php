@@ -1,8 +1,11 @@
 @extends('layouts.dashboard')
 
 @section('content')
-<div class="min-h-screen bg-gradient-to-br from-[#F5F5F5] via-[#FFF9E5] to-[#FFF6D5]">
-    <div class="flex">
+<div class="min-h-screen relative" style="background-image: url('{{ asset('images/bg2.jpg') }}'); background-size: cover; background-position: center; background-attachment: fixed;">
+    <!-- Black overlay -->
+    <div class="absolute inset-0 bg-black/50"></div>
+    
+    <div class="relative flex">
         <!-- sidebar -->
         <aside id="sidebar" class="fixed lg:sticky top-0 left-0 h-screen w-64 bg-[#2E2E2E] text-white transition-transform duration-300 z-40 lg:translate-x-0 -translate-x-full">
             <div class="flex flex-col h-full">
@@ -68,8 +71,8 @@
 
         <!-- main content -->
         <main class="flex-1 p-6 lg:p-10 lg:ml-0">
-            <!-- overview -->
-            <section id="overview-section" class="dashboard-section">
+            <!-- overview (tanpa background foto) -->
+            <section id="overview-section" class="dashboard-section min-h-screen -m-6 lg:-m-10 p-6 lg:p-10 bg-gradient-to-br from-[#F5F5F5] via-[#FFF9E5] to-[#FFF6D5] relative z-10">
                 <div class="mb-8">
                     <h1 class="text-3xl font-bold text-[#2E2E2E]">Selamat Datang, {{ $user->name }}!</h1>
                     <p class="text-[#4F4F4F] mt-2">Kelola kelas dan jadwal latihan tari Anda di sini.</p>

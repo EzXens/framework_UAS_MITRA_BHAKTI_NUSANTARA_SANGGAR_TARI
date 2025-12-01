@@ -2,7 +2,7 @@
 
 @section('content')
     <section class="bg-gradient-to-b from-white via-[#FFF9E5] to-[#FFF6D5] py-6">
-        <div class="relative mx-auto max-w-6xl px-6 pb-12 pt-16 text-center">
+        <div class="relative mx-auto max-w-7xl px-6 pb-12 pt-16 text-center">
             <span class="inline-flex items-center gap-2 rounded-full border border-[#FEDA60]/60 bg-white/80 px-4 py-1 text-sm font-semibold uppercase tracking-[0.35em] text-[#8C6A08] shadow-sm shadow-[#FEDA60]/30">
                 Galeri Sanggar
             </span>
@@ -18,22 +18,22 @@
             @php
                 $carouselSlides = [
                     [
-                        'image' => asset('images/contoh/gallery.png'),
+                        'image' => asset('images/bgtari.jpg'),
                         'title' => 'Parade Tari Nusantara',
                         'description' => 'Sorotan kolaborasi tari tradisional yang mempertemukan ragam budaya Nusantara di satu panggung.',
                     ],
                     [
-                        'image' => asset('images/contoh/home.png'),
+                        'image' => asset('images/bg1.jpg'),
                         'title' => 'Latihan Rutinitas Bhakti Nusantara',
                         'description' => 'Energi dan disiplin penari muda saat mempersiapkan repertoar baru untuk pentas komunitas.',
                     ],
                     [
-                        'image' => asset('images/contoh/about me.png'),
+                        'image' => asset('images/bg2.jpg'),
                         'title' => 'Workshop Tari Kontemporer',
                         'description' => 'Suasana kelas intensif bersama koreografer tamu dalam sesi eksplorasi gerak.',
                     ],
                     [
-                        'image' => asset('images/contoh/product.png'),
+                        'image' => asset('images/bg3.jpg'),
                         'title' => 'Koleksi Busana Pertunjukan',
                         'description' => 'Rangkaian kostum khas yang dirancang khusus untuk membawa cerita ke atas panggung.',
                     ],
@@ -41,32 +41,32 @@
 
                 $imageGallery = [
                     [
-                        'src' => asset('images/contoh/gallery.png'),
+                        'src' => asset('images/galeri/FOTO/1.jpg'),
                         'title' => 'Pentas Akhir Tahun',
                         'description' => 'Perpaduan tari tradisi Jawa Barat dan musik kontemporer.',
                     ],
                     [
-                        'src' => asset('images/contoh/home.png'),
+                        'src' => asset('images/galeri/FOTO/2.jpg'),
                         'title' => 'Panggung Kolaborasi Bali',
                         'description' => 'Kolaborasi dengan komunitas lokal menampilkan tari Legong.',
                     ],
                     [
-                        'src' => asset('images/contoh/about me.png'),
+                        'src' => asset('images/galeri/FOTO/3.jpg'),
                         'title' => 'Festival Pemuda Nusantara',
                         'description' => 'Kolase tari dari berbagai provinsi dengan busana penuh warna.',
                     ],
                     [
-                        'src' => asset('images/contoh/product.png'),
+                        'src' => asset('images/galeri/FOTO/4.jpg'),
                         'title' => 'Workshop Tari Anak',
                         'description' => 'Latihan fun filled untuk anak usia 6-10 tahun.',
                     ],
                     [
-                        'src' => asset('images/contoh/gallery.png'),
+                        'src' => asset('images/galeri/FOTO/5.jpg'),
                         'title' => 'Tour Komunitas Budaya',
                         'description' => 'Pertunjukan di ruang publik dan taman kota.',
                     ],
                     [
-                        'src' => asset('images/contoh/home.png'),
+                        'src' => asset('images/galeri/FOTO/6.jpg'),
                         'title' => 'Sesi Rehearsal',
                         'description' => 'Persiapan intensif menjelang kompetisi nasional.',
                     ],
@@ -111,49 +111,50 @@
                     ],
                 ];
             @endphp
-
-            <div class="relative mx-auto h-[420px] w-full max-w-6xl overflow-hidden rounded-[32px] border border-white/40 bg-white/30 shadow-[0_22px_55px_-20px_rgba(254,218,96,0.55)] backdrop-blur-md md:h-[520px]" data-carousel>
-                <div class="flex h-full transition-transform duration-700 ease-in-out" data-carousel-track>
-                    @foreach ($carouselSlides as $slide)
-                        <div class="relative flex h-full w-full flex-shrink-0" data-title="{{ $slide['title'] }}" data-description="{{ $slide['description'] }}">
-                            <img src="{{ $slide['image'] }}" alt="{{ $slide['title'] }}" class="h-full w-full object-cover transition duration-[2500ms] ease-out will-change-transform" loading="lazy">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/35 to-transparent"></div>
-                            <div class="absolute bottom-10 left-6 right-6 hidden rounded-2xl border border-white/10 bg-white/10 p-4 backdrop-blur-sm lg:block">
-                                <p class="text-xs uppercase tracking-[0.4em] text-[#FEDA60]/90">Sorotan</p>
-                                <p class="mt-1 text-lg font-semibold text-white">{{ $slide['title'] }}</p>
-                                <p class="mt-1 text-sm text-white/75">{{ $slide['description'] }}</p>
+            <div class="mx-auto max-w-7xl px-6 pb-6">
+                <div class="relative mx-auto max-w-7xl w-full px-6 h-[420px] overflow-hidden rounded-[32px] border border-white/40 bg-white/30 shadow-[0_22px_55px_-20px_rgba(254,218,96,0.55)] backdrop-blur-md md:h-[520px]" data-carousel>
+                    <div class="flex h-full  transition-transform duration-700 ease-in-out" data-carousel-track>
+                        @foreach ($carouselSlides as $slide)
+                            <div class="relative flex h-full w-full flex-shrink-0" data-title="{{ $slide['title'] }}" data-description="{{ $slide['description'] }}">
+                                <img src="{{ $slide['image'] }}" alt="{{ $slide['title'] }}" class="h-full w-full object-cover transition duration-[2500ms] ease-out will-change-transform" loading="lazy">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/35 to-transparent"></div>
+                                <div class="absolute bottom-10 left-6 right-6 hidden rounded-2xl border border-white/10 bg-white/10 p-4 backdrop-blur-sm lg:block">
+                                    <p class="text-xs uppercase tracking-[0.4em] text-[#FEDA60]/90">Sorotan</p>
+                                    <p class="mt-1 text-lg font-semibold text-white">{{ $slide['title'] }}</p>
+                                    <p class="mt-1 text-sm text-white/75">{{ $slide['description'] }}</p>
+                                </div>
                             </div>
-                        </div>
-                    @endforeach
-                </div>
+                        @endforeach
+                    </div>
 
-                <div class="sr-only" data-carousel-title>{{ $carouselSlides[0]['title'] }}</div>
-                <div class="sr-only" data-carousel-description>{{ $carouselSlides[0]['description'] }}</div>
+                    <div class="sr-only" data-carousel-title>{{ $carouselSlides[0]['title'] }}</div>
+                    <div class="sr-only" data-carousel-description>{{ $carouselSlides[0]['description'] }}</div>
 
-                <div class="absolute inset-y-0 left-0 right-0 z-20 flex items-center justify-between px-4">
-                    <button type="button" class="inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/30 bg-white/70 text-[#2E2E2E] shadow-lg shadow-black/10 transition hover:bg-[#FEDA60] focus:outline-none focus:ring-2 focus:ring-[#FEDA60]/80" data-carousel-prev aria-label="Slide sebelumnya">
-                        <span class="sr-only">Sebelumnya</span>
-                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                        </svg>
-                    </button>
-                    <button type="button" class="inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/30 bg-white/70 text-[#2E2E2E] shadow-lg shadow-black/10 transition hover:bg-[#FEDA60] focus:outline-none focus:ring-2 focus:ring-[#FEDA60]/80" data-carousel-next aria-label="Slide selanjutnya">
-                        <span class="sr-only">Berikutnya</span>
-                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                        </svg>
-                    </button>
-                </div>
+                    <div class="absolute inset-y-0 left-0 right-0 z-20 flex items-center justify-between px-4">
+                        <button type="button" class="inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/30 bg-white/70 text-[#2E2E2E] shadow-lg shadow-black/10 transition hover:bg-[#FEDA60] focus:outline-none focus:ring-2 focus:ring-[#FEDA60]/80" data-carousel-prev aria-label="Slide sebelumnya">
+                            <span class="sr-only">Sebelumnya</span>
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                            </svg>
+                        </button>
+                        <button type="button" class="inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/30 bg-white/70 text-[#2E2E2E] shadow-lg shadow-black/10 transition hover:bg-[#FEDA60] focus:outline-none focus:ring-2 focus:ring-[#FEDA60]/80" data-carousel-next aria-label="Slide selanjutnya">
+                            <span class="sr-only">Berikutnya</span>
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                            </svg>
+                        </button>
+                    </div>
 
-                <div class="absolute bottom-6 z-20 flex w-full justify-center gap-2">
-                    @foreach ($carouselSlides as $index => $slide)
-                        <button type="button" class="h-2.5 rounded-full border border-white/50 transition-all duration-300 {{ $index === 0 ? 'w-8 bg-[#FEDA60]' : 'w-3 bg-white/40' }}" data-carousel-indicator="{{ $index }}" aria-label="Tampilkan {{ $slide['title'] }}" aria-current="{{ $index === 0 ? 'true' : 'false' }}"></button>
-                    @endforeach
+                    <div class="absolute bottom-6 z-20 flex w-full justify-center gap-2">
+                        @foreach ($carouselSlides as $index => $slide)
+                            <button type="button" class="h-2.5 rounded-full border border-white/50 transition-all duration-300 {{ $index === 0 ? 'w-8 bg-[#FEDA60]' : 'w-3 bg-white/40' }}" data-carousel-indicator="{{ $index }}" aria-label="Tampilkan {{ $slide['title'] }}" aria-current="{{ $index === 0 ? 'true' : 'false' }}"></button>
+                        @endforeach
+                    </div>
                 </div>
             </div>
     </section>
 
-    <section class="relative mx-auto max-w-6xl px-6 pb-20 pt-12 lg:pt-16">
+    <section class="relative mx-auto max-w-7xl px-6 pb-20 pt-12 lg:pt-16">
         <div class="pointer-events-none absolute inset-x-0 top-8 -z-[1] h-[420px] rounded-full bg-gradient-to-r from-[#FFF6D5]/0 via-[#FEDA60]/20 to-[#FFF6D5]/0 blur-3xl"></div>
         <div class="relative rounded-[36px] border border-[#FEDA60]/35 bg-white/95 p-6 shadow-xl shadow-[#FEDA60]/10 md:p-12">
             <div class="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between">
@@ -178,8 +179,8 @@
             <div class="mt-12 space-y-12">
                 <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3" data-tab-panel="images">
                     @foreach ($imageGallery as $image)
-                        <button type="button" class="group relative block overflow-hidden rounded-[28px] border border-[#FEDA60]/40 bg-white shadow-lg shadow-[#FEDA60]/15 transition duration-500 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-[#FEDA60]/25 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FEDA60]" data-modal-trigger data-modal-kind="image" data-modal-src="{{ $image['src'] }}" data-modal-title="{{ $image['title'] }}" data-modal-description="{{ $image['description'] }}">
-                                <div class="relative aspect-square w-full overflow-hidden rounded-3xl bg-[#FFF0C2] md:aspect-[4/3]">
+                        <button type="button" class="group relative block overflow-hidden  border border-[#FEDA60]/40 bg-white shadow-lg shadow-[#FEDA60]/15 transition duration-500 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-[#FEDA60]/25 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FEDA60]" data-modal-trigger data-modal-kind="image" data-modal-src="{{ $image['src'] }}" data-modal-title="{{ $image['title'] }}" data-modal-description="{{ $image['description'] }}">
+                                <div class="relative aspect-square w-full overflow-hidden  bg-[#FFF0C2] md:aspect-[4/3]">
                                 <img src="{{ $image['src'] }}" alt="{{ $image['title'] }}" class="h-full w-full object-cover transition duration-[1600ms] ease-out group-hover:scale-110" loading="lazy">
                                 <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-50 transition duration-500 group-hover:opacity-80"></div>
                                 <div class="pointer-events-none absolute inset-0 flex translate-y-6 flex-col justify-end gap-3 bg-gradient-to-t from-[#FEDA60]/90 via-[#FEDA60]/65 to-transparent px-6 pb-7 pt-16 text-left text-white opacity-0 shadow-[0_22px_50px_-30px_rgba(254,218,96,0.85)] transition-all duration-500 ease-out group-hover:translate-y-0 group-hover:opacity-100">
@@ -199,8 +200,8 @@
                 <div class="hidden" data-tab-panel="video">
                     <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                         @foreach ($videoGallery as $video)
-                            <button type="button" class="group relative block overflow-hidden rounded-[28px] border border-[#FEDA60]/40 bg-[#FFF8DC] shadow-lg shadow-[#FEDA60]/20 transition duration-500 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-[#FEDA60]/35 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FEDA60]" data-modal-trigger data-modal-kind="video" data-modal-src="{{ $video['source'] }}" data-modal-title="{{ $video['title'] }}" data-modal-description="{{ $video['description'] }}">
-                                <div class="relative aspect-video w-full overflow-hidden rounded-3xl">
+                            <button type="button" class="group relative block overflow-hidden  border border-[#FEDA60]/40 bg-[#FFF8DC] shadow-lg shadow-[#FEDA60]/20 transition duration-500 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-[#FEDA60]/35 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FEDA60]" data-modal-trigger data-modal-kind="video" data-modal-src="{{ $video['source'] }}" data-modal-title="{{ $video['title'] }}" data-modal-description="{{ $video['description'] }}">
+                                <div class="relative aspect-video w-full overflow-hidden ">
                                     <img src="{{ $video['thumbnail'] }}" alt="{{ $video['title'] }}" class="h-full w-full object-cover transition duration-[1600ms] ease-out group-hover:scale-110" loading="lazy">
                                     <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-60 transition duration-500 group-hover:opacity-85"></div>
                                     <div class="pointer-events-none absolute inset-0 flex translate-y-8 flex-col items-center justify-end gap-4 bg-gradient-to-t from-[#FEDA60]/90 via-[#FEDA60]/60 to-transparent px-6 pb-8 pt-20 text-center text-white opacity-0 shadow-[0_22px_50px_-30px_rgba(254,218,96,0.85)] transition-all duration-500 ease-out group-hover:translate-y-0 group-hover:opacity-100">
