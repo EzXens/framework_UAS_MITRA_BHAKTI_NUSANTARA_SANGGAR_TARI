@@ -13,30 +13,58 @@
             <h1 class="text-3xl font-bold text-[#2E2E2E]">Edit Gambar</h1>
         </div>
 
+        @if ($errors->any())
+            <div class="mb-6 rounded-xl bg-red-50 border border-red-200 p-4">
+                <div class="flex items-start gap-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                    </svg>
+                    <div class="flex-1">
+                        <h3 class="text-sm font-semibold text-red-800 mb-1">Terjadi Kesalahan</h3>
+                        <ul class="list-disc list-inside text-sm text-red-700 space-y-1">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        @endif
+
         <form action="{{ route('admin.gallery.image.update', $image) }}" method="POST" enctype="multipart/form-data" class="rounded-2xl bg-white border border-[#FEDA60]/30 p-8 shadow-lg space-y-6">
             @csrf
             @method('PUT')
             
             <div>
                 <label class="block text-sm font-semibold text-[#2E2E2E] mb-2">Judul <span class="text-red-500">*</span></label>
-                <input type="text" name="title" value="{{ $image->title }}" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[#FEDA60] focus:ring-2 focus:ring-[#FEDA60]/20">
+                <input type="text" name="title" value="{{ old('title', $image->title) }}" required class="w-full px-4 py-3 rounded-xl border @error('title') border-red-500 @else border-gray-300 @enderror focus:border-[#FEDA60] focus:ring-2 focus:ring-[#FEDA60]/20 text-gray-900 placeholder-gray-400">
+                @error('title')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                @enderror
             </div>
 
             <div>
                 <label class="block text-sm font-semibold text-[#2E2E2E] mb-2">Deskripsi <span class="text-red-500">*</span></label>
-                <textarea name="description" rows="4" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[#FEDA60] focus:ring-2 focus:ring-[#FEDA60]/20">{{ $image->description }}</textarea>
+                <textarea name="description" rows="4" required class="w-full px-4 py-3 rounded-xl border @error('description') border-red-500 @else border-gray-300 @enderror focus:border-[#FEDA60] focus:ring-2 focus:ring-[#FEDA60]/20 text-gray-900 placeholder-gray-400">{{ old('description', $image->description) }}</textarea>
+                @error('description')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                @enderror
             </div>
 
             <div>
                 <label class="block text-sm font-semibold text-[#2E2E2E] mb-2">Gambar Saat Ini</label>
                 <img src="{{ asset($image->image) }}" class="w-full max-w-md h-48 object-cover rounded-xl mb-4">
                 <label class="block text-sm font-semibold text-[#2E2E2E] mb-2">Ganti Gambar (Opsional)</label>
-                <input type="file" name="image" accept="image/*" class="w-full px-4 py-3 rounded-xl border border-gray-300">
+                <input type="file" name="image" accept="image/*" class="w-full px-4 py-3 rounded-xl border @error('image') border-red-500 @else border-gray-300 @enderror focus:border-[#FEDA60] text-gray-900 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#FEDA60] file:text-white hover:file:bg-[#F5B347]">
+                <p class="text-xs text-gray-500 mt-1">Format: JPG, PNG, GIF. Maksimal 2MB.</p>
+                @error('image')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                @enderror
             </div>
 
             <div class="flex items-center gap-3">
                 <input type="hidden" name="is_active" value="0">
-                <input type="checkbox" name="is_active" value="1" {{ $image->is_active ? 'checked' : '' }} class="w-5 h-5 rounded text-[#FEDA60]">
+                <input type="checkbox" name="is_active" value="1" {{ old('is_active', $image->is_active) ? 'checked' : '' }} class="w-5 h-5 rounded border-gray-300 text-[#FEDA60] focus:ring-[#FEDA60]">
                 <label class="text-sm font-semibold text-[#2E2E2E]">Aktifkan gambar ini</label>
             </div>
 

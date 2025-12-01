@@ -14,15 +14,23 @@ class ProductController extends Controller
         return view('pages.products', compact('products'));
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::latest()->paginate(10);
-        return view('products.index', compact('products'));
+        $products = Product::latest()->paginate(25);
+        
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'html' => view('admin.products.table', compact('products'))->render(),
+                'pagination' => view('components.pagination', ['paginator' => $products])->render()
+            ]);
+        }
+        
+        return view('admin.products.index', compact('products'));
     }
 
     public function create()
     {
-        return view('products.create');
+        return view('admin.products.create');
     }
 
     public function store(Request $request)
@@ -48,12 +56,12 @@ class ProductController extends Controller
 
     public function show(Product $product)
     {
-        return view('products.show', compact('product'));
+        return view('admin.products.show', compact('product'));
     }
 
     public function edit(Product $product)
     {
-        return view('products.edit', compact('product'));
+        return view('admin.products.edit', compact('product'));
     }
 
     public function update(Request $request, Product $product)
