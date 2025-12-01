@@ -159,7 +159,7 @@
 
             <!-- jadwal section -->
             <section id="schedule-section" class="dashboard-section hidden">
-                <div class="mb-8">
+                <div class="mb-8 bg-white p-6 rounded-2xl">
                     <h1 class="text-3xl font-bold text-[#2E2E2E]">Jadwal Latihan</h1>
                     <p class="text-[#4F4F4F] mt-2">Timeline jadwal kelas tari yang Anda ikuti.</p>
                 </div>
@@ -239,7 +239,7 @@
 
             <!-- class section -->
             <section id="classes-section" class="dashboard-section hidden">
-                <div class="mb-8">
+                <div class="mb-8 bg-white p-6 rounded-2xl">
                     <h1 class="text-3xl font-bold text-[#2E2E2E]">Kelas Saya</h1>
                     <p class="text-[#4F4F4F] mt-2">Daftar kelas tari yang sedang Anda ikuti.</p>
                 </div>
@@ -307,7 +307,7 @@
 
             <!-- profile -->
             <section id="profile-section" class="dashboard-section hidden">
-                <div class="mb-8">
+                <div class="mb-8 bg-white p-6 rounded-2xl">
                     <h1 class="text-3xl font-bold text-[#2E2E2E]">Profil Saya</h1>
                     <p class="text-[#4F4F4F] mt-2">Informasi lengkap akun Anda.</p>
                 </div>

@@ -188,7 +188,7 @@
                 </p>
 
                 <div class="flex flex-col sm:flex-row gap-4">
-                    <a href="{{ route('register') }}" class="px-6 py-3 rounded-full bg-gradient-to-r from-[#FEDA60] to-[#F5B347] text-[#2E2E2E] text-sm font-bold shadow-lg shadow-[#FEDA60]/40 hover:shadow-xl hover:scale-[1.05] transition-all">Daftar Sekarang</a>
+                    <a href="{{ route('classes.public') }}" class="px-6 py-3 rounded-full bg-gradient-to-r from-[#FEDA60] to-[#F5B347] text-[#2E2E2E] text-sm font-bold shadow-lg shadow-[#FEDA60]/40 hover:shadow-xl hover:scale-[1.05] transition-all">Daftar Kelas Sekarang</a>
                     <a href="{{ route('products') }}" class="px-6 py-3 rounded-full text-on-glass border-2 border-[#FEDA60] text-sm font-semibold hover:bg-[#FEDA60]/10 transition-all">Lihat Produk</a>
                 </div>
             </div>

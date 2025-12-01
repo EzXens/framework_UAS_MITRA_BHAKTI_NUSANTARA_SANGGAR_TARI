@@ -1,10 +1,10 @@
 @php
   $menu = [
     ['label' => 'Beranda', 'route' => 'home'],
-    ['label' => 'Tentang', 'route' => 'about'],
     ['label' => 'Produk', 'route' => 'products'],
     ['label' => 'Kelas', 'route' => 'classes.public'],
     ['label' => 'Galeri', 'route' => 'gallery'],
+    ['label' => 'Tentang', 'route' => 'about'],
     ['label' => 'Kontak', 'route' => 'contact'],
   ];
 @endphp
