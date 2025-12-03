@@ -387,7 +387,8 @@
         </div>
     </section>
 
-    <section id="galeri_kegiatan" class="bg-gradient-to-br from-[#ffffff] via-[#FFF1C7]/80 to-[#FFF1C7] pointer-events-none z-0 py-16 lg:py-24" id="galeri" style="background-image: url('{{ asset('images/bgbatik2.png') }}'); background-size: cover; background-position: center;">
+    <section id="galeri_kegiatan" class="min-h-screen flex items-center py-20 lg:py-28 relative overflow-hidden bg-gradient-to-b from-white to-[#FFF7E0]" style="background-image: url('{{ asset('images/bgbatik2.png') }}'); background-size: cover;">
+        <div class="absolute inset-0 bg-gradient-to-br from-[#ffffff]/80 via-[#FFF1C7]/60 to-[#FFF1C7]/80 pointer-events-none z-0"></div>
         <div class="max-w-7xl mx-auto px-6 space-y-12 ">
             <div class="bg-white/60 backdrop-blur-xl text-center rounded-2xl p-8 shadow-[0_0_20px_rgba(254,218,96,0.15)]">
                 @include('components.ui.section-heading', [
@@ -433,8 +434,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
-                <div class="space-y-6">
+            </div class="z-10">
+                <div class="space-y-6 z-10">
                     @foreach ([
                         ['title' => 'Festival Budaya 2024', 'desc' => 'Kolaborasi dengan seniman daerah untuk menampilkan tari kreasi kontemporer.'],
                         ['title' => 'Kelas Master Workshop', 'desc' => 'Latihan intensif dengan koreografer tamu dari Bali dan Yogyakarta.'],
@@ -451,7 +452,7 @@
     </section>
 
     <section id="testimoni" class="bg-white py-16 lg:py-15">
-        <div class="max-w-6xl mx-auto px-6 space-y-10">
+        <div class="max-w-7xl mx-auto px-8 space-y-10">
         @include('components.ui.section-heading', [
             'subtitle' => 'Testimoni',
             'title' => 'Cerita Para Penari dan Orang Tua',
@@ -478,7 +479,7 @@
     </section>
 
     <section id="cta" class="bg-white  pb-20">
-        <div class="max-w-6xl mx-auto px-6">
+        <div class="max-w-7xl mx-auto px-8">
         <div class="rounded-[32px] bg-gradient-to-br from-[#2E2E2E] via-[#1a1a1a] to-[#2E2E2E] text-white px-8 py-12 lg:px-16 lg:py-16 flex flex-col lg:flex-row items-start lg:items-center gap-8 shadow-2xl border border-[#FEDA60]/20 relative overflow-hidden">
             <!-- Efek cahaya -->
             <div class="absolute top-0 right-0 w-64 h-64 bg-[#FEDA60]/10 rounded-full blur-3xl"></div>
@@ -500,35 +501,101 @@
 
     <!-- Carousel & Section Navigation JavaScript -->
     <script>
-        // Carousel functionality
+        // Carousel functionality — seamless forward-only autoplay
         let currentSlide = 0;
-        const totalSlides = 3;
+        const trackElement = document.getElementById('heroCarousel');
+        let originalSlideCount = 0;
+        let autoplayTimer = null;
+        const AUTOPLAY_INTERVAL = 5000;
+        let isTransitioning = false;
+
+        function updateCarouselTransform() {
+            if (!trackElement) return;
+            trackElement.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+
+        function updateDots() {
+            const dots = document.querySelectorAll('.carousel-dot');
+            let activeIndex = currentSlide;
+            if (currentSlide === originalSlideCount) activeIndex = 0; // clone -> show first dot
+            dots.forEach((dot, idx) => dot.classList.toggle('active', idx === activeIndex));
+        }
 
         function moveCarousel(direction) {
-            currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
-            updateCarousel();
+            if (!trackElement || originalSlideCount <= 0 || isTransitioning) return;
+            isTransitioning = true;
+            // Only allow forward autoplay to loop seamlessly via cloned slide.
+            currentSlide = currentSlide + direction;
+            // Prevent going beyond cloned end when using arrows; clamp to cloned position
+            if (currentSlide > originalSlideCount) currentSlide = originalSlideCount;
+            if (currentSlide < 0) currentSlide = 0;
+            trackElement.style.transition = 'transform 0.5s ease-in-out';
+            updateCarouselTransform();
+            updateDots();
         }
 
         function goToSlide(index) {
-            currentSlide = index;
-            updateCarousel();
+            if (!trackElement || originalSlideCount <= 0) return;
+            isTransitioning = true;
+            currentSlide = Math.max(0, Math.min(index, originalSlideCount - 1));
+            trackElement.style.transition = 'transform 0.5s ease-in-out';
+            updateCarouselTransform();
+            updateDots();
         }
 
-        function updateCarousel() {
-            const track = document.getElementById('heroCarousel');
-            const dots = document.querySelectorAll('.carousel-dot');
+        function startAutoplay() {
+            stopAutoplay();
+            autoplayTimer = setInterval(() => moveCarousel(1), AUTOPLAY_INTERVAL);
+        }
 
-            if (track) {
-                track.style.transform = `translateX(-${currentSlide * 100}%)`;
-            }
+        function stopAutoplay() {
+            if (autoplayTimer) { clearInterval(autoplayTimer); autoplayTimer = null; }
+        }
 
-            dots.forEach((dot, index) => {
-                dot.classList.toggle('active', index === currentSlide);
+        function setupSeamlessAutoplay() {
+            if (!trackElement) return;
+            const slides = Array.from(trackElement.children);
+            originalSlideCount = slides.length;
+            if (originalSlideCount <= 1) return;
+
+            // Clone first slide and append to allow seamless forward loop
+            const firstClone = slides[0].cloneNode(true);
+            firstClone.setAttribute('data-clone', 'true');
+            trackElement.appendChild(firstClone);
+
+            // Ensure transform starts at 0
+            trackElement.style.transition = 'none';
+            currentSlide = 0;
+            updateCarouselTransform();
+            // force reflow then enable transition
+            void trackElement.offsetWidth;
+            trackElement.style.transition = 'transform 0.5s ease-in-out';
+
+            // When reaching the cloned slide, jump back to the real first slide without animation
+            trackElement.addEventListener('transitionend', () => {
+                isTransitioning = false;
+                if (currentSlide === originalSlideCount) {
+                    // we've just moved onto the cloned first slide — jump to real first
+                    trackElement.style.transition = 'none';
+                    currentSlide = 0;
+                    updateCarouselTransform();
+                    // force reflow and restore transition for next moves
+                    void trackElement.offsetWidth;
+                    trackElement.style.transition = 'transform 0.5s ease-in-out';
+                }
+                updateDots();
             });
+
+            // Start autoplay
+            startAutoplay();
+
+            // Optional: pause autoplay on hover
+            trackElement.parentElement?.addEventListener('mouseenter', stopAutoplay);
+            trackElement.parentElement?.addEventListener('mouseleave', startAutoplay);
         }
 
-        // Auto-advance carousel
-        setInterval(() => moveCarousel(1), 5000);
+        // Initialize carousel
+        setupSeamlessAutoplay();
 
         // Section Navigation
         const sections = ['hero', 'tentang', 'program', 'jadwal', 'galeri', 'testimoni', 'cta'];

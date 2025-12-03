@@ -1,5 +1,5 @@
 <footer class="bg-[#2E2E2E] text-white">
-    <div class="max-w-7xl mx-auto px-6 py-12 grid gap-10 lg:grid-cols-12">
+    <div class="max-w-7xl mx-auto px-8 py-12 grid gap-10 lg:grid-cols-12">
         <div class="lg:col-span-3 space-y-4">
             <div class="flex items-center gap-3">
                 <img src="{{ asset('images/logo/logo.png') }}" alt="Bhakti Nusantara" class="h-12 w-12 object-contain drop-shadow-lg">
