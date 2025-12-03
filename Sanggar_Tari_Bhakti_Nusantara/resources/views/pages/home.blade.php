@@ -184,7 +184,7 @@
                 </h1>
 
                 <p class="text-sm lg:text-base text-on-glass max-w-xl leading-relaxed">
-                    Menghidupkan warisan budaya melalui gerak, irama, dan kreativitas. Kami menghadirkan pelatihan terpadu untuk anak hingga dewasa dengan kurikulum seni tari yang modern namun berakar kuat pada tradisi Nusantara.
+                    {{ $homepageTexts->get('hero_description')?->content ?? 'Menghidupkan warisan budaya melalui gerak, irama, dan kreativitas. Kami menghadirkan pelatihan terpadu untuk anak hingga dewasa dengan kurikulum seni tari yang modern namun berakar kuat pada tradisi Nusantara.' }}
                 </p>
 
                 <div class="flex flex-col sm:flex-row gap-4">
@@ -197,23 +197,29 @@
             <div class="relative animate-fade-right delay-200">
                 <div class="carousel-container rounded-3xl overflow-hidden border border-[#FEDA60]/30 shadow-2xl">
                     <div class="carousel-track" id="heroCarousel">
-                        <div class="carousel-slide">
-                            <img src="https://www.kahanjakhuang.or.id/an-component/media/upload-gambar-artikel/Nikah_Adat2.jpg" alt="Tari Tradisional 1" class="w-full h-80 lg:h-96 object-cover">
-                        </div>
-                        <div class="carousel-slide">
-                            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg_rB2QsOhNl_CuaA-YtzrcN9LZqopoULw9ltg3hiKJmih6X7bxVA_X9RSo-VEbuVQnserQPK4GMnljWzxzoq9qKnmkXQvwaAWh1dHytG13yb67oeg1uvy_i0k5Hi8FoL64sUhjSdVi-kE7XWIlWPp_NJfWFqDK-hNBnYQV1e-PfpW0dma0WUBbiqQI7xbF/s1200/Seni%20Pertunjukan%20dari%20Kalimantan%20Timur_Tari%20Burung%20Enggang_Shutterstock%201560386843_Arya%20Dwiky%20Fadilah.jpg" alt="Tari Tradisional 2" class="w-full h-80 lg:h-96 object-cover">
-                        </div>
-                        <div class="carousel-slide">
-                            <img src="https://cdn.antaranews.com/cache/1200x800/2024/07/06/18_1.jpg" alt="Tari Tradisional 3" class="w-full h-80 lg:h-96 object-cover">
-                        </div>
+                        @forelse($homepageCarousels as $carousel)
+                            <div class="carousel-slide">
+                                <img src="{{ asset('storage/' . $carousel->image) }}" alt="{{ $carousel->title }}" class="w-full h-80 lg:h-96 object-cover" title="{{ $carousel->title }}">
+                            </div>
+                        @empty
+                            <div class="carousel-slide">
+                                <img src="https://www.kahanjakhuang.or.id/an-component/media/upload-gambar-artikel/Nikah_Adat2.jpg" alt="Tari Tradisional 1" class="w-full h-80 lg:h-96 object-cover">
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg_rB2QsOhNl_CuaA-YtzrcN9LZqopoULw9ltg3hiKJmih6X7bxVA_X9RSo-VEbuVQnserQPK4GMnljWzxzoq9qKnmkXQvwaAWh1dHytG13yb67oeg1uvy_i0k5Hi8FoL64sUhjSdVi-kE7XWIlWPp_NJfWFqDK-hNBnYQV1e-PfpW0dma0WUBbiqQI7xbF/s1200/Seni%20Pertunjukan%20dari%20Kalimantan%20Timur_Tari%20Burung%20Enggang_Shutterstock%201560386843_Arya%20Dwiky%20Fadilah.jpg" alt="Tari Tradisional 2" class="w-full h-80 lg:h-96 object-cover">
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="https://cdn.antaranews.com/cache/1200x800/2024/07/06/18_1.jpg" alt="Tari Tradisional 3" class="w-full h-80 lg:h-96 object-cover">
+                            </div>
+                        @endforelse
                     </div>
                     <button class="carousel-btn prev" onclick="moveCarousel(-1)">&#10094;</button>
                     <button class="carousel-btn next" onclick="moveCarousel(1)">&#10095;</button>
                 </div>
                 <div class="carousel-dots" id="carouselDots">
-                    <span class="carousel-dot active" onclick="goToSlide(0)"></span>
-                    <span class="carousel-dot" onclick="goToSlide(1)"></span>
-                    <span class="carousel-dot" onclick="goToSlide(2)"></span>
+                    @foreach($homepageCarousels->isNotEmpty() ? $homepageCarousels : collect([1,2,3]) as $key => $item)
+                        <span class="carousel-dot {{ $key === 0 ? 'active' : '' }}" onclick="goToSlide({{ $key }})"></span>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -246,56 +252,108 @@
 
             <!-- Feature Cards -->
             <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                <!-- Card 1 -->
-                <div class="rounded-2xl bg-white/60 backdrop-blur-xl border border-[#E6D8A1]/40 p-6 space-y-4 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-up" style="animation-delay:100ms">
-                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-[#FEDA60] to-[#F5B347] flex items-center justify-center shadow-inner">
-                        <!-- Inline SVG (globe-style) -->
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-[#2E2E2E]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253" />
-                        </svg>
+                @forelse($homepageIcons as $icon)
+                    <div class="rounded-2xl bg-white/60 backdrop-blur-xl border border-[#E6D8A1]/40 p-6 space-y-4 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-up" style="animation-delay:{{ ($loop->index * 100 + 100) }}ms">
+                        <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-[#FEDA60] to-[#F5B347] flex items-center justify-center shadow-inner">
+                            <i class="{{ $icon->icon_class }}"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800">{{ $icon->title }}</h3>
+                        <p class="text-sm text-gray-600">{{ $icon->description ?? 'Fitur unggulan kami untuk memberikan pengalaman terbaik.' }}</p>
                     </div>
-                    <h3 class="text-lg font-semibold text-gray-800">Kurasi Tari Nusantara</h3>
-                    <p class="text-sm text-gray-600">Materi kami mencakup tari tradisional dari Sabang sampai Merauke dengan pendekatan inovatif.</p>
-                </div>
+                @empty
+                    <!-- Card 1 -->
+                    <div class="rounded-2xl bg-white/60 backdrop-blur-xl border border-[#E6D8A1]/40 p-6 space-y-4 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-up" style="animation-delay:100ms">
+                        <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-[#FEDA60] to-[#F5B347] flex items-center justify-center shadow-inner">
+                            <!-- Inline SVG (globe-style) -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-[#2E2E2E]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800">Kurasi Tari Nusantara</h3>
+                        <p class="text-sm text-gray-600">Materi kami mencakup tari tradisional dari Sabang sampai Merauke dengan pendekatan inovatif.</p>
+                    </div>
 
-                <!-- Card 2 -->
-                <div class="rounded-2xl bg-white/60 backdrop-blur-xl border border-[#E6D8A1]/40 p-6 space-y-4 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-up" style="animation-delay:200ms">
-                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-[#FEDA60] to-[#F5B347] flex items-center justify-center shadow-inner">
-                        <!-- Inline SVG (coach-style) -->
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-[#2E2E2E]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5z" />
-                        </svg>
+                    <!-- Card 2 -->
+                    <div class="rounded-2xl bg-white/60 backdrop-blur-xl border border-[#E6D8A1]/40 p-6 space-y-4 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-up" style="animation-delay:200ms">
+                        <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-[#FEDA60] to-[#F5B347] flex items-center justify-center shadow-inner">
+                            <!-- Inline SVG (coach-style) -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-[#2E2E2E]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800">Pelatih Profesional</h3>
+                        <p class="text-sm text-gray-600">Dipandu pengajar berpengalaman yang aktif di panggung nasional dan internasional.</p>
                     </div>
-                    <h3 class="text-lg font-semibold text-gray-800">Pelatih Profesional</h3>
-                    <p class="text-sm text-gray-600">Dipandu pengajar berpengalaman yang aktif di panggung nasional dan internasional.</p>
-                </div>
 
-                <!-- Card 3 -->
-                <div class="rounded-2xl bg-white/60 backdrop-blur-xl border border-[#E6D8A1]/40 p-6 space-y-4 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-up" style="animation-delay:300ms">
-                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-[#FEDA60] to-[#F5B347] flex items-center justify-center shadow-inner">
-                        <!-- Inline SVG (facility-style) -->
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-[#2E2E2E]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008z" />
-                        </svg>
+                    <!-- Card 3 -->
+                    <div class="rounded-2xl bg-white/60 backdrop-blur-xl border border-[#E6D8A1]/40 p-6 space-y-4 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-up" style="animation-delay:300ms">
+                        <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-[#FEDA60] to-[#F5B347] flex items-center justify-center shadow-inner">
+                            <!-- Inline SVG (facility-style) -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-[#2E2E2E]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800">Fasilitas Lengkap</h3>
+                        <p class="text-sm text-gray-600">Studio nyaman dengan ruang ganti, audio profesional, dan galeri kostum.</p>
                     </div>
-                    <h3 class="text-lg font-semibold text-gray-800">Fasilitas Lengkap</h3>
-                    <p class="text-sm text-gray-600">Studio nyaman dengan ruang ganti, audio profesional, dan galeri kostum.</p>
-                </div>
 
-                <!-- Card 4 -->
-                <div class="rounded-2xl bg-white/60 backdrop-blur-xl border border-[#E6D8A1]/40 p-6 space-y-4 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-up" style="animation-delay:400ms">
-                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-[#FEDA60] to-[#F5B347] flex items-center justify-center shadow-inner">
-                        <!-- Inline SVG (community-style) -->
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-[#2E2E2E]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
+                    <!-- Card 4 -->
+                    <div class="rounded-2xl bg-white/60 backdrop-blur-xl border border-[#E6D8A1]/40 p-6 space-y-4 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-up" style="animation-delay:400ms">
+                        <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-[#FEDA60] to-[#F5B347] flex items-center justify-center shadow-inner">
+                            <!-- Inline SVG (community-style) -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-[#2E2E2E]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800">Komunitas Kuat</h3>
+                        <p class="text-sm text-gray-600">Jaringan alumni yang aktif berbagi ilmu dan kolaborasi lintas daerah.</p>
                     </div>
-                    <h3 class="text-lg font-semibold text-gray-800">Komunitas Kuat</h3>
-                    <p class="text-sm text-gray-600">Jaringan alumni yang aktif berbagi ilmu dan kolaborasi lintas daerah.</p>
-                </div>
+                @endforelse
             </div>
         </div>
     </section>
+
+    <!-- Custom Sections -->
+    @forelse($homepageSections as $section)
+        <section class="min-h-screen flex items-center {{ $loop->even ? 'bg-white' : 'bg-gradient-to-b from-white to-[#FFF9E6]' }} py-16 lg:py-24 relative overflow-hidden">
+            <div class="absolute inset-0 opacity-3"></div>
+            <div class="relative max-w-7xl mx-auto px-6 w-full">
+                <div class="grid gap-12 lg:gap-16 lg:grid-cols-2 items-center {{ $loop->odd ? '' : 'lg:grid-cols-2-reverse' }}">
+                    <!-- Content -->
+                    <div class="space-y-6 animate-fade-up">
+                        <div>
+                            <p class="inline-flex px-4 py-1 rounded-full bg-[#FEDA60]/20 border border-[#FEDA60]/40 text-[#FEDA60] text-xs font-semibold uppercase tracking-[0.2em]">
+                                {{ $section->label ?? 'Bagian Spesial' }}
+                            </p>
+                            <h2 class="text-3xl lg:text-4xl font-bold text-gray-800 mt-4">{{ $section->title }}</h2>
+                            <p class="text-lg text-gray-700 mt-3">{{ $section->subtitle }}</p>
+                        </div>
+                        <p class="text-base lg:text-lg text-gray-600 leading-relaxed max-w-lg">{{ $section->content }}</p>
+                        @if($section->link)
+                            <div class="pt-4">
+                                <a href="{{ $section->link }}" class="inline-flex px-6 py-3 rounded-full bg-gradient-to-r from-[#FEDA60] to-[#F5B347] text-[#2E2E2E] font-bold shadow-lg shadow-[#FEDA60]/40 hover:shadow-xl hover:scale-105 transition-all">
+                                    Pelajari Lebih Lanjut
+                                </a>
+                            </div>
+                        @endif
+                    </div>
+                    <!-- Image -->
+                    <div class="relative animate-fade-right {{ $loop->odd ? 'lg:col-start-2' : 'lg:col-start-1' }}">
+                        @if($section->image)
+                            <div class="rounded-3xl overflow-hidden border-2 border-[#FEDA60]/30 shadow-2xl shadow-[#FEDA60]/20">
+                                <img src="{{ Storage::url($section->image) }}" alt="{{ $section->title }}" class="w-full h-96 object-cover">
+                            </div>
+                        @else
+                            <div class="rounded-3xl overflow-hidden border-2 border-[#FEDA60]/30 shadow-2xl bg-gradient-to-br from-[#FEDA60]/20 to-[#F5B347]/20 h-96 flex items-center justify-center">
+                                <p class="text-gray-400 text-center">Gambar tidak tersedia</p>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </section>
+    @empty
+    @endforelse
 
     <!-- Schedule Section -->
     <section class="min-h-screen flex items-center bg-white py-16 lg:py-24 relative" id="jadwal">

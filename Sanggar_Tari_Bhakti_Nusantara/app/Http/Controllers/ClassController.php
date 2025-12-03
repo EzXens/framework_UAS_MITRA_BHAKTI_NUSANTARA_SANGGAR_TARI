@@ -16,7 +16,9 @@ class ClassController extends Controller
         
         $enrolledClassIds = [];
         if (Auth::check()) {
+            // Only consider approved enrollments as "already registered" for the user
             $enrolledClassIds = ClassEnrollment::where('user_id', Auth::id())
+                ->where('status', 'approved')
                 ->pluck('class_id')
                 ->toArray();
         }
@@ -87,7 +89,7 @@ class ClassController extends Controller
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i|after:start_time',
             'capacity' => 'required|integer|min:1',
-            'price' => 'required|numeric|min:0',
+            // price removed from validation
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -128,7 +130,7 @@ class ClassController extends Controller
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i|after:start_time',
             'capacity' => 'required|integer|min:1',
-            'price' => 'required|numeric|min:0',
+            // price removed from validation
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 

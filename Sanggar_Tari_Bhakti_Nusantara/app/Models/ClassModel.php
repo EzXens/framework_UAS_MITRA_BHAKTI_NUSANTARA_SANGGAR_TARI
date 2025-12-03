@@ -14,7 +14,6 @@ class ClassModel extends Model
         'instructor',
         'schedule',
         'capacity',
-        'price',
         'image',
     ];
 }

@@ -28,14 +28,8 @@ return new class extends Migration
             $table->timestamp('created_at')->nullable();
         });
 
-        Schema::create('sessions', function (Blueprint $table) {
-            $table->string('id')->primary();
-            $table->foreignId('user_id')->nullable()->index();
-            $table->string('ip_address', 45)->nullable();
-            $table->text('user_agent')->nullable();
-            $table->longText('payload');
-            $table->integer('last_activity')->index();
-        });
+        // Sessions table is created in its own migration (2025_11_29_000000_create_sessions_table.php)
+        // Remove duplicate sessions creation from this users migration, since it's handled separately.
     }
 
     /**
@@ -45,6 +39,6 @@ return new class extends Migration
     {
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
-        Schema::dropIfExists('sessions');
+        // sessions table will be dropped via its own migration rollback
     }
 };

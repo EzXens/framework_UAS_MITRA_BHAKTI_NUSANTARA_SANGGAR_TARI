@@ -78,6 +78,26 @@
                     <p class="text-[#4F4F4F] mt-2">Kelola kelas dan jadwal latihan tari Anda di sini.</p>
                 </div>
 
+                @if(auth()->check() && auth()->user()->unreadNotifications->count() > 0)
+                    <div class="mb-6">
+                        <div class="rounded-2xl bg-white border border-[#FEDA60]/30 p-4">
+                            <h3 class="font-semibold text-[#2E2E2E] mb-2">Pemberitahuan Terbaru</h3>
+                            <div class="space-y-2">
+                                @foreach(auth()->user()->unreadNotifications as $notification)
+                                    @php $data = $notification->data; @endphp
+                                    <div class="p-3 rounded-lg bg-[#FFF9E5] border border-[#FEDA60]/20">
+                                        <p class="text-sm text-[#2E2E2E]"><strong>{{ $data['class_name'] ?? 'Kelas' }}</strong> — Status: <span class="font-semibold">{{ ucfirst($data['status'] ?? '') }}</span></p>
+                                        @if(($data['status'] ?? '') === 'rejected' && !empty($data['notes']))
+                                            <p class="text-sm text-red-600 mt-1">Alasan penolakan: {{ $data['notes'] }}</p>
+                                        @endif
+                                        <p class="text-xs text-gray-500 mt-1">Klik untuk melihat detail di riwayat notifikasi.</p>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
                 <div class="grid gap-6 md:grid-cols-3 mb-8">
                     <div class="rounded-2xl bg-white border border-[#FEDA60]/30 p-6 shadow-lg">
                         <div class="flex items-center gap-4">
@@ -277,12 +297,7 @@
                                                 </svg>
                                                 {{ $enrollment->class->schedule }}
                                             </p>
-                                            <p class="text-[#8C6A08] font-semibold flex items-center gap-2">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
-                                                </svg>
-                                                Rp {{ number_format($enrollment->class->price, 0, ',', '.') }}
-                                            </p>
+                                            {{-- price removed from enrolled class card --}}
                                         </div>
                                         <div class="mt-4 pt-4 border-t border-[#FEDA60]/20">
                                             <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">

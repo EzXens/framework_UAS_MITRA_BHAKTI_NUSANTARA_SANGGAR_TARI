@@ -8,6 +8,28 @@
         <!-- main content -->
         <main class="flex-1 p-6 lg:p-10 lg:ml-0">
             <div class="max-w-6xl mx-auto">
+                {{-- Flash messages --}}
+                @if(session('success'))
+                    <div class="mb-4 p-4 rounded-md bg-green-50 border border-green-200 text-green-800">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                @if(session('error'))
+                    <div class="mb-4 p-4 rounded-md bg-red-50 border border-red-200 text-red-800">
+                        {{ session('error') }}
+                    </div>
+                @endif
+
+                @if($errors->any())
+                    <div class="mb-4 p-4 rounded-md bg-red-50 border border-red-200 text-red-800">
+                        <ul class="list-disc pl-5">
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
             <!-- dashboard section -->
             <section id="dashboard-section" class="dashboard-section">
                 <div class="mb-8">
@@ -152,6 +174,12 @@
                                         @endif">
                                         {{ ucfirst($enrollment->status) }}
                                     </span>
+                                    <div class="ml-4 flex items-center gap-2">
+                                        @if($enrollment->status === 'pending')
+                                            <button type="button" onclick="openApproveModal({{ $enrollment->id }}, {{ json_encode($enrollment->user->name) }}, {{ json_encode($enrollment->classModel->name) }})" class="px-3 py-2 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700">Setujui</button>
+                                            <button type="button" onclick="openRejectModal({{ $enrollment->id }}, {{ json_encode($enrollment->user->name) }}, {{ json_encode($enrollment->classModel->name) }})" class="px-3 py-2 bg-red-500 text-white rounded-lg text-sm hover:bg-red-600">Tolak</button>
+                                        @endif
+                                    </div>
                                 </div>
                             @empty
                                 <p class="text-center text-[#4F4F4F] py-8">Belum ada pendaftaran</p>
@@ -187,31 +215,660 @@
                     </div>
                 </div>
             </section>
+
+            <!-- homepage texts section -->
+            <section id="homepage-texts-section" class="dashboard-section hidden">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold text-[#2E2E2E]">Teks Homepage</h2>
+                    <p class="text-[#4F4F4F] mt-2">Kelola konten teks di halaman utama seperti Hero Title, Hero Subtitle, Tentang Kami, dll.</p>
+                </div>
+
+                <div class="rounded-2xl bg-white border border-[#FEDA60]/30 p-6 shadow-lg">
+                    <!-- Daftar Teks yang Ada -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-bold text-[#2E2E2E] mb-4">Daftar Teks</h3>
+                        <div class="space-y-3">
+                            @forelse($homepageTexts as $text)
+                                <div class="flex items-start justify-between p-4 rounded-xl bg-[#FFF6D5] border border-[#FEDA60]/20 hover:border-[#FEDA60]/50 transition-all">
+                                    <div class="flex-1">
+                                        <p class="font-semibold text-[#2E2E2E]">{{ $text->label }}</p>
+                                        <p class="text-xs text-[#8C6A08] mb-2">Key: {{ $text->key }}</p>
+                                        <p class="text-sm text-[#4F4F4F] line-clamp-2">{{ $text->content }}</p>
+                                    </div>
+                                    <div class="ml-4 flex items-center gap-2">
+                                        <button type="button" onclick="editText({{ $text->id }}, '{{ addslashes($text->label) }}', '{{ addslashes($text->content) }}')" class="px-3 py-2 bg-[#FEDA60] text-white rounded-lg text-sm hover:bg-[#E5C247]">Edit</button>
+                                        <form action="{{ route('admin.homepage.texts.destroy', $text->id) }}" method="POST" class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" onclick="return confirm('Yakin ingin menghapus?')" class="px-3 py-2 bg-red-500 text-white rounded-lg text-sm hover:bg-red-600">Hapus</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            @empty
+                                <p class="text-center text-[#4F4F4F] py-6">Belum ada teks yang ditambahkan</p>
+                            @endforelse
+                        </div>
+                    </div>
+
+                    <!-- Expected static text keys (declared by the homepage template) -->
+                    <div class="mb-6">
+                        <h4 class="text-md font-semibold text-[#2E2E2E] mb-3">Teks Statis yang Diharapkan</h4>
+                        <div class="grid gap-2">
+                            @foreach($expectedTextItems as $item)
+                                @php($existing = $homepageTexts->firstWhere('key', $item['key']))
+                                <div class="flex items-center justify-between p-3 rounded-md bg-[#FFF8E6] border border-[#FEDA60]/15">
+                                    <div>
+                                        <p class="font-medium text-sm text-[#2E2E2E]">{{ $item['label'] }}</p>
+                                        <p class="text-xs text-[#8C6A08]">Key: {{ $item['key'] }} @if($existing) • <span class="text-green-600">Terdaftar</span> @else • <span class="text-red-600">Belum</span> @endif</p>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        @if($existing)
+                                            <button type="button" onclick="editText({{ $existing->id }}, {{ json_encode($existing->label) }}, {{ json_encode($existing->content) }})" class="px-3 py-2 bg-[#FEDA60] text-white rounded-lg text-sm">Edit</button>
+                                        @else
+                                            <button type="button" onclick="showCreateText({{ json_encode($item['key']) }}, {{ json_encode($item['label']) }})" class="px-3 py-2 bg-green-500 text-white rounded-lg text-sm">Buat</button>
+                                        @endif
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <!-- Form Edit/Tambah -->
+                    <div class="border-t border-[#FEDA60]/20 pt-6">
+                        <h3 class="text-lg font-bold text-[#2E2E2E] mb-4" id="form-title">Tambah Teks Baru</h3>
+                        <form id="text-form" action="{{ route('admin.homepage.texts.store') }}" method="POST">
+                            @csrf
+                            <input type="hidden" id="text-id" name="id">
+                            <input type="hidden" id="form-method" name="_method" value="POST">
+                            
+                            <div class="grid gap-4">
+                                <div>
+                                    <label class="block text-sm font-semibold text-[#2E2E2E] mb-2">Key (e.g., hero_title, hero_subtitle, tentang_kami)</label>
+                                    <input type="text" id="text-key" name="key" class="w-full border border-[#FEDA60]/30 rounded-lg px-4 py-2 text-[#2E2E2E]" placeholder="hero_title" required>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-[#2E2E2E] mb-2">Label (Nama Tampilan)</label>
+                                    <input type="text" id="text-label" name="label" class="w-full border border-[#FEDA60]/30 rounded-lg px-4 py-2 text-[#2E2E2E]" placeholder="Judul Hero" required>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-[#2E2E2E] mb-2">Konten</label>
+                                    <textarea id="text-content" name="content" class="w-full border border-[#FEDA60]/30 rounded-lg px-4 py-2 text-[#2E2E2E]" rows="5" placeholder="Masukkan konten teks..." required></textarea>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button type="submit" class="px-6 py-2 bg-[#FEDA60] text-white rounded-lg font-semibold hover:bg-[#E5C247]">Simpan</button>
+                                    <button type="button" onclick="resetForm()" class="px-6 py-2 bg-gray-400 text-white rounded-lg font-semibold hover:bg-gray-500">Reset</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- homepage carousel section -->
+            <section id="homepage-carousel-section" class="dashboard-section hidden">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold text-[#2E2E2E]">Carousel Slider</h2>
+                    <p class="text-[#4F4F4F] mt-2">Kelola slide/banner yang ditampilkan di carousel homepage.</p>
+                </div>
+
+                <div class="rounded-2xl bg-white border border-[#FEDA60]/30 p-6 shadow-lg">
+                    <!-- Daftar Carousel -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-bold text-[#2E2E2E] mb-4">Daftar Carousel</h3>
+                        <div class="space-y-3">
+                            @forelse($homepageCarousels as $carousel)
+                                <div class="flex items-center justify-between p-4 rounded-xl bg-[#FFF6D5] border border-[#FEDA60]/20 hover:border-[#FEDA60]/50 transition-all">
+                                    <div class="flex items-center gap-4 flex-1">
+                                        @if($carousel->image)
+                                            <img src="{{ asset('storage/' . $carousel->image) }}" alt="{{ $carousel->title }}" class="w-20 h-20 object-cover rounded-lg">
+                                        @else
+                                            <div class="w-20 h-20 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400">No Image</div>
+                                        @endif
+                                        <div>
+                                            <p class="font-semibold text-[#2E2E2E]">{{ $carousel->title }}</p>
+                                            @if($carousel->link)
+                                                <p class="text-xs text-[#8C6A08]">Link: {{ $carousel->link }}</p>
+                                            @endif
+                                            <p class="text-xs text-[#4F4F4F]">Urutan: {{ $carousel->order }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <button type="button" onclick="editCarousel({{ $carousel->id }}, '{{ addslashes($carousel->title) }}', '{{ $carousel->link }}', {{ $carousel->order }})" class="px-3 py-2 bg-[#FEDA60] text-white rounded-lg text-sm hover:bg-[#E5C247]">Edit</button>
+                                        <form action="{{ route('admin.homepage.carousel.destroy', $carousel->id) }}" method="POST" class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" onclick="return confirm('Yakin ingin menghapus?')" class="px-3 py-2 bg-red-500 text-white rounded-lg text-sm hover:bg-red-600">Hapus</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            @empty
+                                <p class="text-center text-[#4F4F4F] py-6">Belum ada carousel yang ditambahkan</p>
+                            @endforelse
+                        </div>
+                    </div>
+
+                    <!-- Form Tambah/Edit -->
+                    <div class="border-t border-[#FEDA60]/20 pt-6">
+                        <h3 class="text-lg font-bold text-[#2E2E2E] mb-4" id="carousel-form-title">Tambah Carousel Baru</h3>
+                        <form id="carousel-form" action="{{ route('admin.homepage.carousel.store') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <input type="hidden" id="carousel-id" name="id">
+                            <input type="hidden" id="carousel-method" name="_method" value="POST">
+                            
+                            <div class="grid gap-4">
+                                <div>
+                                    <label class="block text-sm font-semibold text-[#2E2E2E] mb-2">Judul Slide</label>
+                                    <input type="text" id="carousel-title" name="title" class="w-full border border-[#FEDA60]/30 rounded-lg px-4 py-2 text-[#2E2E2E]" required>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-[#2E2E2E] mb-2">Gambar</label>
+                                    <input type="file" id="carousel-image" name="image" class="w-full border border-[#FEDA60]/30 rounded-lg px-4 py-2" accept="image/*">
+                                    <p class="text-xs text-[#4F4F4F] mt-1">Kosongkan jika tidak ingin mengubah gambar</p>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-[#2E2E2E] mb-2">Link (Opsional)</label>
+                                    <input type="text" id="carousel-link" name="link" class="w-full border border-[#FEDA60]/30 rounded-lg px-4 py-2 text-[#2E2E2E]" placeholder="https://example.com">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-[#2E2E2E] mb-2">Urutan</label>
+                                    <input type="number" id="carousel-order" name="order" class="w-full border border-[#FEDA60]/30 rounded-lg px-4 py-2 text-[#2E2E2E]" value="0">
+                                </div>
+                                <div class="flex gap-2">
+                                    <button type="submit" class="px-6 py-2 bg-[#FEDA60] text-white rounded-lg font-semibold hover:bg-[#E5C247]">Simpan</button>
+                                    <button type="button" onclick="resetCarouselForm()" class="px-6 py-2 bg-gray-400 text-white rounded-lg font-semibold hover:bg-gray-500">Reset</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- homepage icons section -->
+            <section id="homepage-icons-section" class="dashboard-section hidden">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold text-[#2E2E2E]">Icon Items</h2>
+                    <p class="text-[#4F4F4F] mt-2">Kelola icon/fitur seperti Profesional, Berpengalaman, Bersertifikat, dll.</p>
+                </div>
+
+                <div class="rounded-2xl bg-white border border-[#FEDA60]/30 p-6 shadow-lg">
+                    <!-- Daftar Icon -->
+                    <div class="mb-8">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-[#2E2E2E]">Daftar Icon</h3>
+                            <button type="button" onclick="showAddIconForm()" class="px-3 py-2 bg-green-500 text-white rounded-lg text-sm hover:bg-green-600">Tambah Icon</button>
+                        </div>
+                        <div class="space-y-3">
+                            <!-- Expected static icons declared by homepage template -->
+                            <div class="mb-4 p-3 rounded-md bg-[#FFF8E6] border border-[#FEDA60]/15">
+                                <h4 class="text-md font-semibold text-[#2E2E2E] mb-2">Icon Statis yang Diharapkan</h4>
+                                <div class="grid gap-2">
+                                    @foreach($expectedIconItems as $iitem)
+                                        @php($existsIcon = $homepageIcons->firstWhere('title', $iitem['title']))
+                                        <div class="flex items-center justify-between p-2 rounded-md bg-white/30">
+                                            <div>
+                                                <p class="font-medium text-sm text-[#2E2E2E]">{{ $iitem['title'] }}</p>
+                                                <p class="text-xs text-[#8C6A08]">@if($existsIcon) <span class="text-green-600">Terdaftar</span> @else <span class="text-red-600">Belum</span> @endif</p>
+                                            </div>
+                                            <div class="flex items-center gap-2">
+                                                @if($existsIcon)
+                                                    <button type="button" onclick="editIcon({{ $existsIcon->id }}, {{ json_encode($existsIcon->title) }}, {{ json_encode($existsIcon->icon_class) }}, {{ json_encode($existsIcon->description ?? '') }}, {{ json_encode($existsIcon->link ?? '') }})" class="px-3 py-2 bg-[#FEDA60] text-white rounded-lg text-sm">Edit</button>
+                                                @else
+                                                    <button type="button" onclick="showCreateIcon({{ json_encode($iitem['title']) }})" class="px-3 py-2 bg-green-500 text-white rounded-lg text-sm">Buat</button>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                            @forelse($homepageIcons as $icon)
+                                <div class="flex items-center justify-between p-4 rounded-xl bg-[#FFF6D5] border border-[#FEDA60]/20 hover:border-[#FEDA60]/50 transition-all">
+                                    <div class="flex-1">
+                                        <p class="font-semibold text-[#2E2E2E]">{{ $icon->title }}</p>
+                                        <p class="text-xs text-[#8C6A08] mb-1">Icon Class: {{ $icon->icon_class }}</p>
+                                        @if($icon->description)
+                                            <p class="text-sm text-[#4F4F4F]">{{ $icon->description }}</p>
+                                        @endif
+                                        @if($icon->link)
+                                            <p class="text-xs text-[#8C6A08]">Link: {{ $icon->link }}</p>
+                                        @endif
+                                    </div>
+                                    <div class="ml-4 flex items-center gap-2">
+                                        <button type="button" onclick="editIcon({{ $icon->id }}, '{{ addslashes($icon->title) }}', '{{ addslashes($icon->icon_class) }}', '{{ addslashes($icon->description ?? '') }}', '{{ $icon->link }}')" class="px-3 py-2 bg-[#FEDA60] text-white rounded-lg text-sm hover:bg-[#E5C247]">Edit</button>
+                                        <form action="{{ route('admin.homepage.icons.destroy', $icon->id) }}" method="POST" class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" onclick="return confirm('Yakin ingin menghapus?')" class="px-3 py-2 bg-red-500 text-white rounded-lg text-sm hover:bg-red-600">Hapus</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            @empty
+                                <p class="text-center text-[#4F4F4F] py-6">Belum ada icon yang ditambahkan</p>
+                            @endforelse
+                        </div>
+                    </div>
+
+                    <!-- Form Tambah/Edit -->
+                    <div class="border-t border-[#FEDA60]/20 pt-6">
+                        <h3 class="text-lg font-bold text-[#2E2E2E] mb-4" id="icon-form-title">Edit Icon</h3>
+                        <!-- Form hanya muncul saat mengedit icon yang ada -->
+                        <div id="icon-form-wrapper" style="display:none;">
+                            <form id="icon-form" action="#" method="POST">
+                                @csrf
+                                <input type="hidden" id="icon-id" name="id">
+                                <input type="hidden" id="icon-method" name="_method" value="PUT">
+                                
+                                <div class="grid gap-4">
+                                    <div>
+                                        <label class="block text-sm font-semibold text-[#2E2E2E] mb-2">Judul Icon</label>
+                                        <input type="text" id="icon-title" name="title" class="w-full border border-[#FEDA60]/30 rounded-lg px-4 py-2 text-[#2E2E2E]" placeholder="Profesional" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-[#2E2E2E] mb-2">Icon Class (Fontawesome, Bootstrap Icon, dll)</label>
+                                        <input type="text" id="icon-class" name="icon_class" class="w-full border border-[#FEDA60]/30 rounded-lg px-4 py-2 text-[#2E2E2E]" placeholder="fa fa-star" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-[#2E2E2E] mb-2">Deskripsi (Opsional)</label>
+                                        <textarea id="icon-description" name="description" class="w-full border border-[#FEDA60]/30 rounded-lg px-4 py-2 text-[#2E2E2E]" rows="3" placeholder="Penjelasan singkat tentang icon ini"></textarea>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-[#2E2E2E] mb-2">Link (Opsional)</label>
+                                        <input type="text" id="icon-link" name="link" class="w-full border border-[#FEDA60]/30 rounded-lg px-4 py-2 text-[#2E2E2E]" placeholder="https://example.com">
+                                    </div>
+                                    <div class="flex gap-2">
+                                        <button type="submit" id="icon-form-submit" class="px-6 py-2 bg-[#FEDA60] text-white rounded-lg font-semibold hover:bg-[#E5C247]">Simpan Perubahan</button>
+                                        <button type="button" onclick="resetIconForm()" class="px-6 py-2 bg-gray-400 text-white rounded-lg font-semibold hover:bg-gray-500">Batal</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <p class="text-sm text-[#4F4F4F] mt-3">Peringatan: untuk menambah icon baru, hubungi admin atau gunakan fitur khusus jika tersedia. Di sini hanya dapat mengedit icon yang sudah ada.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- homepage sections section -->
+            <section id="homepage-sections-section" class="dashboard-section hidden">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold text-[#2E2E2E]">Section Pages</h2>
+                    <p class="text-[#4F4F4F] mt-2">Kelola section/halaman di homepage dengan konten, gambar, dan layout.</p>
+                </div>
+
+                <div class="rounded-2xl bg-white border border-[#FEDA60]/30 p-6 shadow-lg">
+                    <!-- Daftar Sections -->
+                    <div class="mb-8">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-[#2E2E2E]">Daftar Section</h3>
+                            <button type="button" onclick="showAddSectionForm()" class="px-3 py-2 bg-green-500 text-white rounded-lg text-sm hover:bg-green-600">Tambah Section</button>
+                        </div>
+                        <div class="space-y-3">
+                            <!-- Expected static sections declared by the homepage template -->
+                            <div class="mb-4 p-3 rounded-md bg-[#FFF8E6] border border-[#FEDA60]/15">
+                                <h4 class="text-md font-semibold text-[#2E2E2E] mb-2">Section Statis yang Diharapkan</h4>
+                                <div class="grid gap-2">
+                                    @foreach($expectedSectionItems as $sitem)
+                                        @php($existsSection = $homepageSections->firstWhere('title', $sitem['label']))
+                                        <div class="flex items-center justify-between p-2 rounded-md bg-white/30">
+                                            <div>
+                                                <p class="font-medium text-sm text-[#2E2E2E]">{{ $sitem['label'] }}</p>
+                                                <p class="text-xs text-[#8C6A08]">Slug: {{ $sitem['slug'] }} @if($existsSection) • <span class="text-green-600">Terdaftar</span> @else • <span class="text-red-600">Belum</span> @endif</p>
+                                            </div>
+                                            <div class="flex items-center gap-2">
+                                                @if($existsSection)
+                                                    <button type="button" onclick="editSection({{ $existsSection->id }}, {{ json_encode($existsSection->title) }}, {{ json_encode($existsSection->subtitle ?? '') }}, {{ json_encode($existsSection->content) }}, {{ $existsSection->order }}, {{ $existsSection->is_active ? 'true' : 'false' }})" class="px-3 py-2 bg-[#FEDA60] text-white rounded-lg text-sm">Edit</button>
+                                                @else
+                                                    <button type="button" onclick="showCreateSection({{ json_encode($sitem['label']) }})" class="px-3 py-2 bg-green-500 text-white rounded-lg text-sm">Buat</button>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                            @forelse($homepageSections as $section)
+                                <div class="p-4 rounded-xl bg-[#FFF6D5] border border-[#FEDA60]/20 hover:border-[#FEDA60]/50 transition-all">
+                                    <div class="flex items-start justify-between">
+                                        <div class="flex-1">
+                                            <p class="text-lg font-semibold text-[#2E2E2E]">{{ $section->title }}</p>
+                                            @if($section->subtitle)
+                                                <p class="text-sm text-[#8C6A08]">{{ $section->subtitle }}</p>
+                                            @endif
+                                            <div class="mt-2 text-sm text-[#4F4F4F] line-clamp-3">{!! nl2br(e($section->content)) !!}</div>
+                                            <p class="text-xs text-[#8C6A08] mt-2">Urutan: {{ $section->order }} | Status: {{ $section->is_active ? 'Aktif' : 'Nonaktif' }}</p>
+                                        </div>
+                                        @if($section->image)
+                                            <img src="{{ asset('storage/' . $section->image) }}" alt="{{ $section->title }}" class="w-24 h-24 object-cover rounded-lg ml-4">
+                                        @endif
+                                    </div>
+                                    <div class="flex items-center gap-2 mt-4">
+                                        <button type="button" onclick="editSection({{ $section->id }}, '{{ addslashes($section->title) }}', '{{ addslashes($section->subtitle ?? '') }}', '{{ addslashes($section->content) }}', {{ $section->order }}, {{ $section->is_active ? 'true' : 'false' }})" class="px-3 py-2 bg-[#FEDA60] text-white rounded-lg text-sm hover:bg-[#E5C247]">Edit</button>
+                                        <form action="{{ route('admin.homepage.sections.destroy', $section->id) }}" method="POST" class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" onclick="return confirm('Yakin ingin menghapus?')" class="px-3 py-2 bg-red-500 text-white rounded-lg text-sm hover:bg-red-600">Hapus</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            @empty
+                                <p class="text-center text-[#4F4F4F] py-6">Belum ada section yang ditambahkan</p>
+                            @endforelse
+                        </div>
+                    </div>
+
+                    <!-- Form Tambah/Edit -->
+                    <div class="border-t border-[#FEDA60]/20 pt-6">
+                        <h3 class="text-lg font-bold text-[#2E2E2E] mb-4" id="section-form-title">Edit Section</h3>
+                        <!-- Form hanya untuk edit section yang ada. Disembunyikan secara default. -->
+                        <div id="section-form-wrapper" style="display:none;">
+                            <form id="section-form" action="#" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <input type="hidden" id="section-id" name="id">
+                                <input type="hidden" id="section-method" name="_method" value="PUT">
+                                
+                                <div class="grid gap-4">
+                                    <div>
+                                        <label class="block text-sm font-semibold text-[#2E2E2E] mb-2">Judul Section</label>
+                                        <input type="text" id="section-title" name="title" class="w-full border border-[#FEDA60]/30 rounded-lg px-4 py-2 text-[#2E2E2E]" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-[#2E2E2E] mb-2">Subtitle (Opsional)</label>
+                                        <input type="text" id="section-subtitle" name="subtitle" class="w-full border border-[#FEDA60]/30 rounded-lg px-4 py-2 text-[#2E2E2E]">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-[#2E2E2E] mb-2">Konten</label>
+                                        <textarea id="section-content" name="content" class="w-full border border-[#FEDA60]/30 rounded-lg px-4 py-2 text-[#2E2E2E]" rows="6" required></textarea>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-[#2E2E2E] mb-2">Gambar (Opsional)</label>
+                                        <input type="file" id="section-image" name="image" class="w-full border border-[#FEDA60]/30 rounded-lg px-4 py-2" accept="image/*">
+                                        <p class="text-xs text-[#4F4F4F] mt-1">Kosongkan jika tidak ingin mengubah gambar</p>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-[#2E2E2E] mb-2">Urutan</label>
+                                        <input type="number" id="section-order" name="order" class="w-full border border-[#FEDA60]/30 rounded-lg px-4 py-2 text-[#2E2E2E]" value="0">
+                                    </div>
+                                    <div>
+                                        <label class="flex items-center gap-2">
+                                            <input type="checkbox" id="section-active" name="is_active" value="1" checked class="w-4 h-4">
+                                            <span class="text-sm font-semibold text-[#2E2E2E]">Aktif</span>
+                                        </label>
+                                    </div>
+                                    <div class="flex gap-2">
+                                        <button type="submit" class="px-6 py-2 bg-[#FEDA60] text-white rounded-lg font-semibold hover:bg-[#E5C247]">Simpan Perubahan</button>
+                                        <button type="button" onclick="resetSectionForm()" class="px-6 py-2 bg-gray-400 text-white rounded-lg font-semibold hover:bg-gray-500">Batal</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <p class="text-sm text-[#4F4F4F] mt-3">Peringatan: untuk menambah section baru, hubungi admin atau gunakan fitur terpisah. Di sini hanya untuk mengedit section yang sudah ada.</p>
+                    </div>
+                </div>
+            </section>
             </div>
         </main>
     </div>
 </div>
 
 <script>
-    function showSection(sectionName) {
+    function showSection(sectionName, event) {
+        if (event) event.preventDefault();
+
+        if (!sectionName) return;
+
         // Hide all sections
         document.querySelectorAll('.dashboard-section').forEach(section => {
             section.classList.add('hidden');
         });
-        
-        // Show selected section
-        document.getElementById(sectionName + '-section').classList.remove('hidden');
-        
+
+        // Show selected section (guard if not present)
+        const target = document.getElementById(sectionName + '-section');
+        if (!target) return;
+        target.classList.remove('hidden');
+
         // Update active nav link
         document.querySelectorAll('.nav-link').forEach(link => {
             link.classList.remove('active', 'bg-[#FEDA60]/10', 'text-[#FEDA60]');
         });
-        event.target.closest('.nav-link').classList.add('active', 'bg-[#FEDA60]/10', 'text-[#FEDA60]');
+
+        // Find and highlight the clicked button(s)
+        const buttons = document.querySelectorAll(`[data-section="${sectionName}"]`);
+        buttons.forEach(btn => {
+            btn.classList.add('active', 'bg-[#FEDA60]/10', 'text-[#FEDA60]');
+        });
     }
-    
-    // Handle hash navigation for activity section
-    if (window.location.hash === '#activity') {
-        showSection('activity');
+
+    // Handle initial hash navigation (any section)
+    if (window.location.hash) {
+        const initial = window.location.hash.replace('#', '');
+        try { if (initial) showSection(initial); } catch (e) { /* ignore */ }
+    }
+
+    // Listen for hash changes (when user clicks anchors that only update the hash)
+    window.addEventListener('hashchange', function() {
+        const h = window.location.hash.replace('#', '');
+        try { if (h) showSection(h); } catch (e) { /* ignore */ }
+    });
+
+    // ======================= TEXT SECTION FUNCTIONS =======================
+    function editText(id, label, content) {
+        document.getElementById('text-id').value = id;
+        document.getElementById('text-label').value = label;
+        document.getElementById('text-content').value = content;
+        document.getElementById('text-key').disabled = true;
+        document.getElementById('form-title').textContent = 'Edit Teks';
+        // set action ke update endpoint
+        document.getElementById('text-form').action = `{{ url('admin/homepage/texts') }}/${id}`;
+        document.getElementById('form-method').value = 'PUT';
+        window.scrollTo({ top: document.getElementById('text-form').offsetTop - 100, behavior: 'smooth' });
+    }
+
+    function resetForm() {
+        document.getElementById('text-form').reset();
+        document.getElementById('text-id').value = '';
+        document.getElementById('text-key').disabled = false;
+        document.getElementById('form-title').textContent = 'Tambah Teks Baru';
+        document.getElementById('text-form').action = '{{ route("admin.homepage.texts.store") }}';
+        document.getElementById('form-method').value = 'POST';
+    }
+
+    // ======================= CAROUSEL SECTION FUNCTIONS =======================
+    function editCarousel(id, title, link, order) {
+        document.getElementById('carousel-id').value = id;
+        document.getElementById('carousel-title').value = title;
+        document.getElementById('carousel-link').value = link;
+        document.getElementById('carousel-order').value = order;
+        document.getElementById('carousel-form-title').textContent = 'Edit Carousel';
+        document.getElementById('carousel-form').action = `{{ route('admin.homepage.carousel.store') }}`.replace('store', `update/${id}`);
+        document.getElementById('carousel-method').value = 'PUT';
+        document.getElementById('carousel-image').removeAttribute('required');
+        window.scrollTo({ top: document.getElementById('carousel-form').offsetTop - 100, behavior: 'smooth' });
+    }
+
+    function resetCarouselForm() {
+        document.getElementById('carousel-form').reset();
+        document.getElementById('carousel-id').value = '';
+        document.getElementById('carousel-form-title').textContent = 'Tambah Carousel Baru';
+        document.getElementById('carousel-form').action = '{{ route("admin.homepage.carousel.store") }}';
+        document.getElementById('carousel-method').value = 'POST';
+        document.getElementById('carousel-image').setAttribute('required', 'required');
+    }
+
+    // ======================= ICON SECTION FUNCTIONS =======================
+    function editIcon(id, title, iconClass, description, link) {
+        document.getElementById('icon-id').value = id;
+        document.getElementById('icon-title').value = title;
+        document.getElementById('icon-class').value = iconClass;
+        document.getElementById('icon-description').value = description;
+        document.getElementById('icon-link').value = link;
+        document.getElementById('icon-form-title').textContent = 'Edit Icon';
+        // Set form action to the update endpoint and show the edit-only wrapper
+        document.getElementById('icon-form').action = `{{ url('admin/homepage/icons') }}/${id}`;
+        document.getElementById('icon-method').value = 'PUT';
+        document.getElementById('icon-form-wrapper').style.display = 'block';
+        window.scrollTo({ top: document.getElementById('icon-form-wrapper').offsetTop - 100, behavior: 'smooth' });
+    }
+
+    function resetIconForm() {
+        document.getElementById('icon-form').reset();
+        document.getElementById('icon-id').value = '';
+        document.getElementById('icon-form-title').textContent = 'Edit Icon';
+        document.getElementById('icon-form').action = '#';
+        document.getElementById('icon-method').value = 'PUT';
+        // sembunyikan wrapper edit
+        document.getElementById('icon-form-wrapper').style.display = 'none';
+    }
+
+    function showAddIconForm() {
+        document.getElementById('icon-form').reset();
+        document.getElementById('icon-id').value = '';
+        document.getElementById('icon-form-title').textContent = 'Tambah Icon Baru';
+        document.getElementById('icon-form').action = '{{ route("admin.homepage.icons.store") }}';
+        document.getElementById('icon-method').value = 'POST';
+        document.getElementById('icon-form-wrapper').style.display = 'block';
+        window.scrollTo({ top: document.getElementById('icon-form-wrapper').offsetTop - 100, behavior: 'smooth' });
+    }
+
+    // Prefill create form for expected icons (set title to expected label)
+    function showCreateIcon(title) {
+        showAddIconForm();
+        setTimeout(() => {
+            document.getElementById('icon-title').value = title;
+            document.getElementById('icon-class').value = '';
+            document.getElementById('icon-description').value = '';
+            document.getElementById('icon-link').value = '';
+        }, 80);
+    }
+
+    // ======================= SECTION FUNCTIONS =======================
+    function editSection(id, title, subtitle, content, order, isActive) {
+        document.getElementById('section-id').value = id;
+        document.getElementById('section-title').value = title;
+        document.getElementById('section-subtitle').value = subtitle;
+        document.getElementById('section-content').value = content;
+        document.getElementById('section-order').value = order;
+        document.getElementById('section-active').checked = isActive;
+        document.getElementById('section-form-title').textContent = 'Edit Section';
+        // set action ke endpoint update dan tampilkan form edit
+        document.getElementById('section-form').action = `{{ url('admin/homepage/sections') }}/${id}`;
+        document.getElementById('section-method').value = 'PUT';
+        document.getElementById('section-image').removeAttribute('required');
+        document.getElementById('section-form-wrapper').style.display = 'block';
+        window.scrollTo({ top: document.getElementById('section-form-wrapper').offsetTop - 100, behavior: 'smooth' });
+    }
+
+    function resetSectionForm() {
+        document.getElementById('section-form').reset();
+        document.getElementById('section-id').value = '';
+        document.getElementById('section-form-title').textContent = 'Tambah Section Baru';
+        document.getElementById('section-form').action = '#';
+        document.getElementById('section-method').value = 'PUT';
+        document.getElementById('section-active').checked = true;
+        document.getElementById('section-image').setAttribute('required', 'required');
+        // sembunyikan wrapper edit
+        document.getElementById('section-form-wrapper').style.display = 'none';
+    }
+
+    function showAddSectionForm() {
+        document.getElementById('section-form').reset();
+        document.getElementById('section-id').value = '';
+        document.getElementById('section-form-title').textContent = 'Tambah Section Baru';
+        document.getElementById('section-form').action = '{{ route("admin.homepage.sections.store") }}';
+        document.getElementById('section-method').value = 'POST';
+        document.getElementById('section-active').checked = true;
+        document.getElementById('section-form-wrapper').style.display = 'block';
+        window.scrollTo({ top: document.getElementById('section-form-wrapper').offsetTop - 100, behavior: 'smooth' });
+    }
+
+    // Prefill create form for expected text keys
+    function showCreateText(key, label) {
+        document.getElementById('text-form').reset();
+        document.getElementById('text-id').value = '';
+        document.getElementById('text-key').value = key;
+        document.getElementById('text-label').value = label;
+        document.getElementById('text-content').value = '';
+        document.getElementById('text-key').disabled = false;
+        document.getElementById('form-title').textContent = 'Tambah Teks Baru';
+        document.getElementById('text-form').action = '{{ route("admin.homepage.texts.store") }}';
+        document.getElementById('form-method').value = 'POST';
+        window.scrollTo({ top: document.getElementById('text-form').offsetTop - 100, behavior: 'smooth' });
+    }
+
+    // Prefill create form for expected sections (set title to expected label)
+    function showCreateSection(label) {
+        showAddSectionForm();
+        // small timeout to ensure form is visible
+        setTimeout(() => {
+            document.getElementById('section-title').value = label;
+            document.getElementById('section-subtitle').value = '';
+            document.getElementById('section-content').value = '';
+            document.getElementById('section-order').value = 0;
+            document.getElementById('section-active').checked = true;
+        }, 100);
+    }
+</script>
+<!-- Approve / Reject Modals and forms -->
+<!-- Approve Modal -->
+<div id="approve-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40">
+    <div class="bg-white rounded-lg p-6 w-11/12 max-w-md">
+        <h3 class="text-lg font-bold mb-3 text-black">Konfirmasi Persetujuan</h3>
+        <p id="approve-modal-text" class="mb-4 text-black"></p>
+        <form id="approve-form" method="POST" action="#">
+            @csrf
+            <input type="hidden" name="notes" id="approve-notes">
+            <div class="flex justify-end gap-2 text-black">
+                <button type="button" onclick="closeApproveModal()" class="px-4 py-2 bg-gray-300 rounded">Tidak</button>
+                <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded">Ya, Setujui</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Reject Modal -->
+<div id="reject-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40">
+    <div class="bg-white rounded-lg p-6 w-11/12 max-w-md">
+        <h3 class="text-lg text-black font-bold mb-3">Alasan Penolakan</h3>
+        <p id="reject-modal-text" class="mb-2 text-black"></p>
+        <form id="reject-form" method="POST" action="#">
+            @csrf
+            <div class="mb-4">
+                <label class="block text-sm text-black font-medium mb-1">Alasan penolakan</label>
+                <textarea name="reason" id="reject-reason" class="w-full border rounded px-3 py-2 text-black" rows="4" required></textarea>
+            </div>
+            <div class="flex justify-end gap-2">
+                <button type="button" onclick="closeRejectModal()" class="px-4 py-2 bg-gray-300 rounded">Tidak</button>
+                <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded">Ya, Tolak</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openApproveModal(id, userName, className) {
+        const modal = document.getElementById('approve-modal');
+        document.getElementById('approve-modal-text').textContent = `Apakah anda menyetujui pendaftaran user "${userName}" pada kelas "${className}" ini?`;
+        const form = document.getElementById('approve-form');
+        form.action = `{{ url('/admin/enrollments') }}/${id}/approve`;
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+    function closeApproveModal() {
+        const modal = document.getElementById('approve-modal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+
+    function openRejectModal(id, userName, className) {
+        const modal = document.getElementById('reject-modal');
+        document.getElementById('reject-modal-text').textContent = `Menolak pendaftaran user "${userName}" untuk kelas "${className}". Masukkan alasan penolakan:`;
+        const form = document.getElementById('reject-form');
+        form.action = `{{ url('/admin/enrollments') }}/${id}/reject`;
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+    function closeRejectModal() {
+        const modal = document.getElementById('reject-modal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
     }
 </script>
 @endsection

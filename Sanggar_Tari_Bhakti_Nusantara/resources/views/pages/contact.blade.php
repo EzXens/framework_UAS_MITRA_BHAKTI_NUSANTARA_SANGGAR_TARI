@@ -66,12 +66,21 @@
                             @error('message') <p class="text-xs text-red-400 mt-1">{{ $message }}</p> @enderror
                         </div>
 
-                        <div class="flex items-center justify-end">
-                            <button 
-                                type="submit"
-                                class="px-6 py-3 bg-gradient-to-br from-[#FEDA60] to-[#F5B347] rounded-xl font-semibold text-[#2E2E2E] shadow-lg hover:shadow-xl transition"
-                            >Kirim Pesan</button>
+                       <div class="flex items-center justify-end gap-4">
+
+                        <!-- CAPTCHA CLOUDFLARE -->
+                        <div class="cf-turnstile" 
+                            data-sitekey="0x4AAAAAACEeieCtGo8oT1FO"
+                            data-theme="dark">
                         </div>
+
+                        <!-- TOMBOL KIRIM -->
+                        <button 
+                            type="submit"
+                            class="px-6 py-3 bg-gradient-to-br from-[#FEDA60] to-[#F5B347] rounded-xl font-semibold text-[#2E2E2E] shadow-lg hover:shadow-xl transition"
+                        >Kirim Pesan</button>
+                    </div>
+
 
                     </div>
                 </form>

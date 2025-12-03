@@ -18,7 +18,7 @@
                 Dashboard
             </a>
             
-            <a href="{{ route('admin.dashboard') }}#activity" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#FEDA60]/10 hover:text-[#FEDA60] transition-all text-sm">
+            <a href="{{ route('admin.dashboard') }}#activity" onclick="if(typeof showSection === 'function'){ showSection('activity', event); }" data-section="activity" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#FEDA60]/10 hover:text-[#FEDA60] transition-all text-sm">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5M9 11.25v1.5M12 9v3.75m3-6v6" />
                 </svg>
@@ -71,6 +71,40 @@
                 </svg>
                 Musik Galeri
             </a>
+
+            {{-- home page management --}}
+            <div class="pt-4 pb-2">
+                <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Atur Homepage</p>
+            </div>
+            
+            <a href="{{ route('admin.dashboard') }}#homepage-texts" onclick="if(typeof showSection === 'function'){ showSection('homepage-texts', event); }" data-section="homepage-texts" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#FEDA60]/10 hover:text-[#FEDA60] transition-all text-sm w-full text-left">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 4.5v15m6-15v15m-11.581.313c.498.492 1.173.922 2.026 1.176.855.254 1.747.247 2.654-.02l6.501-2.335c.92-.33 1.539-1.152 1.539-2.076V6.75c0-.933-.619-1.745-1.539-2.076L7.097 2.171c-.907-.266-1.799-.273-2.654.02-.852.254-1.528.684-2.026 1.176M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                Teks Homepage
+            </a>
+            
+            <a href="{{ route('admin.dashboard') }}#homepage-carousel" onclick="if(typeof showSection === 'function'){ showSection('homepage-carousel', event); }" data-section="homepage-carousel" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#FEDA60]/10 hover:text-[#FEDA60] transition-all text-sm w-full text-left">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                </svg>
+                Carousel Slider
+            </a>
+            
+            <a href="{{ route('admin.dashboard') }}#homepage-icons" onclick="if(typeof showSection === 'function'){ showSection('homepage-icons', event); }" data-section="homepage-icons" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#FEDA60]/10 hover:text-[#FEDA60] transition-all text-sm w-full text-left">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122a3 3 0 00-5.78 1.128A2.25 2.25 0 002.25 18h15.75a2.25 2.25 0 110-4.5M11.48 5.1M7.5 10.5h3m-3 6h.008v.008h-.008v-.008zm0 0h3v3H7.5v-3z" />
+                </svg>
+                Icon Items
+            </a>
+            
+            <a href="{{ route('admin.dashboard') }}#homepage-sections" onclick="if(typeof showSection === 'function'){ showSection('homepage-sections', event); }" data-section="homepage-sections" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#FEDA60]/10 hover:text-[#FEDA60] transition-all text-sm w-full text-left">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+                </svg>
+                Section Pages
+            </a>
+
         </nav>
 
         <div class="p-4 border-t border-white/10">

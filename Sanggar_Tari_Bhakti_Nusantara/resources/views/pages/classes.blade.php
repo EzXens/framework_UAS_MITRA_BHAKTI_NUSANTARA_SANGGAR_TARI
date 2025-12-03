@@ -64,9 +64,7 @@
                                 <span><strong>Kapasitas:</strong> {{ $class->capacity }} orang</span>
                             </div>
 
-                            <div class="flex items-center justify-between pt-3">
-                                <span class="text-2xl font-bold text-[#8C6A08]">Rp {{ number_format($class->price, 0, ',', '.') }}</span>
-                            </div>
+                            {{-- price removed from class card --}}
                         </div>
 
                         <div class="mt-4">

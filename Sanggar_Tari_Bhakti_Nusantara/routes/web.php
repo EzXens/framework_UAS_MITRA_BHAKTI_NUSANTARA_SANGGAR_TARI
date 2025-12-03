@@ -8,8 +8,9 @@ use App\Http\Controllers\UserDashboardController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\AdminGalleryController;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\HomeController;
 
-Route::view('/', 'pages.home')->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::view('/tentang', 'pages.about')->name('about');
 Route::get('/produk', [ProductController::class, 'publicIndex'])->name('products');
 Route::get('/galeri', [GalleryController::class, 'index'])->name('gallery');
@@ -27,8 +28,30 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('admin.dashboard');
+    // Enrollment approval/rejection for admin
+    Route::post('/admin/enrollments/{id}/approve', [App\Http\Controllers\Admin\EnrollmentController::class, 'approve'])->name('admin.enrollments.approve');
+    Route::post('/admin/enrollments/{id}/reject', [App\Http\Controllers\Admin\EnrollmentController::class, 'reject'])->name('admin.enrollments.reject');
     Route::resource('products', ProductController::class)->except(['show']);
     Route::resource('classes', ClassController::class)->except(['show']);
+    
+    // Homepage Management Routes
+    Route::prefix('admin/homepage')->name('admin.homepage.')->group(function () {
+        Route::post('/texts', [App\Http\Controllers\Admin\HomepageTextSectionController::class, 'store'])->name('texts.store');
+        Route::put('/texts/{id}', [App\Http\Controllers\Admin\HomepageTextSectionController::class, 'update'])->name('texts.update');
+        Route::delete('/texts/{id}', [App\Http\Controllers\Admin\HomepageTextSectionController::class, 'destroy'])->name('texts.destroy');
+        
+        Route::post('/carousel', [App\Http\Controllers\Admin\HomepageCarouselController::class, 'store'])->name('carousel.store');
+        Route::put('/carousel/{id}', [App\Http\Controllers\Admin\HomepageCarouselController::class, 'update'])->name('carousel.update');
+        Route::delete('/carousel/{id}', [App\Http\Controllers\Admin\HomepageCarouselController::class, 'destroy'])->name('carousel.destroy');
+        
+        Route::post('/icons', [App\Http\Controllers\Admin\HomepageIconController::class, 'store'])->name('icons.store');
+        Route::put('/icons/{id}', [App\Http\Controllers\Admin\HomepageIconController::class, 'update'])->name('icons.update');
+        Route::delete('/icons/{id}', [App\Http\Controllers\Admin\HomepageIconController::class, 'destroy'])->name('icons.destroy');
+        
+        Route::post('/sections', [App\Http\Controllers\Admin\HomepageSectionController::class, 'store'])->name('sections.store');
+        Route::put('/sections/{id}', [App\Http\Controllers\Admin\HomepageSectionController::class, 'update'])->name('sections.update');
+        Route::delete('/sections/{id}', [App\Http\Controllers\Admin\HomepageSectionController::class, 'destroy'])->name('sections.destroy');
+    });
     
     // Gallery Management Routes
     Route::prefix('admin/gallery')->name('admin.gallery.')->group(function () {
