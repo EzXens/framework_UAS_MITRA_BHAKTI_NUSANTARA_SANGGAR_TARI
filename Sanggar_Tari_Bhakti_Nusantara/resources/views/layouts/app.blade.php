@@ -34,16 +34,6 @@
       @endif
 
 
-    <script>
-        const navToggle = document.getElementById('nav-toggle');
-        const navMenu = document.getElementById('nav-menu');
-        if (navToggle && navMenu) {
-            navToggle.addEventListener('click', () => {
-                const expanded = navToggle.getAttribute('aria-expanded') === 'true';
-                navToggle.setAttribute('aria-expanded', String(!expanded));
-                navMenu.classList.toggle('hidden');
-            });
-        }
-    </script>
+    <!-- navbar script is included inside the navbar component (remove duplicate toggler) -->
 </body>
 </html>

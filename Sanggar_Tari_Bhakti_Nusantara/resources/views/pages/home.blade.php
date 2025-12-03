@@ -591,5 +591,47 @@
         document.querySelectorAll('[class*="animate-"]').forEach(el => {
             observer.observe(el);
         });
+
+        // Responsive helpers: set header height CSS variable and adjust hero padding
+        function adjustForHeader() {
+            const header = document.getElementById('main-header');
+            const hero = document.getElementById('hero');
+            if (!header || !hero) return;
+            const h = header.offsetHeight;
+            document.documentElement.style.setProperty('--header-height', h + 'px');
+            // ensure hero content is not hidden behind sticky header on small screens
+            hero.style.paddingTop = (h + 12) + 'px';
+        }
+
+        // Close mobile nav when clicking navigation links (improves hamburger UX)
+        function bindMobileNavLinks() {
+            const mobileLinks = document.querySelectorAll('#nav-menu a.nav-link');
+            const navToggle = document.getElementById('nav-toggle');
+            const navMenu = document.getElementById('nav-menu');
+            const navOverlay = document.getElementById('nav-overlay');
+            if (!mobileLinks.length) return;
+            mobileLinks.forEach(a => {
+                a.addEventListener('click', () => {
+                    // if menu is visible on small screens, trigger close
+                    if (navMenu && !navMenu.classList.contains('hidden')) {
+                        navMenu.classList.remove('active');
+                        navMenu.classList.add('hidden');
+                    }
+                    if (navToggle) navToggle.classList.remove('is-active');
+                    if (navOverlay) {
+                        navOverlay.classList.remove('active');
+                        navOverlay.classList.add('hidden');
+                    }
+                    if (navToggle) navToggle.setAttribute('aria-expanded', 'false');
+                });
+            });
+        }
+
+        // Run initial adjustments and bind
+        window.addEventListener('load', () => {
+            adjustForHeader();
+            bindMobileNavLinks();
+        });
+        window.addEventListener('resize', adjustForHeader);
     </script>
 @endsection
