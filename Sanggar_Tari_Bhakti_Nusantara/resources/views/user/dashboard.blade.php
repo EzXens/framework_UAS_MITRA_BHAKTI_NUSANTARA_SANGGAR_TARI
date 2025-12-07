@@ -108,8 +108,48 @@
                             </div>
                             <div>
                                 <p class="text-3xl font-bold text-[#2E2E2E]">{{ $enrolledClasses->count() }}</p>
-                                <p class="text-sm text-[#4F4F4F]">Kelas Terdaftar</p>
                             </div>
+
+                        {{-- Admin: Aktivitas Terkini (persetujuan surat) --}}
+                        @if(isset($pendingDispensations) && auth()->user()->role === 'admin')
+                            <div class="mb-6">
+                                <div class="rounded-2xl bg-white border border-[#FEDA60]/30 p-4">
+                                    <h3 class="font-semibold text-[#2E2E2E] mb-3">Aktivitas Terkini — Persetujuan Surat</h3>
+                                    @if(count($pendingDispensations) > 0)
+                                        <div class="space-y-3">
+                                            @foreach($pendingDispensations as $pd)
+                                                @php $pp = (array) $pd->payload; @endphp
+                                                <div class="p-3 rounded-lg bg-[#FFF9E5] border border-[#FEDA60]/20 flex items-start justify-between">
+                                                    <div>
+                                                        <p class="text-sm text-[#2E2E2E]"><strong>{{ $pp['name'] ?? '—' }}</strong> — {{ ucfirst($pd->type) }}</p>
+                                                        <p class="text-xs text-gray-600">Kegiatan: {{ $pp['event_name'] ?? '—' }} — {{ $pp['date_from'] ?? '—' }} @if(!empty($pp['date_to'])) sampai {{ $pp['date_to'] }} @endif</p>
+                                                    </div>
+                                                    <div class="flex items-center gap-2">
+                                                        <form method="POST" action="{{ route('admin.dispensations.approve', $pd->id) }}">
+                                                            @csrf
+                                                            <button type="submit" class="px-3 py-1 rounded-lg bg-green-500 text-white text-sm">Setuju</button>
+                                                        </form>
+
+                                                        <button class="px-3 py-1 rounded-lg bg-red-500 text-white text-sm" onclick="document.getElementById('reject-box-{{ $pd->id }}').classList.remove('hidden')">Tolak</button>
+                                                    </div>
+                                                </div>
+
+                                                <form id="reject-box-{{ $pd->id }}" method="POST" action="{{ route('admin.dispensations.reject', $pd->id) }}" class="hidden mt-2">
+                                                    @csrf
+                                                    <div class="flex gap-2">
+                                                        <input type="text" name="rejection_reason" placeholder="Alasan penolakan..." class="w-full rounded-md border-gray-200 p-2" required>
+                                                        <button type="submit" class="px-3 py-1 rounded-lg bg-red-600 text-white">Kirim</button>
+                                                        <button type="button" onclick="document.getElementById('reject-box-{{ $pd->id }}').classList.add('hidden')" class="px-3 py-1 rounded-lg bg-gray-200">Batal</button>
+                                                    </div>
+                                                </form>
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <p class="text-sm text-gray-500">Belum ada permintaan surat baru.</p>
+                                    @endif
+                                </div>
+                            </div>
+                        @endif
                         </div>
                     </div>
 
@@ -421,6 +461,544 @@
                     </div>
                 </div>
             </section>
+
+            <!-- dispensation section -->
+            <section  id="dispensation-section" class="dashboard-section hidden">
+                <div class="mb-8 bg-white p-6 rounded-2xl">
+                        <h1 class="text-3xl font-bold text-[#2E2E2E]">Dispensasi Saya</h1>
+                        <p class="text-[#4F4F4F] mt-2">Buat Surat Dispensasi Anda.</p>
+                    </div> 
+                @if(session('success'))
+                    <div class="mb-4 p-4 rounded-lg bg-green-50 border border-green-200 text-green-800">{{ session('success') }}</div>
+                @endif
+
+                <div class="rounded-2xl bg-white border border-[#FEDA60]/30 p-6 shadow-lg">
+                    <form id="dispensation-form" action="{{ route('dispensations.store') }}" method="POST">
+                        @csrf
+
+                        <div class="grid gap-4 md:grid-cols-2">
+                            <div>
+                                <label class="block text-sm font-semibold text-black mb-1">Pilih Jenis Surat</label>
+                                <select id="disp-type" name="type"
+                                    class="w-full rounded-md border-gray-200 p-2 text-black" required>
+                                    <option value="mahasiswa">Surat Dispensasi - Mahasiswa (Kuliah)</option>
+                                    <option value="siswa">Surat Dispensasi - Siswa (Sekolah)</option>
+                                </select>
+                            </div>
+
+                            <div class="md:col-span-2">
+                                <p class="text-sm text-gray-600">Isilah formulir sesuai tipe yang dipilih. Semua teks input berwarna hitam.</p>
+                            </div>
+
+                            <!-- FORM MAHASISWA -->
+                            <div id="form-mahasiswa" class="type-form">
+                                <label class="block text-sm font-semibold text-black mb-1">Nama Mahasiswa</label>
+                                <input type="text" name="name" class="mhs-input w-full rounded-md border-gray-200 bg-black/10 p-2 text-black mb-3" required oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g,'')" maxlength="100">
+
+                                <label class="block text-sm font-semibold text-black mb-1">NIM Mahasiswa</label>
+                                <input type="text" name="id_number" inputmode="numeric" pattern="\d*" class="mhs-input w-full rounded-md border-gray-200 bg-black/10 p-2 text-black mb-3" required oninput="this.value = this.value.replace(/\D/g,'')" maxlength="20">
+
+                                <label class="block text-sm font-semibold text-black mb-1">Prodi</label>
+                                <input type="text" name="program" class="mhs-input w-full rounded-md border-gray-200 bg-black/10 p-2 text-black mb-3" oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g,'')" maxlength="100">
+
+                                <label class="block text-sm font-semibold text-black mb-1">Instansi</label>
+                                <input type="text" name="school_or_program" class="mhs-input w-full rounded-md border-gray-200 bg-black/10 p-2 text-black mb-3" required oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g,'')" maxlength="150">
+
+                                <label class="block text-sm font-semibold text-black mb-1">Nama Kegiatan</label>
+                                <input type="text" name="event_name" class="mhs-input w-full rounded-md border-gray-200 bg-black/10 p-2 text-black mb-3" required oninput="this.value = this.value.replace(/[^a-zA-Z0-9\s]/g,'')" maxlength="150">
+
+                                <label class="block text-sm font-semibold text-black mb-1">Hari</label>
+                                <select name="day" class="mhs-input w-full rounded-md border-gray-200 bg-black/10 p-2 text-black mb-3" required>
+                                    <option value="Senin">Senin</option>
+                                    <option value="Selasa">Selasa</option>
+                                    <option value="Rabu">Rabu</option>
+                                    <option value="Kamis">Kamis</option>
+                                    <option value="Jumat">Jumat</option>
+                                    <option value="Sabtu">Sabtu</option>
+                                    <option value="Minggu">Minggu</option>
+                                </select>
+
+                                <div class="grid gap-4 md:grid-cols-2">
+                                    <div>
+                                        <label class="block text-sm font-semibold text-black mb-1">Jumlah Hari Dispensasi</label>
+                                        <select class="w-full rounded-md border-gray-200 bg-black/10 p-2 text-black date-type" aria-controls="mahasiswa-dates">
+                                            <option value="single">1 hari</option>
+                                            <option value="range">Lebih dari 1 hari</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-black mb-1">Dari Tanggal</label>
+                                        <input type="date" name="date_from" class="mhs-input w-full rounded-md border-gray-200 bg-black/30 p-2 text-black mb-3" required>
+                                    </div>
+                                    <div id="mahasiswa-dates" class="md:col-span-2 hidden">
+                                        <label class="block text-sm font-semibold text-black mb-1">Sampai Tanggal</label>
+                                        <input type="date" name="date_to" class="mhs-input w-full rounded-md border-gray-200 bg-black/30 p-2 text-black mb-3">
+                                    </div>
+                                </div>
+
+                                <label class="block text-sm font-semibold text-black mb-1">Waktu</label>
+                                <div class="flex items-center gap-2 mb-3">
+                                <input type="text" id="hour_mhs" maxlength="2" placeholder="Jam"
+                                    class="mhs-input w-20 rounded-md border-gray-200 bg-black/10 p-2 text-black text-center">
+
+                                <span class="text-lg font-bold text-black">:</span>
+
+                                <input type="text" id="minute_mhs" maxlength="2" placeholder="Menit"
+                                    class="mhs-input w-20 rounded-md border-gray-200 bg-black/10 p-2 text-black text-center">
+                            </div>
+
+                            <input type="hidden" name="time" id="time_mhs">
+
+                                
+                                <label class="block text-sm font-semibold text-black mb-1">Tempat</label>
+                                <input type="text" name="place" class="mhs-input w-full rounded-md border-gray-200 bg-black/10 p-2 text-black mb-3">
+
+                                <label class="block text-sm font-semibold text-black mb-1">Kota / Provinsi</label>
+                                <input type="text" name="city_province" class="mhs-input w-full rounded-md border-gray-200 bg-black/10 p-2 text-black mb-3" oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g,'')" maxlength="150">
+                            </div>
+
+                            <!-- FORM SISWA -->
+                            <div id="form-siswa" class="type-form hidden">
+                                <label class="block text-sm font-semibold text-black mb-1">Nama Siswa</label>
+                                <input type="text" name="name_siswa" class="siswa-input w-full rounded-md border-gray-200 bg-black/10 p-2 text-black mb-3" required oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g,'')" maxlength="100">
+
+                                <label class="block text-sm font-semibold text-black mb-1">NIS Siswa</label>
+                                <input type="text" name="id_number_siswa" inputmode="numeric" pattern="\d*" class="siswa-input w-full rounded-md border-gray-200 bg-black/10 p-2 text-black mb-3" required oninput="this.value = this.value.replace(/\D/g,'')" maxlength="20">
+
+                                <label class="block text-sm font-semibold text-black mb-1">Kelas</label>
+                                <input type="text" name="student_class" class="siswa-input w-full rounded-md border-gray-200 bg-black/10 p-2 text-black mb-3" required >
+
+                                <label class="block text-sm font-semibold text-black mb-1">Nama Sekolah</label>
+                                <input type="text" name="school_or_program_siswa" class="siswa-input w-full rounded-md border-gray-200 bg-black/10 p-2 text-black mb-3" required>
+
+                                <label class="block text-sm font-semibold text-black mb-1">Nama Kegiatan</label>
+                                <input type="text" name="event_name_siswa" class="siswa-input w-full rounded-md border-gray-200 bg-black/10 p-2 text-black mb-3" required oninput="this.value = this.value.replace(/[^a-zA-Z0-9\s]/g,'')" maxlength="150">
+
+                                <label class="block text-sm font-semibold text-black mb-1">Hari</label>
+                                <select name="day_siswa" class="siswa-input w-full rounded-md border-gray-200 bg-black/10 p-2 text-black mb-3" required>
+                                    <option value="Senin">Senin</option>
+                                    <option value="Selasa">Selasa</option>
+                                    <option value="Rabu">Rabu</option>
+                                    <option value="Kamis">Kamis</option>
+                                    <option value="Jumat">Jumat</option>
+                                    <option value="Sabtu">Sabtu</option>
+                                    <option value="Minggu">Minggu</option>
+                                </select>
+
+                                <div class="grid gap-4 md:grid-cols-2">
+                                    <div>
+                                        <label class="block text-sm font-semibold text-black mb-1">Tipe Tanggal</label>
+                                        <select class="w-full rounded-md border-gray-200 bg-black/10 p-2 text-black date-type" aria-controls="siswa-dates">
+                                            <option value="single">1 hari</option>
+                                            <option value="range">Lebih dari 1 hari</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-black mb-1">Dari Tanggal</label>
+                                        <input type="date" name="date_from_siswa" class="siswa-input w-full rounded-md border-gray-200 bg-black/10 p-2 text-black mb-3" required>
+                                    </div>
+                                    <div id="siswa-dates" class="md:col-span-2 hidden">
+                                        <label class="block text-sm font-semibold text-black mb-1">Sampai Tanggal</label>
+                                        <input type="date" name="date_to_siswa" class="siswa-input w-full rounded-md border-gray-200 bg-black/10 p-2 text-black mb-3">
+                                    </div>
+                                </div>
+
+                                 <label class="block text-sm font-semibold text-black mb-1">Waktu</label>
+                                <div class="flex items-center gap-2 mb-3">
+                                <input type="text" id="hour_siswa" maxlength="2" placeholder="Jam"
+                                    class="siswa-input w-20 rounded-md border-gray-200 bg-black/10 p-2 text-black text-center">
+
+                                <span class="text-lg font-bold text-black">:</span>
+
+                                <input type="text" id="minute_siswa" maxlength="2" placeholder="Menit"
+                                    class="siswa-input w-20 rounded-md border-gray-200 bg-black/10 p-2 text-black text-center">
+                            </div>
+                            <input type="hidden" name="time_siswa" id="time_siswa">
+
+                                <label class="block text-sm font-semibold text-black mb-1">Tempat</label>
+                                <input type="text" name="place_siswa" class="siswa-input w-full rounded-md border-gray-200 bg-black/10 p-2 text-black mb-3">
+
+                                <label class="block text-sm font-semibold text-black mb-1">Kota / Provinsi</label>
+                                <input type="text" name="city_province_siswa" class="siswa-input w-full rounded-md border-gray-200 bg-black/10 p-2 text-black mb-3" oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g,'')" maxlength="150">
+                            </div>
+                        </div>
+
+                        <div class="mt-4 flex items-center justify-end">
+                            <button type="button" onclick="openConfirmSubmitModal()" class="px-6 py-2 rounded-xl bg-gradient-to-r from-[#FEDA60] to-[#F5B347] text-[#2E2E2E] font-semibold cursor-pointer">
+                                Kirim Permohonan
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+                <script>
+                    function toggleForm() {
+                        const type = document.getElementById("disp-type").value;
+
+                        document.getElementById("form-mahasiswa").classList.add("hidden");
+                        document.getElementById("form-siswa").classList.add("hidden");
+
+                        document.querySelectorAll(".mhs-input").forEach(el => el.disabled = true);
+                        document.querySelectorAll(".siswa-input").forEach(el => el.disabled = true);
+
+                        if (type === "mahasiswa") {
+                            document.getElementById("form-mahasiswa").classList.remove("hidden");
+                            document.querySelectorAll(".mhs-input").forEach(el => el.disabled = false);
+                        } else {
+                            document.getElementById("form-siswa").classList.remove("hidden");
+                            document.querySelectorAll(".siswa-input").forEach(el => el.disabled = false);
+                        }
+                    }
+
+                    document.getElementById("disp-type").addEventListener("change", toggleForm);
+
+                    // run once on load
+                    toggleForm();
+                </script>
+
+                <div class="mt-6 rounded-2xl bg-white border border-[#FEDA60]/30 p-6 shadow-lg">
+                    <h3 class="text-lg font-semibold text-[#2E2E2E] mb-4">Daftar Pengajuan Dispensasi Saya</h3>
+                    @if(isset($dispensations) && $dispensations->count() > 0)
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200 w-full text-sm">
+                                <thead>
+                                    <tr class="text-left text-black">
+                                        <th class="px-3 py-2">#</th>
+                                        <th class="px-3 py-2">Tipe</th>
+                                        <th class="px-3 py-2">Nama</th>
+                                        <th class="px-3 py-2">Diajukan</th>
+                                        <th class="px-3 py-2">Status</th>
+                                        <th class="px-3 py-2">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100">
+                                    @foreach($dispensations as $d)
+                                        @php $p = (array) $d->payload; @endphp
+                                        <tr class="text-black">
+                                            <td class="px-3 py-2">{{ $d->id }}</td>
+                                            <td class="px-3 py-2">{{ ucfirst($d->type) }}</td>
+                                            <td class="px-3 py-2">{{ $p['name'] ?? '—' }}</td>
+                                            <td class="px-3 py-2">{{ $d->created_at->format('d M Y H:i') }}</td>
+                                            <td class="px-3 py-2">
+                                                @if($d->status === 'pending')
+                                                    <span class="inline-block px-2 py-1 rounded-full bg-yellow-100 text-yellow-800">Pending</span>
+                                                @elseif($d->status === 'approved')
+                                                    <span class="inline-block px-2 py-1 rounded-full bg-green-100 text-green-800">Approved</span>
+                                                @else
+                                                    <span class="inline-block px-2 py-1 rounded-full bg-red-100 text-red-800">Rejected</span>
+                                                @endif
+                                            </td>
+                                            <td class="px-3 py-2 flex flex-wrap gap-2">
+                                                @if($d->status === 'approved')
+                                                      {{-- Tombol LIHAT hanya membuka PDF --}}
+                                                @if($d->pdf)
+                                                    <a href="{{ Storage::url($d->pdf) }}" 
+                                                    target="_blank" 
+                                                    class="px-3 py-1 rounded-lg bg-blue-600 text-white text-sm hover:bg-blue-700">
+                                                    Lihat
+                                                    </a>
+                                                    
+                                                    <a href="{{ Storage::url($d->pdf) }}" 
+                                                    download 
+                                                    class="px-3 py-1 rounded-lg bg-green-600 text-white text-sm hover:bg-green-700">
+                                                    Download PDF
+                                                    </a>
+                                                @else
+                                                    <p class="text-sm text-yellow-600">⚠️ PDF belum tersedia. Hubungi admin.</p>
+                                                @endif
+
+                                                {{-- ini yang word --}}
+                                                    {{-- @if($d->template)
+                                                        <button type="button" onclick="viewDocxPreview('{{ Storage::url($d->template) }}', {{ $d->id }})" class="px-3 py-1 rounded-lg bg-blue-600 text-white text-sm hover:bg-blue-700">Lihat</button>
+                                                        <a href="{{ Storage::url($d->template) }}" download class="px-3 py-1 rounded-lg bg-indigo-600 text-white text-sm hover:bg-indigo-700">DOCX</a>
+                                                    @endif
+                                                    @if($d->pdf)
+                                                        <a href="{{ Storage::url($d->pdf) }}" target="_blank" class="px-3 py-1 rounded-lg bg-green-600 text-white text-sm hover:bg-green-700">Cetak PDF</a>
+                                                        <a href="{{ Storage::url($d->pdf) }}" download class="px-3 py-1 rounded-lg bg-teal-600 text-white text-sm hover:bg-teal-700">Download PDF</a>
+                                                    @endif --}}
+
+                                                @elseif($d->status === 'rejected')
+                                                    <p class="text-sm text-red-700">❌ {{ $d->rejection_reason ?? 'Ditolak' }}</p>
+                                                @else
+                                                    <p class="text-sm text-yellow-600">⏳ Menunggu...</p>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @else
+                        <p class="text-gray-500">Belum ada pengajuan dispensasi.</p>
+                    @endif
+                </div>
+
+                <script>
+                    (function(){
+                        const typeSelect = document.getElementById('disp-type');
+                        const mahasiswa = document.getElementById('form-mahasiswa');
+                        const siswa = document.getElementById('form-siswa');
+                        const dateTypeSelectors = document.querySelectorAll('.date-type');
+
+                        function showType(type){
+                            if(type === 'mahasiswa'){
+                                mahasiswa.classList.remove('hidden');
+                                siswa.classList.add('hidden');
+                            } else {
+                                siswa.classList.remove('hidden');
+                                mahasiswa.classList.add('hidden');
+                            }
+                        }
+
+                        typeSelect.addEventListener('change', function(e){
+                            showType(e.target.value);
+                        });
+
+                        dateTypeSelectors.forEach(function(sel){
+                            sel.addEventListener('change', function(e){
+                                const targetId = e.target.getAttribute('aria-controls');
+                                const target = document.getElementById(targetId);
+                                if(!target) return;
+                                if(e.target.value === 'range'){
+                                    target.classList.remove('hidden');
+                                } else {
+                                    // hide and clear any date inputs so stale values are not submitted
+                                    target.classList.add('hidden');
+                                    target.querySelectorAll('input[type="date"]').forEach(function(inp){ inp.value = ''; });
+                                }
+                            });
+                        });
+
+                        // init
+                        showType(typeSelect.value);
+                    })();
+                </script>
+
+                <!-- DOCX Preview Modal -->
+                <!-- Confirm Submit Modal -->
+                <div id="confirm-submit-modal" class="hidden fixed inset-0 bg-black/40 z-50 items-center justify-center">
+                    <div class="bg-white rounded-lg p-6 w-11/12 max-w-md">
+                        <h3 class="text-lg font-bold mb-3 text-black">Konfirmasi Pengiriman Surat</h3>
+                        <p id="confirm-submit-text" class="mb-4 text-black">Apakah Anda yakin ingin mengirim surat dispensasi? Setelah dikirim, surat akan menunggu persetujuan admin.</p>
+                        <div class="flex justify-end gap-2">
+                            <button type="button" onclick="closeConfirmSubmitModal()" class="px-4 py-2 bg-[#FEDA60] text-black rounded">Batal</button>
+                            <button type="button" id="confirm-submit-yes" class="px-4 py-2 bg-green-600 text-white rounded">Kirim</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Date error alert modal -->
+                <div id="date-error-modal" class="hidden fixed inset-0 bg-black/40 z-50 items-center justify-center">
+                    <div class="bg-white rounded-lg p-6 w-11/12 max-w-md">
+                        <h3 class="text-lg font-bold mb-3 text-black">Kesalahan Tanggal</h3>
+                        <p id="date-error-text" class="mb-4 text-black"></p>
+                        <div class="flex justify-end">
+                            <button type="button" id="date-error-ok" class="px-4 py-2 bg-[#FEDA60] text-black rounded">OK</button>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    (function(){
+                        const modal = document.getElementById('confirm-submit-modal');
+                        const confirmBtn = document.getElementById('confirm-submit-yes');
+                        const dateErrorModal = document.getElementById('date-error-modal');
+                        const dateErrorText = document.getElementById('date-error-text');
+                        const dateErrorOk = document.getElementById('date-error-ok');
+                        let lastInvalidEl = null;
+
+                                        window.openConfirmSubmitModal = function(){
+                                            const frm = document.getElementById('dispensation-form');
+                                            if(!frm) return;
+
+                                            // Validate form first using HTML5 constraint validation API
+                                            if(typeof frm.reportValidity === 'function'){
+                                                const ok = frm.reportValidity();
+                                                if(!ok){
+                                                    // focus first invalid field if possible
+                                                    try{
+                                                        const invalid = frm.querySelector(':invalid');
+                                                        if(invalid) invalid.focus();
+                                                    }catch(e){}
+                                                    return; // don't open modal when form invalid
+                                                }
+                                            }
+
+                                            // Additional: validate logical date ranges when range selected
+                                            function validateDateRanges(){
+                                                const type = document.getElementById('disp-type') ? document.getElementById('disp-type').value : null;
+                                                if(type === 'mahasiswa'){
+                                                    const dtSel = document.querySelector('#form-mahasiswa .date-type');
+                                                    if(dtSel && dtSel.value === 'range'){
+                                                        const from = document.querySelector('#form-mahasiswa input[name="date_from"]')?.value || '';
+                                                        const to = document.querySelector('#form-mahasiswa input[name="date_to"]')?.value || '';
+                                                        if(!from || !to) return { ok: false, message: 'Tanggal dari dan sampai harus diisi.', el: !from ? document.querySelector('#form-mahasiswa input[name="date_from"]') : document.querySelector('#form-mahasiswa input[name="date_to"]') };
+                                                        if(from > to) return { ok: false, message: 'Tanggal mulai tidak boleh lebih besar dari tanggal sampai.', el: document.querySelector('#form-mahasiswa input[name="date_from"]') };
+                                                    }
+                                                } else if(type === 'siswa'){
+                                                    const dtSel = document.querySelector('#form-siswa .date-type');
+                                                    if(dtSel && dtSel.value === 'range'){
+                                                        const from = document.querySelector('#form-siswa input[name="date_from_siswa"]')?.value || '';
+                                                        const to = document.querySelector('#form-siswa input[name="date_to_siswa"]')?.value || '';
+                                                        if(!from || !to) return { ok: false, message: 'Tanggal dari dan sampai harus diisi.', el: !from ? document.querySelector('#form-siswa input[name="date_from_siswa"]') : document.querySelector('#form-siswa input[name="date_to_siswa"]') };
+                                                        if(from > to) return { ok: false, message: 'Tanggal mulai tidak boleh lebih besar dari tanggal sampai.', el: document.querySelector('#form-siswa input[name="date_from_siswa"]') };
+                                                    }
+                                                }
+                                                return { ok: true };
+                                            }
+
+                                            const dateCheck = validateDateRanges();
+                                            if(!dateCheck.ok){
+                                                if(dateErrorText) dateErrorText.textContent = dateCheck.message || 'Kesalahan tanggal.';
+                                                lastInvalidEl = dateCheck.el || null;
+                                                if(dateErrorModal) { dateErrorModal.classList.remove('hidden'); dateErrorModal.classList.add('flex'); }
+                                                return;
+                                            }
+
+                                            const type = document.getElementById('disp-type') ? document.getElementById('disp-type').value : null;
+                                            const txt = document.getElementById('confirm-submit-text');
+                                            if(type){
+                                                txt.textContent = `Apakah Anda yakin ingin mengirim surat dispensasi (${type})? Setelah dikirim, surat akan menunggu persetujuan admin.`;
+                                            }
+                                            if(!modal) return;
+                                            modal.classList.remove('hidden');
+                                            modal.classList.add('flex');
+                                        };
+
+                        window.closeConfirmSubmitModal = function(){
+                            if(!modal) return;
+                            modal.classList.add('hidden');
+                            modal.classList.remove('flex');
+                        };
+
+                        function setTimeHiddenValues(){
+                            // mahasiswa
+                            const hourM = document.getElementById('hour_mhs');
+                            const minM = document.getElementById('minute_mhs');
+                            const hiddenM = document.getElementById('time_mhs');
+                            if(hourM && minM && hiddenM){
+                                const h = hourM.value.trim();
+                                const m = minM.value.trim();
+                                if(h !== '' && m !== ''){
+                                    hiddenM.value = h.padStart(2, '0') + ':' + m.padStart(2, '0');
+                                } else {
+                                    hiddenM.value = '';
+                                }
+                            }
+
+                            // siswa
+                            const hourS = document.getElementById('hour_siswa');
+                            const minS = document.getElementById('minute_siswa');
+                            const hiddenS = document.getElementById('time_siswa');
+                            if(hourS && minS && hiddenS){
+                                const h = hourS.value.trim();
+                                const m = minS.value.trim();
+                                if(h !== '' && m !== ''){
+                                    hiddenS.value = h.padStart(2, '0') + ':' + m.padStart(2, '0');
+                                } else {
+                                    hiddenS.value = '';
+                                }
+                            }
+                        }
+
+                        if(confirmBtn){
+                            confirmBtn.addEventListener('click', function(){
+                                const form = document.getElementById('dispensation-form');
+                                if(!form) return;
+                                if(typeof form.reportValidity === 'function'){
+                                    if(!form.reportValidity()) return; // keep modal open for corrections
+                                }
+                                // ensure hidden time values are set (because form.submit() does not trigger submit handlers)
+                                try{ setTimeHiddenValues(); }catch(e){}
+                                // submit
+                                form.submit();
+                            });
+                        }
+                        if(dateErrorOk){
+                            dateErrorOk.addEventListener('click', function(){
+                                if(dateErrorModal){ dateErrorModal.classList.add('hidden'); dateErrorModal.classList.remove('flex'); }
+                                if(lastInvalidEl && typeof lastInvalidEl.focus === 'function') lastInvalidEl.focus();
+                                lastInvalidEl = null;
+                            });
+                        }
+                    })();
+                </script>
+                <div id="docx-preview-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+                    <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+                        <!-- Header -->
+                        <div class="flex items-center justify-between p-6 border-b border-gray-200 bg-gradient-to-r from-[#FEDA60] to-[#F5B347]">
+                            <h2 class="text-xl font-bold text-[#2E2E2E]">Preview Surat Dispensasi</h2>
+                            <button onclick="closeDocxPreview()" class="text-gray-600 hover:text-gray-900">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        
+                        <!-- Content -->
+                        <div class="flex-1 overflow-y-auto p-6 bg-gray-50">
+                            <div id="docx-preview-content" class="bg-white p-8 rounded-lg shadow-sm border border-gray-200">
+                                <p class="text-center text-gray-500">Loading preview...</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Footer -->
+                        <div class="flex items-center justify-between p-6 border-t border-gray-200 bg-gray-100">
+                            <p class="text-sm text-gray-600">💡 Preview surat Anda. Gunakan tombol download untuk menyimpan file.</p>
+                            <button onclick="closeDocxPreview()" class="px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500">Tutup</button>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    function viewDocxPreview(fileUrl, dispensationId) {
+                        const modal = document.getElementById('docx-preview-modal');
+                        const content = document.getElementById('docx-preview-content');
+                        
+                        // Show loading state
+                        modal.classList.remove('hidden');
+                        content.innerHTML = '<p class="text-center text-gray-500">Memuat preview surat...</p>';
+                        
+                        // Try to fetch and display DOCX
+                        fetch(fileUrl)
+                            .then(response => response.blob())
+                            .then(blob => {
+                                // Create URL untuk preview
+                                const fileUrl = URL.createObjectURL(blob);
+                                
+                                // Use a library like mammoth.js untuk convert DOCX to HTML
+                                // Atau display info bahwa file siap untuk download
+                                const fileName = 'Dispensation_' + dispensationId + '.docx';
+                                
+                                content.innerHTML = `
+                                    <div class="text-center py-8">
+                                        <svg class="w-16 h-16 mx-auto text-blue-500 mb-4" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M8 16.5a1 1 0 11-2 0 1 1 0 012 0zM15 7a1 1 0 11-2 0 1 1 0 012 0zM4 20H3a1 1 0 01-1-1v-2a1 1 0 011-1h1v3zm6 0h-.5a1 1 0 01-1-1v-2a1 1 0 011-1h.5v3zm6 0h1a1 1 0 001-1v-2a1 1 0 00-1-1h-1v3zM4.333 11H2a1 1 0 00-1 1v2a1 1 0 001 1h2.333v-3zM2.5 5a1 1 0 11-2 0 1 1 0 012 0zM18 4H9v2h9V4z"></path>
+                                        </svg>
+                                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Dokumen Word (.DOCX)</h3>
+                                        <p class="text-gray-600 mb-4">${fileName}</p>
+                                        <p class="text-sm text-gray-500 mb-6">Preview inline tidak tersedia untuk file Word. Gunakan tombol di bawah untuk membuka atau mendownload file.</p>
+                                        <div class="flex gap-3 justify-center">
+                                            <a href="${fileUrl}" target="_blank" download class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Download DOCX</a>
+                                            <a href="${fileUrl}" target="_blank" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">Buka di Aplikasi Default</a>
+                                        </div>
+                                    </div>
+                                `;
+                            })
+                            .catch(error => {
+                                console.error('Error loading preview:', error);
+                                content.innerHTML = `
+                                    <div class="text-center py-8">
+                                        <p class="text-red-600">Gagal memuat preview.</p>
+                                        <p class="text-sm text-gray-500 mt-2">Silakan gunakan tombol download untuk mengakses file.</p>
+                                    </div>
+                                `;
+                            });
+                    }
+                    
+                    function closeDocxPreview() {
+                        document.getElementById('docx-preview-modal').classList.add('hidden');
+                    }
+                </script>
+            </section>
         </main>
     </div>
 </div>
@@ -459,4 +1037,96 @@
     // innit navlink
     document.querySelector('.nav-link').classList.add('bg-[#FEDA60]/10', 'text-[#FEDA60]');
 </script>
+
+{{-- popup sukses --}}
+@if(session('success'))
+<div id="success-popup" class="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+    <div class="bg-white rounded-xl p-6 shadow-xl w-80 text-center animate-fadeIn">
+        
+        <div class="mx-auto mb-3 w-16 h-16 bg-green-500 rounded-full flex items-center justify-center animate-bounce">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+            </svg>
+        </div>
+
+        <p class="font-semibold text-green-700">{{ session('success') }}</p>
+
+        <button onclick="document.getElementById('success-popup').remove()"
+                class="mt-4 px-4 py-2 rounded-lg bg-green-600 text-white">
+            OK
+        </button>
+    </div>
+</div>
+@endif
+
+{{-- script input waktu --}}
+<script>
+// ========================
+// BATASI INPUT ANGKA
+// ========================
+function onlyNumber(input, max) {
+    input.addEventListener("input", function () {
+        this.value = this.value.replace(/\D/g, "");
+        if (this.value.length > 2) this.value = this.value.slice(0, 2);
+        if (parseInt(this.value) > max) {
+            this.value = max.toString().padStart(2, "0");
+        }
+    });
+
+    input.addEventListener("blur", function () {
+        if (this.value !== "") {
+            this.value = this.value.padStart(2, "0");
+        }
+    });
+}
+
+// ========================
+// SETUP JAM & MENIT UNTUK SEMUA FORM
+// ========================
+function setupTimeFields(hourId, minuteId, hiddenId, maxHour = 23) {
+
+    const hourInput = document.getElementById(hourId);
+    const minuteInput = document.getElementById(minuteId);
+    const hiddenInput = document.getElementById(hiddenId);
+
+    // Batasi input
+    onlyNumber(hourInput, maxHour);
+    onlyNumber(minuteInput, 59);
+
+    // Saat submit -> gabungkan
+    document.addEventListener("submit", function (e) {
+
+        // Cek apakah form yang disubmit adalah dispensations.store
+        const form = e.target.closest('form[action="{{ route('dispensations.store') }}"]');
+        if (!form) return;
+
+        const hour = hourInput.value;
+        const minute = minuteInput.value;
+
+        if (hour === "" || minute === "") {
+            hiddenInput.value = null;
+            return;
+        }
+
+        hiddenInput.value = hour.padStart(2, "0") + ":" + minute.padStart(2, "0");
+
+        console.log("TIME SET:", hiddenInput.value);
+    });
+}
+
+// ========================
+// PASANGKAN UNTUK MAHASISWA
+// ========================
+setupTimeFields("hour_mhs", "minute_mhs", "time_mhs", 23);
+
+// ========================
+// PASANGKAN UNTUK SISWA
+// ========================
+setupTimeFields("hour_siswa", "minute_siswa", "time_siswa", 23);
+
+</script>
+
+
+
+
 @endsection

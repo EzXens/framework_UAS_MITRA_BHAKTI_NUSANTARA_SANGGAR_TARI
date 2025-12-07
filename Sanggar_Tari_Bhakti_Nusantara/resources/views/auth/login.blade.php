@@ -9,24 +9,24 @@
         <div class="absolute inset-0 overflow-hidden pointer-events-none">
             <!-- Glow 1 (atas kiri) -->
             <div class="absolute -top-32 -left-20 w-[500px] h-[500px] rounded-full
-                    bg-gradient-to-br from-[#FFE9A3]/40 via-[#F7D774]/25 to-transparent
-                    blur-[120px] opacity-70"></div>
+                        bg-gradient-to-br from-[#FFE9A3]/40 via-[#F7D774]/25 to-transparent
+                        blur-[120px] opacity-70"></div>
 
             <!-- Glow 2 (bawah kanan) -->
             <div class="absolute bottom-0 right-0 w-[600px] h-[600px] rounded-full
-                    bg-gradient-to-tl from-[#F5C768]/30 via-[#EFC45C]/20 to-transparent
-                    blur-[130px] opacity-60"></div>
+                        bg-gradient-to-tl from-[#F5C768]/30 via-[#EFC45C]/20 to-transparent
+                        blur-[130px] opacity-60"></div>
 
             <!-- Glow Tengah (lebih halus & besar) -->
             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
-                    w-[900px] h-[900px] rounded-full
-                    bg-gradient-radial from-[#F4D27A]/20 to-transparent
-                    blur-[150px] opacity-40"></div>
+                        w-[900px] h-[900px] rounded-full
+                        bg-gradient-radial from-[#F4D27A]/20 to-transparent
+                        blur-[150px] opacity-40"></div>
         </div>
 
         <!-- Soft Pattern Emas -->
         <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(circle at 2px 2px, #FAD97A 1px, transparent 0);
-                background-size: 45px 45px;">
+                    background-size: 45px 45px;">
         </div>
 
         <div class="relative max-w-md w-full">
@@ -76,12 +76,35 @@
                                 value="{{ old('email') }}" placeholder="nama@email.com">
                         </div>
 
-                        <div>
-                            <label for="password" class="block text-sm font-semibold text-[#2E2E2E] mb-2">Password</label>
+                     <div>
+                        <label for="password" class="block text-sm font-semibold text-[#2E2E2E] mb-2">
+                            Password
+                        </label>
+
+                        <div class="relative w-full">
                             <input id="password" name="password" type="password" required
-                                class="w-full px-4 py-3 rounded-xl border-2 border-[#E2B136]/30 bg-white/80 focus:outline-none focus:border-[#FEDA60] focus:ring-2 focus:ring-[#FEDA60]/20 transition-all"
+                                class="w-full px-4 pr-12 py-3 rounded-xl border-2 border-[#E2B136]/30 bg-white/80
+                                    focus:outline-none focus:border-[#FEDA60] focus:ring-2 
+                                    focus:ring-[#FEDA60]/20 transition-all"
                                 placeholder="••••••••">
+
+                            <!-- Eye Icon Container -->
+                            <button type="button" onclick="togglePassword()"
+                                class="flex items-center justify-center absolute right-4 top-0 h-full">
+                                <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg"
+                                    class="h-6 w-6 text-[#6F6F6F] hover:text-[#2E2E2E] transition"
+                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 
+                                        2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 
+                                        0-8.268-2.943-9.542-7z" />
+                                </svg>
+                            </button>
                         </div>
+                    </div>
+
 
                         <div class="flex items-center">
                             <input id="remember" name="remember" type="checkbox"
@@ -110,4 +133,33 @@
             </div>
         </div>
     </section>
+
+    <script>
+    function togglePassword() {
+        const passwordInput = document.getElementById("password");
+        const eyeIcon = document.getElementById("eyeIcon");
+
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+
+            // Ubah icon jadi "eye-off"
+            eyeIcon.innerHTML = `
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7a9.97 9.97 0 012.31-4.181m3.17-2.54A9.954 9.954 0 0112 5c4.477 0 8.268 2.943 9.542 7a9.98 9.98 0 01-4.258 5.263M3 3l18 18" />
+            `;
+        } else {
+            passwordInput.type = "password";
+
+            // Kembalikan icon "eye"
+            eyeIcon.innerHTML = `
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 
+                    9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            `;
+        }
+    }
+</script>
+
 @endsection

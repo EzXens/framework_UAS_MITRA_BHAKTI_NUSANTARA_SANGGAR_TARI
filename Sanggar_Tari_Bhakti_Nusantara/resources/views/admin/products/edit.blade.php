@@ -36,26 +36,26 @@
                 <div class="mb-4">
                     <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Nama Produk</label>
                     <input type="text" name="name" id="name" value="{{ old('name', $product->name) }}" required
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                        class="w-full px-3 py-2 border text-black border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
                 </div>
 
                 <div class="mb-4">
                     <label for="description" class="block text-sm font-medium text-gray-700 mb-2">Deskripsi</label>
                     <textarea name="description" id="description" rows="4" required
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">{{ old('description', $product->description) }}</textarea>
+                        class="w-full px-3 py-2 border text-black border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">{{ old('description', $product->description) }}</textarea>
                 </div>
 
                 <div class="grid grid-cols-2 gap-4 mb-4">
-                    <div>
+                    {{-- <div>
                         <label for="price" class="block text-sm font-medium text-gray-700 mb-2">Harga</label>
                         <input type="number" name="price" id="price" value="{{ old('price', $product->price) }}" step="0.01" required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-                    </div>
+                            class="w-full px-3 py-2 border text-black border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                    </div> --}}
 
                     <div>
                         <label for="stock" class="block text-sm font-medium text-gray-700 mb-2">Stok</label>
                         <input type="number" name="stock" id="stock" value="{{ old('stock', $product->stock) }}" required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                            class="w-full px-3 py-2 border text-black border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
                     </div>
                 </div>
 
@@ -68,7 +68,7 @@
                         </div>
                     @endif
                     <input type="file" name="image" id="image" accept="image/*"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                        class="w-full px-3 py-2 border text-black border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
                     <p class="text-xs text-gray-500 mt-1">Format: JPG, PNG, GIF (Max: 2MB). Kosongkan jika tidak ingin mengubah gambar.</p>
                 </div>
 

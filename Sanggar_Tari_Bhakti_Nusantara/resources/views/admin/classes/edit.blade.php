@@ -36,19 +36,19 @@
                 <div class="mb-4">
                     <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Nama Kelas</label>
                     <input type="text" name="name" id="name" value="{{ old('name', $class->name) }}" required
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                        class="w-full px-3 py-2 border text-black border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
                 </div>
 
                 <div class="mb-4">
                     <label for="description" class="block text-sm font-medium text-gray-700 mb-2">Deskripsi</label>
                     <textarea name="description" id="description" rows="4" required
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">{{ old('description', $class->description) }}</textarea>
+                        class="w-full px-3 py-2 border text-black border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">{{ old('description', $class->description) }}</textarea>
                 </div>
 
                 <div class="mb-4">
                     <label for="instructor" class="block text-sm font-medium text-gray-700 mb-2">Instruktur</label>
                     <input type="text" name="instructor" id="instructor" value="{{ old('instructor', $class->instructor) }}" required
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                        class="w-full px-3 py-2 border text-black border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
                 </div>
 
                 @php
@@ -116,13 +116,13 @@
                         <div>
                             <label for="start_time" class="block text-xs text-gray-600 mb-1">Waktu Mulai (24 Jam)</label>
                             <input type="time" name="start_time" id="start_time" value="{{ old('start_time', $startTime) }}" required
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                class="w-full px-3 py-2 border text-black border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
                             <p class="text-xs text-gray-500 mt-1">Format: HH:MM (contoh: 14:00)</p>
                         </div>
                         <div>
                             <label for="end_time" class="block text-xs text-gray-600 mb-1">Waktu Selesai (24 Jam)</label>
                             <input type="time" name="end_time" id="end_time" value="{{ old('end_time', $endTime) }}" required
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                class="w-full px-3 py-2 border text-black border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
                             <p class="text-xs text-gray-500 mt-1">Format: HH:MM (contoh: 16:00)</p>
                         </div>
                     </div>
@@ -132,7 +132,7 @@
                     <div>
                         <label for="capacity" class="block text-sm font-medium text-gray-700 mb-2">Kapasitas</label>
                         <input type="number" name="capacity" id="capacity" value="{{ old('capacity', $class->capacity) }}" min="1" required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                            class="w-full px-3 py-2 border text-black border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
                     </div>
                 </div>
 
@@ -146,7 +146,7 @@
                             <p class="text-xs text-gray-500">{{ basename($class->image) }}</p>
                         </div>
                     @else
-                        <div class="mb-4 p-8 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 text-center">
+                        <div class="mb-4 p-8 border-2 border-dashed text-black border-gray-300 rounded-lg bg-gray-50 text-center">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 text-gray-400 mx-auto mb-2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
                             </svg>
@@ -154,7 +154,7 @@
                         </div>
                     @endif
                     <input type="file" name="image" id="image" accept="image/*"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                        class="w-full px-3 py-2 border text-black border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
                     <p class="text-xs text-gray-500 mt-1">Format: JPG, PNG, GIF (Max: 2MB). Kosongkan jika tidak ingin mengubah gambar.</p>
                 </div>
 

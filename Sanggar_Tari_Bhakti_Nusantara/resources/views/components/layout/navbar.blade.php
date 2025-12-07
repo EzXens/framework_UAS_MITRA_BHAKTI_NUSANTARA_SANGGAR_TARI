@@ -165,6 +165,23 @@
     #main-header .nav-toggle.is-active .nav-toggle-line:nth-child(3) {
       transform: translateY(-6px) rotate(-45deg);
     }
+    
+    #main-header .btn-login-gold {
+      background: linear-gradient(135deg, #FEDA60, #F5B347);
+      color: #2E2E2E;
+      border-radius: 14px;
+      box-shadow: 0 0 12px rgba(254, 218, 96, 0.55), 
+                  0 6px 16px rgba(0, 0, 0, 0.35);
+      letter-spacing: 0.5px;
+      transition: all .25s ease;
+    }
+
+    #main-header .btn-login-gold:hover {
+      filter: brightness(1.05);
+      transform: scale(1.1);
+      box-shadow: 0 0 18px rgba(254, 218, 96, 0.75),
+                  0 10px 24px rgba(0, 0, 0, 0.4);
+    }
 
     @media (min-width: 1024px) {
       #main-header .glass {
@@ -279,6 +296,20 @@
                       </svg>
                       Kelola Galeri
                     </a>
+                        <a href="{{ route('admin.dispensations.index') }}"
+                          class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm text-gray-300 hover:bg-[#FEDA60]/10 hover:text-[#FEDA60] transition-all {{ request()->routeIs('admin.dispensations.*') ? 'bg-[#FEDA60]/10 text-[#FEDA60]' : '' }}">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 7.5A2.25 2.25 0 015.25 5.25h13.5A2.25 2.25 0 0121 7.5v9a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 16.5v-9zM7.5 8.25h9M7.5 12h9M7.5 15.75h4.5" />
+                          </svg>
+                          Kelola Surat
+                        </a>
+                        <a href="{{ route('admin.dashboard') }}#homepage-texts" 
+                          class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm text-gray-300 hover:bg-[#FEDA60]/10 hover:text-[#FEDA60] transition-all">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 4.5v15m6-15v15m-11.581.313c.498.492 1.173.922 2.026 1.176.855.254 1.747.247 2.654-.02l6.501-2.335c.92-.33 1.539-1.152 1.539-2.076V6.75c0-.933-.619-1.745-1.539-2.076L7.097 2.171c-.907-.266-1.799-.273-2.654.02-.852.254-1.528.684-2.026 1.176" />
+                          </svg>
+                          Kelola Homepage
+                        </a>
                   @else
                     <a href="{{ route('user.dashboard') }}"
                       class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm text-gray-300 hover:bg-[#FEDA60]/10 hover:text-[#FEDA60] transition-all {{ request()->routeIs('user.dashboard') ? 'bg-[#FEDA60]/10 text-[#FEDA60]' : '' }}">
@@ -309,6 +340,16 @@
             </div>
           </div>
         @endauth
+        
+        @guest
+          <div class="hidden lg:flex items-center justify-end">
+            <a href="{{ route('login') }}"
+              class="btn-login-gold px-6 py-2.5 text-sm font-semibold rounded-xl transition-all">
+              <span>Login</span>
+            </a>
+          </div>
+        @endguest
+
 
         <!-- Mobile toggle -->
         <button id="nav-toggle"
@@ -338,6 +379,13 @@
           </a>
         @endif
       @endforeach
+      
+      @guest
+        <a href="{{ route('login') }}"
+          class="py-3 px-4 rounded-2xl bg-gradient-to-r from-[#FEDA60] to-[#F5B347] text-[#2E2E2E] text-center font-bold shadow-lg mb-2">
+          Login
+        </a>
+      @endguest
 
       @auth
         <div class="py-2 border-b border-[#FEDA60]/20 text-[#FEDA60] font-medium">Hai, {{ auth()->user()->name }}</div>
@@ -357,6 +405,11 @@
           <a href="{{ route('classes.index') }}"
             class="py-2 border-b border-[#FEDA60]/20 nav-link {{ request()->routeIs('classes.*') ? 'active' : '' }}">Kelola
             Kelas</a>
+          <a href="{{ route('admin.dispensations.index') }}"
+            class="py-2 border-b border-[#FEDA60]/20 nav-link {{ request()->routeIs('admin.dispensations.*') ? 'active' : '' }}">Kelola
+            Surat</a>
+          <a href="{{ route('admin.dashboard') }}#homepage-texts"
+            class="py-2 border-b border-[#FEDA60]/20 nav-link">Kelola Homepage</a>
         @else
           <a href="{{ route('user.dashboard') }}"
             class="py-3 px-4 rounded-2xl bg-gradient-to-r from-[#FEDA60] to-[#F5B347] text-[#2E2E2E] text-center font-bold shadow-lg flex items-center justify-center gap-2 {{ request()->routeIs('user.dashboard') ? 'ring-2 ring-[#FEDA60]' : '' }}">

@@ -11,6 +11,7 @@ use App\Models\HomepageTextSection;
 use App\Models\HomepageCarousel;
 use App\Models\HomepageIcon;
 use App\Models\HomepageSection;
+use App\Models\Dispensation;
 
 class DashboardController extends Controller
 {
@@ -30,6 +31,13 @@ class DashboardController extends Controller
         $recentUsers = User::where('role', 'user')
             ->latest()
             ->take(5)
+            ->get();
+
+        // Pending dispensations for admin quick approval
+        $pendingDispensations = Dispensation::with('user')
+            ->where('status', 'pending')
+            ->latest()
+            ->take(10)
             ->get();
 
         // Homepage Management Data
@@ -83,6 +91,7 @@ class DashboardController extends Controller
             'expectedTextItems' => $expectedTextItems,
             'expectedSectionItems' => $expectedSectionItems,
             'expectedIconItems' => $expectedIconItems,
+            'pendingDispensations' => $pendingDispensations ?? collect(),
         ]);
     }
 }

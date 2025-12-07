@@ -78,19 +78,63 @@
                         </div>
 
                         <div>
-                            <label for="password" class="block text-sm font-semibold text-[#2E2E2E] mb-2">Password</label>
-                            <input id="password" name="password" type="password" required
-                                class="w-full px-4 py-3 rounded-xl border-2 border-[#E2B136]/30 bg-white/80 focus:outline-none focus:border-[#FEDA60] focus:ring-2 focus:ring-[#FEDA60]/20 transition-all"
-                                placeholder="Minimal 8 karakter">
-                        </div>
+                        <label for="password" class="block text-sm font-semibold text-[#2E2E2E] mb-2">Password</label>
 
-                        <div>
-                            <label for="password_confirmation"
-                                class="block text-sm font-semibold text-[#2E2E2E] mb-2">Konfirmasi Password</label>
-                            <input id="password_confirmation" name="password_confirmation" type="password" required
-                                class="w-full px-4 py-3 rounded-xl border-2 border-[#E2B136]/30 bg-white/80 focus:outline-none focus:border-[#FEDA60] focus:ring-2 focus:ring-[#FEDA60]/20 transition-all"
-                                placeholder="Ulangi password Anda">
+                        <div class="relative w-full">
+                            <input id="password" name="password" type="password" required
+                                class="w-full px-4 pr-12 py-3 rounded-xl border-2 border-[#E2B136]/30 bg-white/80 
+                                    focus:outline-none focus:border-[#FEDA60] focus:ring-2 focus:ring-[#FEDA60]/20 transition-all"
+                                placeholder="Minimal 8 karakter">
+
+                            <!-- Eye Button -->
+                            <button type="button"
+                                onclick="togglePassword('password','eyeIcon1')"
+                                class="flex items-center justify-center absolute right-4 top-0 h-full">
+
+                                <svg id="eyeIcon1" xmlns="http://www.w3.org/2000/svg"
+                                    class="h-6 w-6 text-[#6F6F6F] hover:text-[#2E2E2E]"
+                                    fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 
+                                        2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 
+                                        0-8.268-2.943-9.542-7z" />
+                                </svg>
+                            </button>
                         </div>
+                    </div>
+
+
+                    <div>
+                        <label for="password_confirmation" class="block text-sm font-semibold text-[#2E2E2E] mb-2">
+                            Konfirmasi Password
+                        </label>
+
+                        <div class="relative w-full">
+                            <input id="password_confirmation" name="password_confirmation" type="password" required
+                                class="w-full px-4 pr-12 py-3 rounded-xl border-2 border-[#E2B136]/30 bg-white/80 
+                                    focus:outline-none focus:border-[#FEDA60] focus:ring-2 focus:ring-[#FEDA60]/20 transition-all"
+                                placeholder="Ulangi password Anda">
+
+                            <!-- Eye Button -->
+                            <button type="button"
+                                onclick="togglePassword('password_confirmation','eyeIcon2')"
+                                class="flex items-center justify-center absolute right-4 top-0 h-full">
+
+                                <svg id="eyeIcon2" xmlns="http://www.w3.org/2000/svg"
+                                    class="h-6 w-6 text-[#6F6F6F] hover:text-[#2E2E2E]"
+                                    fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 
+                                        2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 
+                                        0-8.268-2.943-9.542-7z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
 
                         <button type="submit"
                             class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#FEDA60] to-[#F5B347] text-[#2E2E2E] font-semibold shadow-lg shadow-[#FEDA60]/30 hover:shadow-xl hover:shadow-[#FEDA60]/40 hover:scale-[1.02] transition-all">
@@ -111,4 +155,31 @@
             </div>
         </div>
     </section>
+
+    <script>
+function togglePassword(fieldId, iconId) {
+    const input = document.getElementById(fieldId);
+    const icon = document.getElementById(iconId);
+
+    if (input.type === "password") {
+        input.type = "text";
+        icon.innerHTML = `
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M3 3l18 18M9.88 9.88A3 3 0 0114.12 14.12M6.1 6.1C4.29 7.49 2.82 9.5 2.458 12
+                3.732 16.057 7.523 19 12 19c1.84 0 3.57-.5 5.06-1.36M17.9 17.9
+                C19.71 16.51 21.18 14.5 21.542 12
+                20.268 7.943 16.477 5 12 5c-1.96 0-3.82.5-5.45 1.39" />`;
+    } else {
+        input.type = "password";
+        icon.innerHTML = `
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268
+                2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477
+                0-8.268-2.943-9.542-7z" />`;
+    }
+}
+</script>
+
 @endsection

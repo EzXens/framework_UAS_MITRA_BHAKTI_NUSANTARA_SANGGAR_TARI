@@ -1,0 +1,31 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+class Dispensation extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'type',
+        'payload',
+        'status',
+        'rejection_reason',
+        'template',
+        'pdf',
+    ];
+
+    protected $casts = [
+        'payload' => 'array',
+    ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+}

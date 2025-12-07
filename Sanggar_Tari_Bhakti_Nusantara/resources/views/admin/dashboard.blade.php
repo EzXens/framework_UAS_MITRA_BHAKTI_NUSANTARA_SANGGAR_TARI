@@ -104,39 +104,53 @@
                 <div class="mt-8">
                     <h2 class="text-2xl font-bold text-[#2E2E2E] mb-6">Aksi Cepat</h2>
                     <div class="grid gap-6 lg:grid-cols-4 md:grid-cols-2">
-                        <a href="{{ route('products.index') }}" class="p-6 rounded-2xl bg-gradient-to-br from-[#FEDA60] to-[#F5B347] text-white text-center hover:shadow-xl hover:scale-[1.05] transition-all">
+
+                        <a href="{{ route('products.index') }}" class="p-6 rounded-2xl bg-gradient-to-br from-[#FEDA60] to-[#F5B347] text-black text-center hover:shadow-xl hover:scale-[1.05] transition-all">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-12 h-12 mx-auto mb-3">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
                             </svg>
                             <p class="font-semibold text-lg">Kelola Produk</p>
                         </a>
 
-                        <a href="{{ route('classes.index') }}" class="p-6 rounded-2xl bg-gradient-to-br from-[#FFE184] to-[#FEDA60] text-white text-center hover:shadow-xl hover:scale-[1.05] transition-all">
+                        <a href="{{ route('classes.index') }}" class="p-6 rounded-2xl bg-gradient-to-br from-[#FEDA60] to-[#F5B347] text-black text-center hover:shadow-xl hover:scale-[1.05] transition-all">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-12 h-12 mx-auto mb-3">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" />
                             </svg>
                             <p class="font-semibold text-lg">Kelola Kelas</p>
                         </a>
 
-                        <a href="{{ route('products.create') }}" class="p-6 rounded-2xl bg-gradient-to-br from-[#F5B347] to-[#E2B136] text-white text-center hover:shadow-xl hover:scale-[1.05] transition-all">
+                        <a href="{{ route('products.create') }}" class="p-6 rounded-2xl bg-gradient-to-br from-[#FEDA60] to-[#F5B347] text-black text-center hover:shadow-xl hover:scale-[1.05] transition-all">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-12 h-12 mx-auto mb-3">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                             </svg>
                             <p class="font-semibold text-lg">Tambah Produk</p>
                         </a>
 
-                        <a href="{{ route('classes.create') }}" class="p-6 rounded-2xl bg-gradient-to-br from-[#E2B136] to-[#C89B2E] text-white text-center hover:shadow-xl hover:scale-[1.05] transition-all">
+                        <a href="{{ route('classes.create') }}" class="p-6 rounded-2xl bg-gradient-to-br from-[#FEDA60] to-[#F5B347] text-black text-center hover:shadow-xl hover:scale-[1.05] transition-all">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-12 h-12 mx-auto mb-3">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                             </svg>
                             <p class="font-semibold text-lg">Tambah Kelas</p>
                         </a>
 
-                        <a href="{{ route('admin.gallery.carousel.index') }}" class="p-6 rounded-2xl bg-gradient-to-br from-[#C89B2E] to-[#B8841A] text-white text-center hover:shadow-xl hover:scale-[1.05] transition-all">
+                        <a href="{{ route('admin.gallery.carousel.index') }}" class="p-6 rounded-2xl bg-gradient-to-br from-[#FEDA60] to-[#F5B347] text-black text-center hover:shadow-xl hover:scale-[1.05] transition-all">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-12 h-12 mx-auto mb-3">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
                             </svg>
                             <p class="font-semibold text-lg">Kelola Galeri</p>
+                        </a>
+                         <a href="{{ route('admin.dispensations.index') }}" class="p-6 rounded-2xl bg-gradient-to-br from-[#FEDA60] to-[#F5B347] text-black text-black  text-center hover:shadow-xl hover:scale-[1.05] transition-all">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-12 h-12 mx-auto mb-3">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 7.5A2.25 2.25 0 015.25 5.25h13.5A2.25 2.25 0 0121 7.5v9a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 16.5v-9zM7.5 8.25h9M7.5 12h9M7.5 15.75h4.5" />
+                            </svg>
+                            <p class="font-semibold text-lg">Kelola Surat</p>
+                        </a>
+
+                        <a href="{{ route('admin.dashboard') }}#homepage-texts" class="p-6 rounded-2xl bg-gradient-to-br from-[#FEDA60] to-[#F5B347] text-black text-black  text-center hover:shadow-xl hover:scale-[1.05] transition-all">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-12 h-12 mx-auto mb-3">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 4.5v15m6-15v15m-11.581.313c.498.492 1.173.922 2.026 1.176.855.254 1.747.247 2.654-.02l6.501-2.335c.92-.33 1.539-1.152 1.539-2.076V6.75c0-.933-.619-1.745-1.539-2.076L7.097 2.171c-.907-.266-1.799-.273-2.654.02-.852.254-1.528.684-2.026 1.176" />
+                            </svg>
+                            <p class="font-semibold text-lg">Kelola Homepage</p>
                         </a>
                     </div>
                 </div>
@@ -183,6 +197,60 @@
                                 </div>
                             @empty
                                 <p class="text-center text-[#4F4F4F] py-8">Belum ada pendaftaran</p>
+                            @endforelse
+                        </div>
+                    </div>
+
+                    <!-- Pending Dispensations -->
+                    <div class="rounded-2xl bg-white border border-[#FEDA60]/30 p-6 shadow-lg">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-[#2E2E2E]">Permintaan Surat Dispensasi</h3>
+                            <span class="px-3 py-1 rounded-full bg-[#FEDA60]/20 text-[#8C6A08] text-xs font-semibold">{{ isset($pendingDispensations) ? $pendingDispensations->count() : 0 }} Baru</span>
+                        </div>
+
+                        <div class="space-y-3">
+                            @forelse($pendingDispensations as $pd)
+                                @php $pp = (array) $pd->payload; @endphp
+                                <div class="flex items-center gap-4 p-3 rounded-xl bg-[#FFF6D5] border border-[#FEDA60]/20">
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-sm font-semibold text-[#2E2E2E] truncate">{{ $pp['name'] ?? optional($pd->user)->name }}</p>
+                                        <p class="text-xs text-[#4F4F4F] truncate">{{ ucfirst($pd->type) }} — Kegiatan: {{ $pp['event_name'] ?? '—' }}</p>
+                                        <p class="text-xs text-[#8C6A08] mt-1">Tanggal: {{ $pp['date_from'] ?? '—' }} @if(!empty($pp['date_to'])) sampai {{ $pp['date_to'] }} @endif</p>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <a href="{{ route('admin.dispensations.show', $pd->id) }}" 
+                                        class="px-3 py-1 rounded-lg bg-blue-600 text-white text-sm">Lihat</a>
+
+                                        <!-- Tombol Setujui -->
+                                        <button onclick="openApproveConfirm({{ $pd->id }})"
+                                                class="px-3 py-1 rounded-lg bg-green-500 text-white text-sm">
+                                            Setujui
+                                        </button>
+
+                                        <!-- Tombol Tolak -->
+                                        <button onclick="openRejectBox({{ $pd->id }})" 
+                                            class="px-3 py-1 rounded-lg bg-red-500 text-white text-sm">
+                                        Tolak
+                                    </button>
+
+                                    </div>
+
+    
+
+
+
+                                </div>
+
+                                <form id="reject-box-{{ $pd->id }}" method="POST" action="{{ route('admin.dispensations.reject', $pd->id) }}" class="hidden">
+                                    @csrf
+                                    <div class="mt-2 flex gap-2">
+                                        <input type="text" name="rejection_reason" placeholder="Alasan penolakan..." class="w-full rounded-md border-gray-200 p-2 text-black bg-black/10" required>
+                                        <button type="submit" class="px-3 py-1 rounded-lg bg-red-600 text-white">Kirim</button>
+                                        <button type="button" onclick="document.getElementById('reject-box-{{ $pd->id }}').classList.add('hidden')" class="px-3 py-1 text-black rounded-lg bg-[#FEDA60]">Batal</button>
+                                    </div>
+                                </form>
+                            @empty
+                                <p class="text-center text-[#4F4F4F] py-6">Belum ada permintaan surat dispensasi.</p>
                             @endforelse
                         </div>
                     </div>
@@ -476,7 +544,7 @@
                                     </div>
                                     <div class="flex gap-2">
                                         <button type="submit" id="icon-form-submit" class="px-6 py-2 bg-[#FEDA60] text-white rounded-lg font-semibold hover:bg-[#E5C247]">Simpan Perubahan</button>
-                                        <button type="button" onclick="resetIconForm()" class="px-6 py-2 bg-gray-400 text-white rounded-lg font-semibold hover:bg-gray-500">Batal</button>
+                                        <button type="button" onclick="resetIconForm()" class="px-6 py-2 bg-[#FEDA60] text-black rounded-lg font-semibold hover:bg-gray-500">Batal</button>
                                     </div>
                                 </div>
                             </form>
@@ -593,7 +661,7 @@
                                     </div>
                                     <div class="flex gap-2">
                                         <button type="submit" class="px-6 py-2 bg-[#FEDA60] text-white rounded-lg font-semibold hover:bg-[#E5C247]">Simpan Perubahan</button>
-                                        <button type="button" onclick="resetSectionForm()" class="px-6 py-2 bg-gray-400 text-white rounded-lg font-semibold hover:bg-gray-500">Batal</button>
+                                        <button type="button" onclick="resetSectionForm()" class="px-6 py-2 bg-[#FEDA60] text-black rounded-lg font-semibold hover:bg-gray-500">Batal</button>
                                     </div>
                                 </div>
                             </form>
@@ -606,6 +674,157 @@
         </main>
     </div>
 </div>
+
+{{-- konfirmasi surat dispensasi --}}
+
+{{-- popup konfirmasi setuju --}}
+<div id="disp-approve-confirm" class="hidden fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+    <div class="bg-white rounded-xl p-6 shadow-xl w-80 text-center">
+        <h2 class="text-lg text-black font-bold mb-3">Konfirmasi</h2>
+        <p class="text-black">Apakah Anda yakin ingin <span class="text-green-600 font-semibold">menyetujui</span> pengajuan ini?</p>
+
+        <form id="disp-approve-form" method="POST" class="mt-5">
+            @csrf
+            <button type="submit" class="w-full py-2 bg-green-600 text-white rounded-lg mb-2">Ya, Setujui</button>
+        </form>
+
+        <button onclick="closeApproveConfirm()" class="w-full py-2 bg-[#FEDA60] text-black rounded-lg">
+            Batal
+        </button>
+    </div>
+</div>
+
+
+{{-- pop up input penolakan --}}
+<!-- POPUP INPUT PENOLAKAN -->
+<div id="disp-reject-popup" 
+     class="fixed inset-0 hidden items-center justify-center bg-black/50 backdrop-blur-sm z-50">
+    
+    <div class="bg-white rounded-2xl p-6 w-full max-w-md shadow-lg transform transition-all">
+        <h2 class="text-xl font-semibold text-gray-800 mb-3">Tolak Pengajuan</h2>
+        <p class="text-gray-600 text-sm mb-4">Masukkan alasan penolakan sebelum mengirim.</p>
+        
+        <textarea id="disp-reject-reason" 
+              class="w-full p-3 rounded-xl border border-gray-300 bg-gray-100 text-gray-800"
+              placeholder="Alasan penolakan..." rows="3"></textarea>
+
+        <div class="mt-5 flex justify-end gap-2">
+            <button onclick="closeRejectBox()"
+                    class="px-4 py-2 rounded-lg bg-[#FEDA60] text-black hover:bg-gray-300">
+                Batal
+            </button>
+
+            <button onclick="openRejectConfirm()" 
+                    class="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700">
+                Kirim
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- POPUP KONFIRMASI PENOLAKAN -->
+<div id="disp-reject-confirm" 
+     class="fixed inset-0 hidden items-center justify-center bg-black/50 backdrop-blur-sm z-50">
+    
+    <div class="bg-white rounded-2xl p-6 w-full max-w-md shadow-lg text-center">
+        <h2 class="text-xl font-semibold text-gray-800">Konfirmasi Penolakan</h2>
+        <p class="text-gray-600 mt-2">Yakin ingin menolak pengajuan ini?</p>
+
+        <form id="disp-reject-form" method="POST" class="mt-5">
+            @csrf
+            <input type="hidden" name="rejection_reason" id="disp-reject-reason-input">
+
+            <div class="flex justify-center gap-3 mt-4">
+                <button type="button" onclick="closeRejectConfirm()"
+                        class="px-4 py-2 rounded-lg bg-[#FEDA60] text-black hover:bg-gray-300">
+                    Batal
+                </button>
+
+                <button type="submit"
+                        class="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700">
+                    Ya, Tolak
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+{{-- popup sukses --}}
+@if(session('success'))
+<div id="success-popup" class="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+    <div class="bg-white rounded-xl p-6 shadow-xl w-80 text-center animate-fadeIn">
+        
+        <div class="mx-auto mb-3 w-16 h-16 bg-green-500 rounded-full flex items-center justify-center animate-bounce">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+            </svg>
+        </div>
+
+        <p class="font-semibold text-green-700">{{ session('success') }}</p>
+
+        <button onclick="document.getElementById('success-popup').remove()"
+                class="mt-4 px-4 py-2 rounded-lg bg-green-600 text-white">
+            OK
+        </button>
+    </div>
+</div>
+@endif
+
+<script>
+function openApproveConfirm(id) {
+    const form = document.getElementById("disp-approve-form");
+    form.action = "/admin/dispensations/" + id + "/approve";
+    document.getElementById("disp-approve-confirm").classList.remove("hidden");
+}
+
+function closeApproveConfirm() {
+    document.getElementById("disp-approve-confirm").classList.add("hidden");
+}
+
+let dispRejectId = null;
+
+// Buka popup input alasan
+function openRejectBox(id) {
+    dispRejectId = id;
+    document.getElementById('disp-reject-popup').classList.remove('hidden');
+    document.getElementById('disp-reject-popup').classList.add('flex');
+}
+
+// Tutup popup input
+function closeRejectBox() {
+    document.getElementById('disp-reject-popup').classList.add('hidden');
+    document.getElementById('disp-reject-popup').classList.remove('flex');
+}
+
+// Buka popup konfirmasi
+function openRejectConfirm() {
+    const reason = document.getElementById('disp-reject-reason').value.trim();
+
+    if (reason === "") {
+        alert("Alasan penolakan wajib diisi.");
+        return;
+    }
+
+    document.getElementById('disp-reject-reason-input').value = reason;
+
+    const form = document.getElementById('disp-reject-form');
+    form.action = "/admin/dispensations/" + dispRejectId + "/reject";
+
+    closeRejectBox();
+
+    document.getElementById('disp-reject-confirm').classList.remove('hidden');
+    document.getElementById('disp-reject-confirm').classList.add('flex');
+}
+
+// Tutup konfirmasi
+function closeRejectConfirm() {
+    document.getElementById('disp-reject-confirm').classList.add('hidden');
+    document.getElementById('disp-reject-confirm').classList.remove('flex');
+}
+</script>
+
+{{-- end of konfirmasi surat dispensasi --}}
 
 <script>
     function showSection(sectionName, event) {
@@ -833,7 +1052,7 @@
                 <textarea name="reason" id="reject-reason" class="w-full border rounded px-3 py-2 text-black" rows="4" required></textarea>
             </div>
             <div class="flex justify-end gap-2">
-                <button type="button" onclick="closeRejectModal()" class="px-4 py-2 bg-gray-300 rounded">Tidak</button>
+                <button type="button" onclick="closeRejectModal()" class="px-4 py-2 bg-[#FEDA60] text-black rounded">Batal</button>
                 <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded">Ya, Tolak</button>
             </div>
         </form>

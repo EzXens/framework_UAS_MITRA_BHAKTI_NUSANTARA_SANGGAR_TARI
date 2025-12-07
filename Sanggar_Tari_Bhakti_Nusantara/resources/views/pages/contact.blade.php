@@ -115,14 +115,22 @@
 
                                 <div>
                                     <label class="text-sm font-medium text-gray-200">Subjek</label>
-                                    <input type="text" name="subject" value="{{ old('subject') }}"
-                                           class="mt-2 w-full rounded-xl px-4 py-3 border border-white/10 
-                                                  bg-white/10 text-white placeholder-gray-300 
-                                                  focus:outline-none focus:ring-2 focus:ring-yellow-400">
+
+                                    <select name="subject"
+                                        class="mt-2 w-full rounded-xl px-4 py-3 border border-white/10 
+                                            bg-white/10 text-white placeholder-gray-300 
+                                            focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                                        <option value="" class="text-black">-- Pilih Subjek --</option>
+                                        <option style="background: rgba(0, 0, 0, 0.85);" value="Keluhan"  {{ old('subject') == 'Keluhan' ? 'selected' : '' }}>Keluhan</option>
+                                        <option style="background: rgba(0, 0, 0, 0.85);" value="Saran"    {{ old('subject') == 'Saran' ? 'selected' : '' }}>Saran</option>
+                                        <option style="background: rgba(0, 0, 0, 0.85);" value="Lainnya"  {{ old('subject') == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
+                                    </select>
+
                                     @error('subject') 
                                         <p class="text-xs text-red-400 mt-1">{{ $message }}</p> 
                                     @enderror
                                 </div>
+
 
                                 <div>
                                     <label class="text-sm font-medium text-gray-200">Pesan</label>

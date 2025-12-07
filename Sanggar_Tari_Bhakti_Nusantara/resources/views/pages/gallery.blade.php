@@ -59,7 +59,9 @@
                     ]);
                 }
             @endphp
-            <div class="mx-auto max-w-7xl px-6 pb-6">
+
+            {{-- carousel lama --}}
+            {{-- <div class="mx-auto max-w-7xl px-6 pb-6">
                 <div class="relative mx-auto max-w-7xl w-full px-6 h-[420px] overflow-hidden rounded-[32px] border border-white/40 bg-white/30 shadow-[0_22px_55px_-20px_rgba(254,218,96,0.55)] backdrop-blur-md md:h-[520px]" data-carousel>
                     <div class="flex h-full  transition-transform duration-700 ease-in-out" data-carousel-track>
                         @foreach ($carouselSlides as $slide)
@@ -99,7 +101,105 @@
                         @endforeach
                     </div>
                 </div>
-            </div>
+            </div> --}}
+            {{-- end of carousel lama --}}
+
+            {{-- carousel baru 3d --}}
+            <!-- ================= CAROUSEL 3D ================= -->
+    <div class="relative w-full flex flex-col items-center justify-center py-30 overflow-hidden">
+
+        <div id="carousel3d" class="relative flex items-center justify-center w-full h-[350px] sm:h-[400px]"
+            style="perspective:2000px; transform-style:preserve-3d;">
+
+            @foreach ($carouselSlides as $index => $slide)
+                <div class="absolute transition-all duration-700 ease-in-out transform"
+                    data-index="{{ $index }}">
+                    <img src="{{ asset($slide->image) }}"
+                        class="rounded-2xl shadow-2xl w-[700px] h-[500px] mx-auto object-cover" />
+
+                    <!-- Caption / Optional -->
+                    <div class="text-center mt-4">
+                        <p class="text-lg font-semibold text-[#2E2E2E]">{{ $slide->title }}</p>
+                        <p class="text-sm text-[#4F4F4F]">{{ $slide->description }}</p>
+                    </div>
+                </div>
+            @endforeach
+
+        </div>
+
+        <!-- Tombol Navigasi -->
+        <button id="prevBtn"
+            class="absolute left-6 top-1/2 -translate-y-1/2 z-20 bg-[#FEDA60] text-black px-4 py-2 rounded-full shadow-lg">
+            ❮
+        </button>
+
+        <button id="nextBtn"
+            class="absolute right-6 top-1/2 -translate-y-1/2 z-20 bg-[#FEDA60] text-black px-4 py-2 rounded-full shadow-lg">
+            ❯
+        </button>
+
+        <!-- Indikator Dot -->
+        <div class="flex justify-center space-x-2 mt-6">
+            @for ($i = 0; $i < $carouselSlides->count(); $i++)
+                <button class="dot w-3 h-3 rounded-full bg-gray-400" onclick="goTo3D({{ $i }})"></button>
+            @endfor
+        </div>
+
+    </div>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const slides3D = document.querySelectorAll('#carousel3d [data-index]');
+        const dots3D = document.querySelectorAll('.dot');
+        const nextBtn = document.getElementById('nextBtn');
+        const prevBtn = document.getElementById('prevBtn');
+
+        let current3D = 0;
+
+        function render3D() {
+            slides3D.forEach((slide, i) => {
+                const diff = i - current3D;
+                const offset =
+                    (diff > slides3D.length / 2) ? diff - slides3D.length :
+                    (diff < -slides3D.length / 2) ? diff + slides3D.length :
+                    diff;
+
+                slide.style.opacity = (i === current3D) ? 1 : 0.85;
+                slide.style.zIndex = (i === current3D) ? 20 : 10;
+                slide.style.transform =
+                    `translateX(${offset * 65}%) scale(${i === current3D ? 1 : 0.85}) rotateY(${offset * -45}deg)`;
+                slide.style.filter = (i === current3D) ? 'none' : 'blur(1.5px) brightness(0.9)';
+            });
+
+            dots3D.forEach((dot, i) => {
+                dot.classList.toggle('bg-white', i === current3D);
+                dot.classList.toggle('bg-gray-400', i !== current3D);
+            });
+        }
+
+        function next3D() {
+            current3D = (current3D + 1) % slides3D.length;
+            render3D();
+        }
+
+        function prev3D() {
+            current3D = (current3D - 1 + slides3D.length) % slides3D.length;
+            render3D();
+        }
+
+        window.goTo3D = function(i) {
+            current3D = i;
+            render3D();
+        }
+
+        nextBtn.addEventListener('click', next3D);
+        prevBtn.addEventListener('click', prev3D);
+
+        setInterval(next3D, 5000);
+
+        render3D();
+    });
+</script>
+            {{-- end carousel baru 3d --}}
     </section>
 
     <section class="relative mx-auto max-w-7xl px-6 pb-20 pt-12 lg:pt-16">
@@ -382,158 +482,160 @@
             initializeMediaContent();
             
             // Carousel code (unchanged)
-            document.querySelectorAll('[data-carousel]').forEach((carousel) => {
-                if (carousel.dataset.carouselInit === 'true') {
-                    return;
-                }
-                carousel.dataset.carouselInit = 'true';
+            // document.querySelectorAll('[data-carousel]').forEach((carousel) => {
+            //     if (carousel.dataset.carouselInit === 'true') {
+            //         return;
+            //     }
+            //     carousel.dataset.carouselInit = 'true';
 
-                const track = carousel.querySelector('[data-carousel-track]');
-                const prevBtn = carousel.querySelector('[data-carousel-prev]');
-                const nextBtn = carousel.querySelector('[data-carousel-next]');
-                const indicators = Array.from(carousel.querySelectorAll('[data-carousel-indicator]'));
-                const titleEl = carousel.querySelector('[data-carousel-title]');
-                const descEl = carousel.querySelector('[data-carousel-description]');
+            //     const track = carousel.querySelector('[data-carousel-track]');
+            //     const prevBtn = carousel.querySelector('[data-carousel-prev]');
+            //     const nextBtn = carousel.querySelector('[data-carousel-next]');
+            //     const indicators = Array.from(carousel.querySelectorAll('[data-carousel-indicator]'));
+            //     const titleEl = carousel.querySelector('[data-carousel-title]');
+            //     const descEl = carousel.querySelector('[data-carousel-description]');
 
-                if (!track) {
-                    return;
-                }
+            //     if (!track) {
+            //         return;
+            //     }
 
-                const originalSlides = Array.from(track.children);
-                if (originalSlides.length <= 1) {
-                    titleEl && (titleEl.textContent = originalSlides[0]?.dataset.title ?? '');
-                    descEl && (descEl.textContent = originalSlides[0]?.dataset.description ?? '');
-                    return;
-                }
+            //     const originalSlides = Array.from(track.children);
+            //     if (originalSlides.length <= 1) {
+            //         titleEl && (titleEl.textContent = originalSlides[0]?.dataset.title ?? '');
+            //         descEl && (descEl.textContent = originalSlides[0]?.dataset.description ?? '');
+            //         return;
+            //     }
 
-                const firstClone = originalSlides[0].cloneNode(true);
-                const lastClone = originalSlides[originalSlides.length - 1].cloneNode(true);
-                firstClone.dataset.clone = 'true';
-                lastClone.dataset.clone = 'true';
-                track.appendChild(firstClone);
-                track.insertBefore(lastClone, originalSlides[0]);
+            //     const firstClone = originalSlides[0].cloneNode(true);
+            //     const lastClone = originalSlides[originalSlides.length - 1].cloneNode(true);
+            //     firstClone.dataset.clone = 'true';
+            //     lastClone.dataset.clone = 'true';
+            //     track.appendChild(firstClone);
+            //     track.insertBefore(lastClone, originalSlides[0]);
 
-                const slides = Array.from(track.children);
-                let currentIndex = 1;
-                const AUTOPLAY_INTERVAL = 4000;
-                let autoPlayTimer = null;
-                let isTransitioning = false;
+            //     const slides = Array.from(track.children);
+            //     let currentIndex = 1;
+            //     const AUTOPLAY_INTERVAL = 4000;
+            //     let autoPlayTimer = null;
+            //     let isTransitioning = false;
 
-                const enableTransition = () => {
-                    track.style.transitionProperty = 'transform';
-                    track.style.transitionDuration = '700ms';
-                    track.style.transitionTimingFunction = 'cubic-bezier(0.4, 0, 0.2, 1)';
-                };
+            //     const enableTransition = () => {
+            //         track.style.transitionProperty = 'transform';
+            //         track.style.transitionDuration = '700ms';
+            //         track.style.transitionTimingFunction = 'cubic-bezier(0.4, 0, 0.2, 1)';
+            //     };
 
-                const disableTransition = () => {
-                    track.style.transitionDuration = '0ms';
-                };
+            //     const disableTransition = () => {
+            //         track.style.transitionDuration = '0ms';
+            //     };
 
-                const getNormalizedIndex = () => {
-                    return (currentIndex - 1 + originalSlides.length) % originalSlides.length;
-                };
+            //     const getNormalizedIndex = () => {
+            //         return (currentIndex - 1 + originalSlides.length) % originalSlides.length;
+            //     };
 
-                const updateMeta = () => {
-                    const normalizedIndex = getNormalizedIndex();
-                    const activeSlide = originalSlides[normalizedIndex];
-                    if (titleEl && activeSlide?.dataset.title) {
-                        titleEl.textContent = activeSlide.dataset.title;
-                    }
-                    if (descEl && activeSlide?.dataset.description) {
-                        descEl.textContent = activeSlide.dataset.description;
-                    }
-                    indicators.forEach((indicator, idx) => {
-                        const isActive = idx === normalizedIndex;
-                        indicator.classList.toggle('w-8', isActive);
-                        indicator.classList.toggle('bg-[#FEDA60]', isActive);
-                        indicator.classList.toggle('w-3', !isActive);
-                        indicator.classList.toggle('bg-white/40', !isActive);
-                        indicator.setAttribute('aria-current', isActive ? 'true' : 'false');
-                    });
-                };
+            //     const updateMeta = () => {
+            //         const normalizedIndex = getNormalizedIndex();
+            //         const activeSlide = originalSlides[normalizedIndex];
+            //         if (titleEl && activeSlide?.dataset.title) {
+            //             titleEl.textContent = activeSlide.dataset.title;
+            //         }
+            //         if (descEl && activeSlide?.dataset.description) {
+            //             descEl.textContent = activeSlide.dataset.description;
+            //         }
+            //         indicators.forEach((indicator, idx) => {
+            //             const isActive = idx === normalizedIndex;
+            //             indicator.classList.toggle('w-8', isActive);
+            //             indicator.classList.toggle('bg-[#FEDA60]', isActive);
+            //             indicator.classList.toggle('w-3', !isActive);
+            //             indicator.classList.toggle('bg-white/40', !isActive);
+            //             indicator.setAttribute('aria-current', isActive ? 'true' : 'false');
+            //         });
+            //     };
 
-                const setTranslate = () => {
-                    track.style.transform = `translateX(-${currentIndex * 100}%)`;
-                    updateMeta();
-                };
+            //     const setTranslate = () => {
+            //         track.style.transform = `translateX(-${currentIndex * 100}%)`;
+            //         updateMeta();
+            //     };
 
-                const moveTo = (index, { viaAutoplay = false } = {}) => {
-                    if (isTransitioning) {
-                        return;
-                    }
+            //     const moveTo = (index, { viaAutoplay = false } = {}) => {
+            //         if (isTransitioning) {
+            //             return;
+            //         }
 
-                    const targetIndex = Math.max(0, Math.min(index, slides.length - 1));
-                    const previousIndex = currentIndex;
+            //         const targetIndex = Math.max(0, Math.min(index, slides.length - 1));
+            //         const previousIndex = currentIndex;
 
-                    if (targetIndex === previousIndex) {
-                        if (!viaAutoplay) {
-                            restartAutoPlay();
-                        }
-                        return;
-                    }
+            //         if (targetIndex === previousIndex) {
+            //             if (!viaAutoplay) {
+            //                 restartAutoPlay();
+            //             }
+            //             return;
+            //         }
 
-                    currentIndex = targetIndex;
-                    isTransitioning = true;
-                    enableTransition();
-                    setTranslate();
-                    if (!viaAutoplay) {
-                        restartAutoPlay();
-                    }
-                };
+            //         currentIndex = targetIndex;
+            //         isTransitioning = true;
+            //         enableTransition();
+            //         setTranslate();
+            //         if (!viaAutoplay) {
+            //             restartAutoPlay();
+            //         }
+            //     };
 
-                const moveNext = (viaAutoplay = false) => moveTo(currentIndex + 1, { viaAutoplay });
-                const movePrev = () => moveTo(currentIndex - 1);
+            //     const moveNext = (viaAutoplay = false) => moveTo(currentIndex + 1, { viaAutoplay });
+            //     const movePrev = () => moveTo(currentIndex - 1);
 
-                const snapTo = (index) => {
-                    disableTransition();
-                    currentIndex = index;
-                    setTranslate();
-                    void track.offsetWidth;
-                    enableTransition();
-                };
+            //     const snapTo = (index) => {
+            //         disableTransition();
+            //         currentIndex = index;
+            //         setTranslate();
+            //         void track.offsetWidth;
+            //         enableTransition();
+            //     };
 
-                const stopAutoPlay = () => {
-                    if (autoPlayTimer) {
-                        clearInterval(autoPlayTimer);
-                        autoPlayTimer = null;
-                    }
-                };
+            //     const stopAutoPlay = () => {
+            //         if (autoPlayTimer) {
+            //             clearInterval(autoPlayTimer);
+            //             autoPlayTimer = null;
+            //         }
+            //     };
 
-                const restartAutoPlay = () => {
-                    stopAutoPlay();
-                    autoPlayTimer = setInterval(() => moveNext(true), AUTOPLAY_INTERVAL);
-                };
+            //     const restartAutoPlay = () => {
+            //         stopAutoPlay();
+            //         autoPlayTimer = setInterval(() => moveNext(true), AUTOPLAY_INTERVAL);
+            //     };
 
-                prevBtn?.addEventListener('click', () => movePrev());
-                nextBtn?.addEventListener('click', () => moveNext());
-                indicators.forEach((indicator, idx) => {
-                    indicator.addEventListener('click', () => moveTo(idx + 1));
-                });
+            //     prevBtn?.addEventListener('click', () => movePrev());
+            //     nextBtn?.addEventListener('click', () => moveNext());
+            //     indicators.forEach((indicator, idx) => {
+            //         indicator.addEventListener('click', () => moveTo(idx + 1));
+            //     });
 
-                carousel.addEventListener('mouseenter', stopAutoPlay);
-                carousel.addEventListener('mouseleave', restartAutoPlay);
+            //     carousel.addEventListener('mouseenter', stopAutoPlay);
+            //     carousel.addEventListener('mouseleave', restartAutoPlay);
 
-                track.addEventListener('transitionend', (event) => {
-                    if (event.target !== track || event.propertyName !== 'transform') {
-                        return;
-                    }
+            //     track.addEventListener('transitionend', (event) => {
+            //         if (event.target !== track || event.propertyName !== 'transform') {
+            //             return;
+            //         }
 
-                    isTransitioning = false;
+            //         isTransitioning = false;
 
-                    if (currentIndex === slides.length - 1) {
-                        snapTo(1);
-                    } else if (currentIndex === 0) {
-                        snapTo(originalSlides.length);
-                    }
-                });
+            //         if (currentIndex === slides.length - 1) {
+            //             snapTo(1);
+            //         } else if (currentIndex === 0) {
+            //             snapTo(originalSlides.length);
+            //         }
+            //     });
 
-                disableTransition();
-                setTranslate();
-                void track.offsetWidth;
-                enableTransition();
-                restartAutoPlay();
-            });
+            //     disableTransition();
+            //     setTranslate();
+            //     void track.offsetWidth;
+            //     enableTransition();
+            //     restartAutoPlay();
+            // });
 
+
+          
             // Tab switching is now handled via page navigation (removed JavaScript tab switching)
 
             const modal = document.getElementById('gallery-modal');

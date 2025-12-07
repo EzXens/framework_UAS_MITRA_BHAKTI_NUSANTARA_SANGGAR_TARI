@@ -8,6 +8,7 @@ use App\Models\ClassModel;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Dispensation;
 
 class UserDashboardController extends Controller
 {
@@ -15,8 +16,16 @@ class UserDashboardController extends Controller
     {
         $user = Auth::user();
         
-        // getter enrolled classes
+        // getter enrolled classes (only approved should be considered "enrolled")
         $enrolledClasses = ClassEnrollment::where('user_id', $user->id)
+            ->where('status', 'approved')
+            ->with('class')
+            ->latest()
+            ->get();
+
+        // also expose pending enrollments so dashboard can show waiting state if needed
+        $pendingEnrollments = ClassEnrollment::where('user_id', $user->id)
+            ->where('status', 'pending')
             ->with('class')
             ->latest()
             ->get();
@@ -34,7 +43,16 @@ class UserDashboardController extends Controller
             }
         }
         
-        return view('user.dashboard', compact('user', 'enrolledClasses', 'schedules'));
+        // user's dispensations
+        $dispensations = Dispensation::where('user_id', $user->id)->latest()->get();
+
+        // if admin, also fetch pending dispensations for quick approval in aktivitas
+        $pendingDispensations = [];
+        if ($user->role === 'admin') {
+            $pendingDispensations = Dispensation::where('status', 'pending')->latest()->take(10)->get();
+        }
+
+        return view('user.dashboard', compact('user', 'enrolledClasses', 'pendingEnrollments', 'schedules', 'dispensations', 'pendingDispensations'));
     }
 
     public function updateProfilePicture(Request $request)

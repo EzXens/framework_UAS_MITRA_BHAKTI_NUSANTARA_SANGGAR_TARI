@@ -78,13 +78,13 @@
                                                 <a href="{{ route('classes.edit', $class) }}" class="inline-flex items-center px-3 py-1.5 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors text-xs font-semibold">
                                                     Edit
                                                 </a>
-                                                <form action="{{ route('classes.destroy', $class) }}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus kelas ini?')">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="inline-flex items-center px-3 py-1.5 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors text-xs font-semibold">
-                                                        Hapus
-                                                    </button>
-                                                </form>
+                                            <button type="button"
+                                                    onclick="openDeletePopup({{ $class->id }})"
+                                                    class="inline-flex items-center px-3 py-1.5 bg-red-100 text-red-700 rounded-lg 
+                                                        hover:bg-red-200 transition-colors text-xs font-semibold">
+                                                Hapus
+                                            </button>
+
                                             </div>
                                         </td>
                                     </tr>
@@ -193,6 +193,120 @@
         </main>
     </div>
 </div>
+
+<!-- Popup Konfirmasi hapus -->
+<div id="deletePopup"
+     class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-50">
+    
+    <div class="bg-white rounded-2xl w-[90%] max-w-sm p-6 shadow-xl text-center">
+        <h2 class="text-lg font-semibold text-gray-800">Konfirmasi Penghapusan</h2>
+        <p class="mt-2 text-sm text-gray-600">
+            Apakah Anda yakin ingin menghapus kelas ini?
+        </p>
+
+        <form id="deleteForm" method="POST" class="mt-6">
+            @csrf
+            @method('DELETE')
+
+            <div class="flex items-center justify-center gap-3">
+                <button type="button"
+                        onclick="closeDeletePopup()"
+                        class="px-4 py-2 rounded-xl bg-[#FEDA60] hover:bg-gray-300 
+                               text-gray-800 font-medium transition">
+                    Batal
+                </button>
+
+                <button type="submit"
+                        class="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 
+                               text-white font-semibold transition">
+                    Hapus
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Popup Sukses hapus -->
+<div id="successPopup"
+     class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden items-center justify-center z-50">
+
+    <div class="bg-white rounded-2xl w-[90%] max-w-sm p-8 shadow-xl text-center relative">
+        
+        <!-- Icon Centang Animasi -->
+        <div class="mx-auto mb-4 w-20 h-20 flex items-center justify-center rounded-full border-4 border-green-500">
+            <svg id="successCheck"
+                 xmlns="http://www.w3.org/2000/svg"
+                 fill="none" viewBox="0 0 24 24" stroke-width="2"
+                 stroke="green" class="w-12 h-12 opacity-0 scale-50 transition-all duration-300">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+        </div>
+
+        <h2 class="text-xl font-semibold text-gray-800 mb-2">Berhasil</h2>
+
+        <p class="text-gray-600 text-sm mb-6">
+            {{ session('success') }}
+        </p>
+
+        <button onclick="closeSuccessPopup()"
+                class="px-5 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-xl transition">
+            OK
+        </button>
+    </div>
+</div>
+
+
+
+<script>
+    // ========== Popup Delete ==========
+    function openDeletePopup(id) {
+        const popup = document.getElementById('deletePopup');
+        const form = document.getElementById('deleteForm');
+
+        form.action = "/classes/" + id;
+
+        popup.classList.remove("hidden");
+        popup.classList.add("flex");
+    }
+
+    function closeDeletePopup() {
+        const popup = document.getElementById('deletePopup');
+        popup.classList.add("hidden");
+        popup.classList.remove("flex");
+    }
+
+    // ========== Popup Sukses ==========
+    function openSuccessPopup() {
+        const popup = document.getElementById('successPopup');
+        const icon = document.getElementById('successCheck');
+
+        popup.classList.remove("hidden");
+        popup.classList.add("flex");
+
+        // Animasi centang
+        setTimeout(() => {
+            icon.classList.remove("opacity-0", "scale-50");
+            icon.classList.add("opacity-100", "scale-100");
+        }, 100);
+    }
+
+    function closeSuccessPopup() {
+        const popup = document.getElementById('successPopup');
+        popup.classList.add("hidden");
+        popup.classList.remove("flex");
+    }
+</script>
+
+@if (session('success'))
+<script>
+    // tampilkan popup sukses setelah muat halaman
+    document.addEventListener('DOMContentLoaded', () => {
+        openSuccessPopup();
+    });
+</script>
+@endif
+
+
 
 
 @endsection

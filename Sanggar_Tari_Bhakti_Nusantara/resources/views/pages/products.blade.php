@@ -26,7 +26,7 @@
                             <h3 class="text-lg font-semibold">{{ $product->name }}</h3>
                             <p class="text-sm leading-relaxed text-[#4F4F4F] line-clamp-3 mt-2 flex-grow">{{ $product->description }}</p>
                             <div class="flex items-center justify-between pt-4 mt-4 border-t border-[#FEDA60]/30">
-                                <span class="text-2xl font-bold text-[#8C6A08]">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+                                {{-- <span class="text-2xl font-bold text-[#8C6A08]">Rp {{ number_format($product->price, 0, ',', '.') }}</span> --}}
                                 <span class="text-sm text-[#4F4F4F]">Stok: <strong>{{ $product->stock }}</strong></span>
                             </div>
                             <a href="mailto:info@bhaktinusantara.id?subject=Inquiry about {{ $product->name }}" class="inline-flex items-center justify-center gap-2 text-sm font-semibold text-[#2E2E2E] bg-gradient-to-r from-[#FEDA60] to-[#F5B347] px-6 py-3 rounded-xl shadow-lg shadow-[#FEDA60]/30 hover:shadow-xl hover:scale-[1.02] transition-all mt-4">

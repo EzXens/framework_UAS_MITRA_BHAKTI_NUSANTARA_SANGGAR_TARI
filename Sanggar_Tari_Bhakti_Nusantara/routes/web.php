@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ClassController;
 use App\Http\Controllers\UserDashboardController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\DispensationController;
 use App\Http\Controllers\AdminGalleryController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HomeController;
@@ -31,6 +32,13 @@ Route::middleware(['auth', 'admin'])->group(function () {
     // Enrollment approval/rejection for admin
     Route::post('/admin/enrollments/{id}/approve', [App\Http\Controllers\Admin\EnrollmentController::class, 'approve'])->name('admin.enrollments.approve');
     Route::post('/admin/enrollments/{id}/reject', [App\Http\Controllers\Admin\EnrollmentController::class, 'reject'])->name('admin.enrollments.reject');
+    
+    // Dispensations management
+    Route::get('/admin/dispensations', [DispensationController::class, 'adminIndex'])->name('admin.dispensations.index');
+    Route::get('/admin/dispensations/{dispensation}', [DispensationController::class, 'adminShow'])->name('admin.dispensations.show');
+    Route::post('/admin/dispensations/{dispensation}/approve', [DispensationController::class, 'approve'])->name('admin.dispensations.approve');
+    Route::post('/admin/dispensations/{dispensation}/reject', [DispensationController::class, 'reject'])->name('admin.dispensations.reject');
+    Route::post('/admin/dispensations/{dispensation}/generate', [DispensationController::class, 'generate'])->name('admin.dispensations.generate');
     Route::resource('products', ProductController::class)->except(['show']);
     Route::resource('classes', ClassController::class)->except(['show']);
     
@@ -92,4 +100,5 @@ Route::middleware(['auth', 'admin'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
     Route::post('/dashboard/profile-picture', [UserDashboardController::class, 'updateProfilePicture'])->name('user.updateProfilePicture');
+    Route::post('/dispensations', [DispensationController::class, 'store'])->name('dispensations.store');
 });

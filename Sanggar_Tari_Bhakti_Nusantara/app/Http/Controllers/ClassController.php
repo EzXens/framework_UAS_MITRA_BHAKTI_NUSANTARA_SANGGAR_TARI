@@ -17,9 +17,13 @@ class ClassController extends Controller
         $enrolledClassIds = [];
         if (Auth::check()) {
             // Only consider approved enrollments as "already registered" for the user
+            // Cast to integers and ensure uniqueness to avoid accidental truthy matches in the view
             $enrolledClassIds = ClassEnrollment::where('user_id', Auth::id())
                 ->where('status', 'approved')
                 ->pluck('class_id')
+                ->map(function ($id) { return (int) $id; })
+                ->unique()
+                ->values()
                 ->toArray();
         }
         
@@ -41,20 +45,34 @@ class ClassController extends Controller
             return back()->with('error', 'Kapasitas kelas sudah penuh.');
         }
 
-        $existingEnrollment = ClassEnrollment::where('user_id', Auth::id())
+        // Check for existing active enrollment (pending or approved) that should block re-registration
+        $existingActive = ClassEnrollment::where('user_id', Auth::id())
             ->where('class_id', $class->id)
+            ->whereIn('status', ['pending', 'approved'])
             ->first();
 
-        if ($existingEnrollment) {
+        if ($existingActive) {
             return back()->with('error', 'Anda sudah terdaftar di kelas ini.');
         }
 
-        ClassEnrollment::create([
-            'user_id' => Auth::id(),
-            'class_id' => $class->id,
-            'status' => 'pending',
-            'notes' => $request->input('notes')
-        ]);
+        // If there is a previously rejected enrollment, allow re-registration by reusing that record
+        $previousRejected = ClassEnrollment::where('user_id', Auth::id())
+            ->where('class_id', $class->id)
+            ->where('status', 'rejected')
+            ->first();
+
+        if ($previousRejected) {
+            $previousRejected->status = 'pending';
+            $previousRejected->notes = $request->input('notes');
+            $previousRejected->save();
+        } else {
+            ClassEnrollment::create([
+                'user_id' => Auth::id(),
+                'class_id' => $class->id,
+                'status' => 'pending',
+                'notes' => $request->input('notes')
+            ]);
+        }
 
         return back()->with('success', 'Pendaftaran kelas berhasil! Silakan tunggu konfirmasi admin.');
     }

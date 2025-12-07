@@ -151,14 +151,8 @@
         <button class="section-nav-dot" data-section="tentang" onclick="scrollToSection('tentang')">
             <span class="tooltip">Tentang</span>
         </button>
-        <button class="section-nav-dot" data-section="program" onclick="scrollToSection('program')">
-            <span class="tooltip">Program</span>
-        </button>
         <button class="section-nav-dot" data-section="jadwal" onclick="scrollToSection('jadwal')">
             <span class="tooltip">Jadwal</span>
-        </button>
-        <button class="section-nav-dot" data-section="galeri" onclick="scrollToSection('galeri')">
-            <span class="tooltip">Galeri</span>
         </button>
         <button class="section-nav-dot" data-section="testimoni" onclick="scrollToSection('testimoni')">
             <span class="tooltip">Testimoni</span>
