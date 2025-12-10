@@ -25,7 +25,20 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login')->middl
 Route::post('/login', [AuthController::class, 'login'])->name('login.post')->middleware('guest');
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register')->middleware('guest');
 Route::post('/register', [AuthController::class, 'register'])->name('register.post')->middleware('guest');
+// email verification
+Route::get('/email/verify/{token}', [AuthController::class, 'verifyEmail'])->name('verification.verify');
+Route::get('/email/verify', [AuthController::class, 'showVerifyNotice'])->name('verification.notice');
+Route::post('/email/resend', [AuthController::class, 'resendVerification'])->name('verification.resend');
+Route::post('/email/verify-code', [AuthController::class, 'verifyCode'])->name('verification.verifyCode');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+
+// Password reset
+Route::get('/password/forgot', [AuthController::class, 'showForgot'])->name('password.forgot')->middleware('guest');
+Route::post('/password/forgot', [AuthController::class, 'sendForgot'])->name('password.forgot.post')->middleware('guest');
+Route::get('/password/reset', [AuthController::class, 'showResetNotice'])->name('password.reset.notice')->middleware('guest');
+Route::post('/password/verify-code', [AuthController::class, 'verifyResetCode'])->name('password.verifyCode')->middleware('guest');
+Route::get('/password/reset/{token}', [AuthController::class, 'showReset'])->name('password.reset')->middleware('guest');
+Route::post('/password/reset', [AuthController::class, 'resetPassword'])->name('password.reset.post')->middleware('guest');
 
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('admin.dashboard');

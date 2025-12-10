@@ -215,7 +215,8 @@ class AdminGalleryController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'video_url' => 'required|url'
+            'video_url' => 'nullable|url|required_without:video_file',
+            'video_file' => 'nullable|mimes:mp4,mov,avi,webm|max:51200|required_without:video_url'
         ]);
 
         if ($request->hasFile('thumbnail')) {
@@ -223,6 +224,15 @@ class AdminGalleryController extends Controller
             $thumbnailName = time() . '_video_thumb_' . $thumbnail->getClientOriginalName();
             $thumbnail->move(public_path('images/galeri/video'), $thumbnailName);
             $validated['thumbnail'] = 'images/galeri/video/' . $thumbnailName;
+        }
+
+        // handle uploaded video file (from cutter) if provided
+        if ($request->hasFile('video_file')) {
+            $videoFile = $request->file('video_file');
+            $videoName = time() . '_video_' . $videoFile->getClientOriginalName();
+            $videoFile->move(public_path('videos/galeri'), $videoName);
+            // store relative path so views can use asset() when needed
+            $validated['video_url'] = 'videos/galeri/' . $videoName;
         }
 
         $validated['is_active'] = $request->input('is_active', 0) == 1;
@@ -244,7 +254,8 @@ class AdminGalleryController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'video_url' => 'required|url'
+            'video_url' => 'nullable|url|required_without:video_file',
+            'video_file' => 'nullable|mimes:mp4,mov,avi,webm|max:51200|required_without:video_url'
         ]);
 
         if ($request->hasFile('thumbnail')) {
@@ -257,6 +268,19 @@ class AdminGalleryController extends Controller
             $thumbnailName = time() . '_video_thumb_' . $thumbnail->getClientOriginalName();
             $thumbnail->move(public_path('images/galeri/video'), $thumbnailName);
             $validated['thumbnail'] = 'images/galeri/video/' . $thumbnailName;
+        }
+
+        // handle uploaded video file (from cutter) if provided
+        if ($request->hasFile('video_file')) {
+            // delete previous local file when appropriate
+            if ($video->video_url && file_exists(public_path($video->video_url))) {
+                try { unlink(public_path($video->video_url)); } catch (\Exception $e) { }
+            }
+
+            $videoFile = $request->file('video_file');
+            $videoName = time() . '_video_' . $videoFile->getClientOriginalName();
+            $videoFile->move(public_path('videos/galeri'), $videoName);
+            $validated['video_url'] = 'videos/galeri/' . $videoName;
         }
 
         $validated['is_active'] = $request->input('is_active', 0) == 1;

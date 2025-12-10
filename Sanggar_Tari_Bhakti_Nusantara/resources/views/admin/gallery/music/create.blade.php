@@ -52,8 +52,8 @@
 
             <div>
                 <label class="block text-sm font-semibold text-[#2E2E2E] mb-2">File Audio <span class="text-red-500">*</span></label>
-                <input type="file" name="audio_file" accept="audio/*" required class="w-full px-4 py-3 rounded-xl border @error('audio_file') border-red-500 @else border-gray-300 @enderror focus:border-[#FEDA60] text-gray-900 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#FEDA60] file:text-white hover:file:bg-[#F5B347]">
-                <p class="text-xs text-gray-500 mt-1">Format: MP3, WAV, OGG. Maksimal 10MB.</p>
+                <p class="text-xs text-gray-500 mb-4">Upload file audio dan gunakan tool di bawah untuk memotong bagian yang diinginkan sebelum menyimpan.</p>
+                @include('components.audio-cutter', ['required' => true])
                 @error('audio_file')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror

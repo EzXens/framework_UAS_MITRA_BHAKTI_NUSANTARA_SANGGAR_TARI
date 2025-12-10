@@ -51,12 +51,21 @@
             </div>
 
             <div>
-                <label class="block text-sm font-semibold text-[#2E2E2E] mb-2">URL Video (YouTube Embed) <span class="text-red-500">*</span></label>
-                <input type="url" name="video_url" value="{{ old('video_url') }}" placeholder="https://www.youtube.com/embed/VIDEO_ID?autoplay=1&rel=0" required class="w-full px-4 py-3 rounded-xl border @error('video_url') border-red-500 @else border-gray-300 @enderror focus:border-[#FEDA60] focus:ring-2 focus:ring-[#FEDA60]/20 text-gray-900 placeholder-gray-400">
-                <p class="text-xs text-gray-500 mt-1">Gunakan URL embed YouTube (bukan URL biasa). Contoh: https://www.youtube.com/embed/dQw4w9WgXcQ</p>
+                <label class="block text-sm font-semibold text-[#2E2E2E] mb-2">Video (YouTube embed atau Upload Lokal)</label>
+                <p class="text-xs text-gray-500 mb-2">Anda dapat memasukkan URL embed YouTube atau upload video lokal dan memotongnya di tempat.</p>
+
+                <label class="block text-sm font-medium text-gray-700 mb-1">URL Embed YouTube</label>
+                <input type="url" name="video_url" value="{{ old('video_url') }}" placeholder="https://www.youtube.com/embed/VIDEO_ID?autoplay=1&rel=0" class="w-full px-4 py-3 rounded-xl border @error('video_url') border-red-500 @else border-gray-300 @enderror focus:border-[#FEDA60] focus:ring-2 focus:ring-[#FEDA60]/20 text-gray-900 placeholder-gray-400">
                 @error('video_url')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
+
+                <div class="my-4">
+                    <div class="text-sm font-medium text-gray-200 mb-2">Atau: Upload Lokal & Potong</div>
+                    @include('components.video-cutter-embed')
+                    {{-- Hidden input to receive trimmed video file from cutter component --}}
+                    <input type="file" name="video_file" id="video_file_input" style="display:none;" />
+                </div>
             </div>
 
             <div>

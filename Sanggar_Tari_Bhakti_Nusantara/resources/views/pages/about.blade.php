@@ -30,8 +30,8 @@
                         </div>
                         <div class="flex-1">
                             <h3 class="text-2xl font-bold text-[#2E2E2E] mb-3">Visi</h3>
-                            <p class="text-base text-[#4F4F4F] leading-relaxed">
-                                Menjadi sanggar tari rujukan nasional yang mengedepankan pelestarian budaya, inovasi koreografi, dan pengembangan karakter melalui seni tari.
+                            <p class="text-base text-[#4F4F4F] leading-relaxed text-justify">
+                                Menjadi pusat pelestarian dan pengembangan seni di Kalimantan Timur yang kreatif, profesional, dan berdaya saing, serta mampu memperkenalkan kekayaan budaya Indonesia kepada generasi muda dan masyarakat luas.
                             </p>
                         </div>
                     </div>
@@ -50,20 +50,28 @@
                             <ul class="space-y-3 text-base text-[#4F4F4F] leading-relaxed">
                                 <li class="flex items-start gap-3">
                                     <span class="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#FEDA60] mt-2"></span>
-                                    <span>Menghadirkan kurikulum tari tradisional yang sistematis dan adaptif.</span>
+                                    <span>Melestarikan dan mengembangkan seni tari tradisional, khususnya budaya Kalimantan Timur.</span>
                                 </li>
                                 <li class="flex items-start gap-3">
                                     <span class="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#FEDA60] mt-2"></span>
-                                    <span>Memberikan fasilitas latihan dan panggung yang layak bagi penari.</span>
+                                    <span>Menyediakan ruang belajar yang profesional, inklusif, dan berkarakter bagi para penari untuk mengembangkan bakat dan kreativitas.</span>
                                 </li>
                                 <li class="flex items-start gap-3">
                                     <span class="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#FEDA60] mt-2"></span>
-                                    <span>Menjalin kolaborasi dengan komunitas budaya dan institusi pendidikan.</span>
+                                    <span>Menghadirkan pertunjukan tari yang berkualitas sebagai bentuk edukasi, apresiasi, dan promosi budaya Indonesia.</span>
                                 </li>
                                 <li class="flex items-start gap-3">
                                     <span class="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#FEDA60] mt-2"></span>
-                                    <span>Mendorong penari untuk aktif berkarya dan berkompetisi secara sehat.</span>
+                                    <span>Mendorong kolaborasi antar komunitas seni untuk memperkaya karya dan memperluas jaringan pelestarian budaya.</span>
                                 </li>
+                                {{-- <li class="flex items-start gap-3">
+                                    <span class="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#FEDA60] mt-2"></span>
+                                    <span>Membentuk generasi muda yang berwawasan budaya, disiplin, kreatif, dan memiliki kecintaan terhadap seni tari.</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#FEDA60] mt-2"></span>
+                                    <span>Menjadi jembatan antara tradisi dan modernitas melalui karya tari yang inovatif tanpa meninggalkan nilai budaya.</span>
+                                </li> --}}
                             </ul>
                         </div>
                     </div>
