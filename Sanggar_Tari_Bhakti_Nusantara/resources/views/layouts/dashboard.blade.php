@@ -14,6 +14,28 @@
     <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.12.2/dist/ffmpeg.min.js"></script>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+    <style>
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-fade-in-down {
+            animation: fadeInDown 0.3s ease-out;
+        }
+        
+        .fade-out {
+            transition: opacity 0.5s ease-out;
+            opacity: 0;
+        }
+    </style>
 </head>
 <body class="bg-gradient-to-br from-[#F5F5F5] via-[#FFF9E5] to-[#FFF6D5] font-sans">
     {{ $slot ?? '' }}

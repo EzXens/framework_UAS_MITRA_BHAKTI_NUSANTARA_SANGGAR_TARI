@@ -169,12 +169,12 @@
             <!-- Hero Content -->
             <div class="space-y-6 rounded-3xl p-2">
                 <span class="inline-flex px-4 py-1 rounded-full bg-[#FEDA60]/20 border border-[#FEDA60]/40 text-[#FEDA60] text-xs font-semibold uppercase tracking-[0.2em]">
-                    Sanggar Tari
+                    {{ $homepageTexts->get('hero_badge')?->content ?? 'Sanggar Tari' }}
                 </span>
 
                 <h1 class="text-3xl lg:text-5xl font-bold title-on-glass leading-tight">
-                    Bhakti Nusantara<br class="hidden lg:block">
-                    <span class="text-[#FFFFFF]">Ruang Ekspresi Tari Tradisional Indonesia</span>
+                    {{ $homepageTexts->get('hero_title')?->content ?? 'Bhakti Nusantara' }}<br class="hidden lg:block">
+                    <span class="text-[#FFFFFF]">{{ $homepageTexts->get('hero_subtitle')?->content ?? 'Ruang Ekspresi Tari Tradisional Indonesia' }}</span>
                 </h1>
 
                 <p class="text-sm lg:text-base text-on-glass max-w-xl leading-relaxed">
@@ -182,8 +182,8 @@
                 </p>
 
                 <div class="flex flex-col sm:flex-row gap-4">
-                    <a href="{{ route('classes.public') }}" class="px-6 py-3 rounded-full bg-gradient-to-r from-[#FEDA60] to-[#F5B347] text-[#2E2E2E] text-sm font-bold shadow-lg shadow-[#FEDA60]/40 hover:shadow-xl hover:scale-[1.05] transition-all">Daftar Kelas Sekarang</a>
-                    <a href="{{ route('products') }}" class="px-6 py-3 rounded-full text-on-glass border-2 border-[#FEDA60] text-sm font-semibold hover:bg-[#FEDA60]/10 transition-all">Lihat Produk</a>
+                    <a href="{{ route('classes.public') }}" class="px-6 py-3 rounded-full bg-gradient-to-r from-[#FEDA60] to-[#F5B347] text-[#2E2E2E] text-sm font-bold shadow-lg shadow-[#FEDA60]/40 hover:shadow-xl hover:scale-[1.05] transition-all">{{ $homepageTexts->get('hero_btn_primary')?->content ?? 'Daftar Kelas Sekarang' }}</a>
+                    <a href="{{ route('products') }}" class="px-6 py-3 rounded-full text-on-glass border-2 border-[#FEDA60] text-sm font-semibold hover:bg-[#FEDA60]/10 transition-all">{{ $homepageTexts->get('hero_btn_secondary')?->content ?? 'Lihat Produk' }}</a>
                 </div>
             </div>
 
@@ -235,9 +235,9 @@
             <div class="bg-white/60 backdrop-blur-xl text-center rounded-2xl mb-6 animate-fade-up">
                 <div class="border border-[#F5D577]/40 rounded-[32px] shadow-lg p-10">
                     @include('components.ui.section-heading', [
-                        'subtitle' => 'Tentang Sanggar',
-                        'title' => 'Seni Tari Sebagai Media Belajar Nilai Hidup',
-                        'description' => 'Kami percaya bahwa gerakan tari menyimpan filosofi hidup. Program Bhakti Nusantara dirancang untuk mengasah teknik, disiplin, dan karakter.',
+                        'subtitle' => $homepageTexts->get('about_subtitle')?->content ?? 'Tentang Sanggar',
+                        'title' => $homepageTexts->get('about_title')?->content ?? 'Seni Tari Sebagai Media Belajar Nilai Hidup',
+                        'description' => $homepageTexts->get('about_description')?->content ?? 'Kami percaya bahwa gerakan tari menyimpan filosofi hidup. Program Bhakti Nusantara dirancang untuk mengasah teknik, disiplin, dan karakter.',
                         'dark' => false,
                         'descWhite' => false
                     ])
@@ -249,7 +249,7 @@
                 @forelse($homepageIcons as $icon)
                     <div class="rounded-2xl bg-white/60 backdrop-blur-xl border border-[#E6D8A1]/40 p-6 space-y-4 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-up" style="animation-delay:{{ ($loop->index * 100 + 100) }}ms">
                         <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-[#FEDA60] to-[#F5B347] flex items-center justify-center shadow-inner">
-                            <i class="{{ $icon->icon_class }}"></i>
+                            {!! $icon->icon_class !!}
                         </div>
                         <h3 class="text-lg font-semibold text-gray-800">{{ $icon->title }}</h3>
                         <p class="text-sm text-gray-600">{{ $icon->description ?? 'Fitur unggulan kami untuk memberikan pengalaman terbaik.' }}</p>
@@ -355,9 +355,9 @@
         <div class="relative max-w-7xl mx-auto px-6 space-y-10 w-full">
             <div class="rounded-3xl glass-dark border-gold-soft p-8 shadow-[0_0_20px_rgba(254,218,96,0.15)] animate-fade-up">
                 @include('components.ui.section-heading', [
-                    'subtitle' => 'Jadwal Mingguan',
-                    'title' => 'Latihan Terstruktur Menyesuaikan Usia dan Level',
-                    'description' => 'Setiap peserta mendapatkan kelas sesuai kelompok usia dan kemampuan dengan kuota terbatas agar pelatih dapat fokus pada perkembangan individu.',
+                    'subtitle' => $homepageTexts->get('schedule_subtitle')?->content ?? 'Jadwal Mingguan',
+                    'title' => $homepageTexts->get('schedule_title')?->content ?? 'Latihan Terstruktur Menyesuaikan Usia dan Level',
+                    'description' => $homepageTexts->get('schedule_description')?->content ?? 'Setiap peserta mendapatkan kelas sesuai kelompok usia dan kemampuan dengan kuota terbatas agar pelatih dapat fokus pada perkembangan individu.',
                     'dark' => true,
                     'descWhite' => true
                 ])
@@ -386,9 +386,9 @@
         <div class="max-w-7xl mx-auto px-6 space-y-12 ">
             <div class="bg-white/60 backdrop-blur-xl text-center rounded-2xl p-8 shadow-[0_0_20px_rgba(254,218,96,0.15)]">
                 @include('components.ui.section-heading', [
-                    'subtitle' => 'Galeri Kegiatan',
-                    'title' => 'Momen Terbaik di Panggung dan Studio',
-                    'description' => 'Dokumentasi perjalanan Bhakti Nusantara dalam berbagai festival, pentas sekolah, hingga kolaborasi lintas budaya.',
+                    'subtitle' => $homepageTexts->get('gallery_subtitle')?->content ?? 'Galeri Kegiatan',
+                    'title' => $homepageTexts->get('gallery_title')?->content ?? 'Momen Terbaik di Panggung dan Studio',
+                    'description' => $homepageTexts->get('gallery_description')?->content ?? 'Dokumentasi perjalanan Bhakti Nusantara dalam berbagai festival, pentas sekolah, hingga kolaborasi lintas budaya.',
                     'dark' => false,
                     'descWhite' => false
                 ])
@@ -448,9 +448,9 @@
     <section id="testimoni" class="bg-white py-16 lg:py-15">
         <div class="max-w-7xl mx-auto px-8 space-y-10">
         @include('components.ui.section-heading', [
-            'subtitle' => 'Testimoni',
-            'title' => 'Cerita Para Penari dan Orang Tua',
-            'description' => 'Pengalaman nyata belajar di Bhakti Nusantara yang membawa perubahan positif pada percaya diri, disiplin, dan apresiasi budaya.',
+            'subtitle' => $homepageTexts->get('testimonial_subtitle')?->content ?? 'Testimoni',
+            'title' => $homepageTexts->get('testimonial_title')?->content ?? 'Cerita Para Penari dan Orang Tua',
+            'description' => $homepageTexts->get('testimonial_description')?->content ?? 'Pengalaman nyata belajar di Bhakti Nusantara yang membawa perubahan positif pada percaya diri, disiplin, dan apresiasi budaya.',
             'dark' => true,
             'descWhite' => true,
         ])
@@ -480,14 +480,14 @@
             <div class="absolute bottom-0 left-0 w-64 h-64 bg-[#F5B347]/10 rounded-full blur-3xl"></div>
 
             <div class="relative space-y-3  flex-1">
-                <h2 class="text-2xl lg:text-4xl font-bold title-on-glass">Siap Bergabung dengan Bhakti Nusantara?</h2>
-                <p class="text-sm lg:text-base text-on-glass leading-relaxed">Daftarkan diri Anda untuk sesi trial gratis dan rasakan atmosfer latihan di studio kami. Tim kami siap membantu menentukan kelas terbaik.</p>
+                <h2 class="text-2xl lg:text-4xl font-bold title-on-glass">{{ $homepageTexts->get('cta_title')?->content ?? 'Siap Bergabung dengan Bhakti Nusantara?' }}</h2>
+                <p class="text-sm lg:text-base text-on-glass leading-relaxed">{{ $homepageTexts->get('cta_description')?->content ?? 'Daftarkan diri Anda untuk sesi trial gratis dan rasakan atmosfer latihan di studio kami. Tim kami siap membantu menentukan kelas terbaik.' }}</p>
             </div>
-            <a href="https://wa.me/6281234567890?text=Halo,%20saya%20tertarik%20untuk%20booking%20trial%20di%20Sanggar%20Bhakti%20Nusantara" target="_blank" class="relative px-8 py-4 rounded-full bg-gradient-to-r from-[#FEDA60] to-[#F5B347] text-[#2E2E2E] text-sm font-bold shadow-lg hover:shadow-xl hover:scale-[1.05] transition-all whitespace-nowrap flex items-center gap-2">
+            <a href="https://wa.me/{{ $homepageTexts->get('cta_whatsapp')?->content ?? '6281234567890' }}?text=Halo,%20saya%20tertarik%20untuk%20booking%20trial%20di%20Sanggar%20Bhakti%20Nusantara" target="_blank" class="relative px-8 py-4 rounded-full bg-gradient-to-r from-[#FEDA60] to-[#F5B347] text-[#2E2E2E] text-sm font-bold shadow-lg hover:shadow-xl hover:scale-[1.05] transition-all whitespace-nowrap flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-5 h-5">
                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
                 </svg>
-                Booking Trial via WhatsApp
+                {{ $homepageTexts->get('cta_button')?->content ?? 'Booking Trial via WhatsApp' }}
             </a>
         </div>
         </div>

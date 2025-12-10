@@ -10,24 +10,42 @@
             <div class="max-w-6xl mx-auto">
                 {{-- Flash messages --}}
                 @if(session('success'))
-                    <div class="mb-4 p-4 rounded-md bg-green-50 border border-green-200 text-green-800">
-                        {{ session('success') }}
+                    <div class="mb-6 p-4 rounded-xl bg-green-50 border-l-4 border-green-500 shadow-lg animate-fade-in-down">
+                        <div class="flex items-center gap-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <p class="text-green-800 font-medium">{{ session('success') }}</p>
+                        </div>
                     </div>
                 @endif
 
                 @if(session('error'))
-                    <div class="mb-4 p-4 rounded-md bg-red-50 border border-red-200 text-red-800">
-                        {{ session('error') }}
+                    <div class="mb-6 p-4 rounded-xl bg-red-50 border-l-4 border-red-500 shadow-lg animate-fade-in-down">
+                        <div class="flex items-center gap-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <p class="text-red-800 font-medium">{{ session('error') }}</p>
+                        </div>
                     </div>
                 @endif
 
                 @if($errors->any())
-                    <div class="mb-4 p-4 rounded-md bg-red-50 border border-red-200 text-red-800">
-                        <ul class="list-disc pl-5">
-                            @foreach($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
+                    <div class="mb-6 p-4 rounded-xl bg-red-50 border-l-4 border-red-500 shadow-lg animate-fade-in-down">
+                        <div class="flex items-start gap-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <div class="flex-1">
+                                <p class="text-red-800 font-semibold mb-2">Terjadi kesalahan:</p>
+                                <ul class="list-disc list-inside text-red-700 space-y-1">
+                                    @foreach($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 @endif
             <!-- dashboard section -->
@@ -288,86 +306,47 @@
             <section id="homepage-texts-section" class="dashboard-section hidden">
                 <div class="mb-8">
                     <h2 class="text-3xl font-bold text-[#2E2E2E]">Teks Homepage</h2>
-                    <p class="text-[#4F4F4F] mt-2">Kelola konten teks di halaman utama seperti Hero Title, Hero Subtitle, Tentang Kami, dll.</p>
+                    <p class="text-[#4F4F4F] mt-2">Edit konten teks di halaman utama. Semua section sudah disiapkan, tinggal edit kontennya.</p>
                 </div>
 
                 <div class="rounded-2xl bg-white border border-[#FEDA60]/30 p-6 shadow-lg">
-                    <!-- Daftar Teks yang Ada -->
-                    <div class="mb-8">
-                        <h3 class="text-xl font-bold text-[#2E2E2E] mb-4">Daftar Teks</h3>
-                        <div class="space-y-3">
-                            @forelse($homepageTexts as $text)
-                                <div class="flex items-start justify-between p-4 rounded-xl bg-[#FFF6D5] border border-[#FEDA60]/20 hover:border-[#FEDA60]/50 transition-all">
-                                    <div class="flex-1">
-                                        <p class="font-semibold text-[#2E2E2E]">{{ $text->label }}</p>
-                                        <p class="text-xs text-[#8C6A08] mb-2">Key: {{ $text->key }}</p>
-                                        <p class="text-sm text-[#4F4F4F] line-clamp-2">{{ $text->content }}</p>
+                    <!-- Daftar Teks yang Ada (Edit Only) -->
+                    <div class="space-y-4">
+                        @forelse($homepageTexts as $text)
+                            <div class="border border-[#FEDA60]/30 rounded-xl p-5 hover:border-[#FEDA60]/60 transition-all bg-white">
+                                <form action="{{ route('admin.homepage.texts.update', $text->id) }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    
+                                    <div class="space-y-3">
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <p class="font-bold text-[#2E2E2E]">{{ $text->label }}</p>
+                                                <p class="text-xs text-[#8C6A08]">Key: {{ $text->key }}</p>
+                                            </div>
+                                            <button type="submit" class="px-5 py-2 bg-gradient-to-r from-[#FEDA60] to-[#F5B347] text-[#2E2E2E] rounded-lg text-sm font-bold hover:shadow-lg transition-all">
+                                                Simpan
+                                            </button>
+                                        </div>
+                                        
+                                        <div>
+                                            <label class="block text-sm font-semibold text-[#4F4F4F] mb-2">Konten</label>
+                                            @if($text->key === 'cta_whatsapp')
+                                                <input type="text" name="content" value="{{ $text->content }}" class="w-full border border-[#FEDA60]/30 rounded-lg px-4 py-2 text-[#2E2E2E] focus:ring-2 focus:ring-[#FEDA60] focus:border-transparent" placeholder="628123456789" required>
+                                                <p class="text-xs text-[#8C6A08] mt-1">Format: 628xxxxxxxxxx (tanpa +, tanpa spasi)</p>
+                                            @else
+                                                <textarea name="content" rows="3" class="w-full border border-[#FEDA60]/30 rounded-lg px-4 py-2 text-[#2E2E2E] focus:ring-2 focus:ring-[#FEDA60] focus:border-transparent" placeholder="Masukkan konten teks..." required>{{ $text->content }}</textarea>
+                                            @endif
+                                        </div>
                                     </div>
-                                    <div class="ml-4 flex items-center gap-2">
-                                        <button type="button" onclick="editText({{ $text->id }}, '{{ addslashes($text->label) }}', '{{ addslashes($text->content) }}')" class="px-3 py-2 bg-[#FEDA60] text-white rounded-lg text-sm hover:bg-[#E5C247]">Edit</button>
-                                        <form action="{{ route('admin.homepage.texts.destroy', $text->id) }}" method="POST" class="inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" onclick="return confirm('Yakin ingin menghapus?')" class="px-3 py-2 bg-red-500 text-white rounded-lg text-sm hover:bg-red-600">Hapus</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            @empty
-                                <p class="text-center text-[#4F4F4F] py-6">Belum ada teks yang ditambahkan</p>
-                            @endforelse
-                        </div>
-                    </div>
-
-                    <!-- Expected static text keys (declared by the homepage template) -->
-                    <div class="mb-6">
-                        <h4 class="text-md font-semibold text-[#2E2E2E] mb-3">Teks Statis yang Diharapkan</h4>
-                        <div class="grid gap-2">
-                            @foreach($expectedTextItems as $item)
-                                @php($existing = $homepageTexts->firstWhere('key', $item['key']))
-                                <div class="flex items-center justify-between p-3 rounded-md bg-[#FFF8E6] border border-[#FEDA60]/15">
-                                    <div>
-                                        <p class="font-medium text-sm text-[#2E2E2E]">{{ $item['label'] }}</p>
-                                        <p class="text-xs text-[#8C6A08]">Key: {{ $item['key'] }} @if($existing) • <span class="text-green-600">Terdaftar</span> @else • <span class="text-red-600">Belum</span> @endif</p>
-                                    </div>
-                                    <div class="flex items-center gap-2">
-                                        @if($existing)
-                                            <button type="button" onclick="editText({{ $existing->id }}, {{ json_encode($existing->label) }}, {{ json_encode($existing->content) }})" class="px-3 py-2 bg-[#FEDA60] text-white rounded-lg text-sm">Edit</button>
-                                        @else
-                                            <button type="button" onclick="showCreateText({{ json_encode($item['key']) }}, {{ json_encode($item['label']) }})" class="px-3 py-2 bg-green-500 text-white rounded-lg text-sm">Buat</button>
-                                        @endif
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-
-                    <!-- Form Edit/Tambah -->
-                    <div class="border-t border-[#FEDA60]/20 pt-6">
-                        <h3 class="text-lg font-bold text-[#2E2E2E] mb-4" id="form-title">Tambah Teks Baru</h3>
-                        <form id="text-form" action="{{ route('admin.homepage.texts.store') }}" method="POST">
-                            @csrf
-                            <input type="hidden" id="text-id" name="id">
-                            <input type="hidden" id="form-method" name="_method" value="POST">
-                            
-                            <div class="grid gap-4">
-                                <div>
-                                    <label class="block text-sm font-semibold text-[#2E2E2E] mb-2">Key (e.g., hero_title, hero_subtitle, tentang_kami)</label>
-                                    <input type="text" id="text-key" name="key" class="w-full border border-[#FEDA60]/30 rounded-lg px-4 py-2 text-[#2E2E2E]" placeholder="hero_title" required>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-semibold text-[#2E2E2E] mb-2">Label (Nama Tampilan)</label>
-                                    <input type="text" id="text-label" name="label" class="w-full border border-[#FEDA60]/30 rounded-lg px-4 py-2 text-[#2E2E2E]" placeholder="Judul Hero" required>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-semibold text-[#2E2E2E] mb-2">Konten</label>
-                                    <textarea id="text-content" name="content" class="w-full border border-[#FEDA60]/30 rounded-lg px-4 py-2 text-[#2E2E2E]" rows="5" placeholder="Masukkan konten teks..." required></textarea>
-                                </div>
-                                <div class="flex gap-2">
-                                    <button type="submit" class="px-6 py-2 bg-[#FEDA60] text-white rounded-lg font-semibold hover:bg-[#E5C247]">Simpan</button>
-                                    <button type="button" onclick="resetForm()" class="px-6 py-2 bg-gray-400 text-white rounded-lg font-semibold hover:bg-gray-500">Reset</button>
-                                </div>
+                                </form>
                             </div>
-                        </form>
+                        @empty
+                            <div class="text-center py-12">
+                                <p class="text-[#4F4F4F] mb-4">Belum ada teks yang ditambahkan</p>
+                                <p class="text-sm text-[#8C6A08]">Jalankan seeder: <code class="bg-[#FFF6D5] px-2 py-1 rounded">php artisan db:seed --class=HomepageTextSectionSeeder</code></p>
+                            </div>
+                        @endforelse
                     </div>
                 </div>
             </section>
@@ -490,15 +469,21 @@
                             </div>
                             @forelse($homepageIcons as $icon)
                                 <div class="flex items-center justify-between p-4 rounded-xl bg-[#FFF6D5] border border-[#FEDA60]/20 hover:border-[#FEDA60]/50 transition-all">
-                                    <div class="flex-1">
-                                        <p class="font-semibold text-[#2E2E2E]">{{ $icon->title }}</p>
-                                        <p class="text-xs text-[#8C6A08] mb-1">Icon Class: {{ $icon->icon_class }}</p>
-                                        @if($icon->description)
-                                            <p class="text-sm text-[#4F4F4F]">{{ $icon->description }}</p>
-                                        @endif
-                                        @if($icon->link)
-                                            <p class="text-xs text-[#8C6A08]">Link: {{ $icon->link }}</p>
-                                        @endif
+                                    <div class="flex items-center gap-4 flex-1">
+                                        <!-- Icon Preview -->
+                                        <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-[#FEDA60] to-[#F5B347] flex items-center justify-center flex-shrink-0">
+                                            {!! $icon->icon_class !!}
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <p class="font-semibold text-[#2E2E2E]">{{ $icon->title }}</p>
+                                            @if($icon->description)
+                                                <p class="text-sm text-[#4F4F4F] truncate">{{ $icon->description }}</p>
+                                            @endif
+                                            @if($icon->link)
+                                                <p class="text-xs text-[#8C6A08]">Link: {{ $icon->link }}</p>
+                                            @endif
+                                            <p class="text-xs text-gray-400 mt-1">Urutan: {{ $icon->order }} | Status: {{ $icon->is_active ? 'Aktif' : 'Tidak Aktif' }}</p>
+                                        </div>
                                     </div>
                                     <div class="ml-4 flex items-center gap-2">
                                         <button type="button" onclick="editIcon({{ $icon->id }}, '{{ addslashes($icon->title) }}', '{{ addslashes($icon->icon_class) }}', '{{ addslashes($icon->description ?? '') }}', '{{ $icon->link }}')" class="px-3 py-2 bg-[#FEDA60] text-white rounded-lg text-sm hover:bg-[#E5C247]">Edit</button>
@@ -531,8 +516,9 @@
                                         <input type="text" id="icon-title" name="title" class="w-full border border-[#FEDA60]/30 rounded-lg px-4 py-2 text-[#2E2E2E]" placeholder="Profesional" required>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-[#2E2E2E] mb-2">Icon Class (Fontawesome, Bootstrap Icon, dll)</label>
-                                        <input type="text" id="icon-class" name="icon_class" class="w-full border border-[#FEDA60]/30 rounded-lg px-4 py-2 text-[#2E2E2E]" placeholder="fa fa-star" required>
+                                        <label class="block text-sm font-semibold text-[#2E2E2E] mb-2">Icon (SVG Code atau Icon Class)</label>
+                                        <textarea id="icon-class" name="icon_class" class="w-full border border-[#FEDA60]/30 rounded-lg px-4 py-2 text-[#2E2E2E] font-mono text-xs" rows="4" placeholder='Paste SVG: <svg xmlns="..." class="w-7 h-7">...</svg> atau Icon Class: fa fa-star' required></textarea>
+                                        <p class="text-xs text-[#8C6A08] mt-1">💡 Tip: Untuk SVG, copy dari <a href="https://heroicons.com" target="_blank" class="underline">Heroicons.com</a> dan tambahkan class="w-7 h-7 text-[#2E2E2E]"</p>
                                     </div>
                                     <div>
                                         <label class="block text-sm font-semibold text-[#2E2E2E] mb-2">Deskripsi (Opsional)</label>
@@ -854,39 +840,49 @@ function closeRejectConfirm() {
         });
     }
 
-    // Handle initial hash navigation (any section)
-    if (window.location.hash) {
-        const initial = window.location.hash.replace('#', '');
-        try { if (initial) showSection(initial); } catch (e) { /* ignore */ }
-    }
+    // Handle session-based section to show (e.g., after form submission redirect)
+    @if(session('show_section'))
+        showSection('{{ session("show_section") }}');
+        // Update URL hash without reloading
+        if (window.location.hash !== '#{{ session("show_section") }}') {
+            history.replaceState(null, null, '#{{ session("show_section") }}');
+        }
+    @else
+        // Handle initial hash navigation (any section)
+        if (window.location.hash) {
+            const initial = window.location.hash.replace('#', '');
+            try { if (initial) showSection(initial); } catch (e) { /* ignore */ }
+        }
+    @endif
 
     // Listen for hash changes (when user clicks anchors that only update the hash)
     window.addEventListener('hashchange', function() {
         const h = window.location.hash.replace('#', '');
         try { if (h) showSection(h); } catch (e) { /* ignore */ }
     });
+    
+    // Auto-hide success/error messages after 5 seconds
+    setTimeout(function() {
+        const alerts = document.querySelectorAll('.bg-green-50, .bg-red-50');
+        alerts.forEach(function(alert) {
+            alert.classList.add('fade-out');
+            setTimeout(function() {
+                alert.remove();
+            }, 500);
+        });
+    }, 5000);
+    
+    // Make alerts dismissible by click
+    document.querySelectorAll('.bg-green-50, .bg-red-50').forEach(function(alert) {
+        alert.style.cursor = 'pointer';
+        alert.addEventListener('click', function() {
+            this.classList.add('fade-out');
+            setTimeout(() => this.remove(), 500);
+        });
+    });
 
     // ======================= TEXT SECTION FUNCTIONS =======================
-    function editText(id, label, content) {
-        document.getElementById('text-id').value = id;
-        document.getElementById('text-label').value = label;
-        document.getElementById('text-content').value = content;
-        document.getElementById('text-key').disabled = true;
-        document.getElementById('form-title').textContent = 'Edit Teks';
-        // set action ke update endpoint
-        document.getElementById('text-form').action = `{{ url('admin/homepage/texts') }}/${id}`;
-        document.getElementById('form-method').value = 'PUT';
-        window.scrollTo({ top: document.getElementById('text-form').offsetTop - 100, behavior: 'smooth' });
-    }
-
-    function resetForm() {
-        document.getElementById('text-form').reset();
-        document.getElementById('text-id').value = '';
-        document.getElementById('text-key').disabled = false;
-        document.getElementById('form-title').textContent = 'Tambah Teks Baru';
-        document.getElementById('text-form').action = '{{ route("admin.homepage.texts.store") }}';
-        document.getElementById('form-method').value = 'POST';
-    }
+    // No longer needed - inline edit forms in the view
 
     // ======================= CAROUSEL SECTION FUNCTIONS =======================
     function editCarousel(id, title, link, order) {
@@ -996,19 +992,7 @@ function closeRejectConfirm() {
         window.scrollTo({ top: document.getElementById('section-form-wrapper').offsetTop - 100, behavior: 'smooth' });
     }
 
-    // Prefill create form for expected text keys
-    function showCreateText(key, label) {
-        document.getElementById('text-form').reset();
-        document.getElementById('text-id').value = '';
-        document.getElementById('text-key').value = key;
-        document.getElementById('text-label').value = label;
-        document.getElementById('text-content').value = '';
-        document.getElementById('text-key').disabled = false;
-        document.getElementById('form-title').textContent = 'Tambah Teks Baru';
-        document.getElementById('text-form').action = '{{ route("admin.homepage.texts.store") }}';
-        document.getElementById('form-method').value = 'POST';
-        window.scrollTo({ top: document.getElementById('text-form').offsetTop - 100, behavior: 'smooth' });
-    }
+    // Text section functions removed - now using inline forms
 
     // Prefill create form for expected sections (set title to expected label)
     function showCreateSection(label) {

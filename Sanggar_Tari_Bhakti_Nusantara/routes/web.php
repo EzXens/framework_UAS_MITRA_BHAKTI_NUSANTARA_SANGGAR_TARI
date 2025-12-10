@@ -10,9 +10,10 @@ use App\Http\Controllers\DispensationController;
 use App\Http\Controllers\AdminGalleryController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AboutController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::view('/tentang', 'pages.about')->name('about');
+Route::get('/tentang', [AboutController::class, 'index'])->name('about');
 Route::get('/produk', [ProductController::class, 'publicIndex'])->name('products');
 Route::get('/galeri', [GalleryController::class, 'index'])->name('gallery');
 Route::get('/kontak', [ContactController::class, 'index'])->name('contact');
@@ -44,9 +45,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     
     // Homepage Management Routes
     Route::prefix('admin/homepage')->name('admin.homepage.')->group(function () {
-        Route::post('/texts', [App\Http\Controllers\Admin\HomepageTextSectionController::class, 'store'])->name('texts.store');
+        // Text sections - Edit only (no create/delete)
         Route::put('/texts/{id}', [App\Http\Controllers\Admin\HomepageTextSectionController::class, 'update'])->name('texts.update');
-        Route::delete('/texts/{id}', [App\Http\Controllers\Admin\HomepageTextSectionController::class, 'destroy'])->name('texts.destroy');
         
         Route::post('/carousel', [App\Http\Controllers\Admin\HomepageCarouselController::class, 'store'])->name('carousel.store');
         Route::put('/carousel/{id}', [App\Http\Controllers\Admin\HomepageCarouselController::class, 'update'])->name('carousel.update');
@@ -95,6 +95,31 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::put('/music/{music}', [AdminGalleryController::class, 'musicUpdate'])->name('music.update');
         Route::delete('/music/{music}', [AdminGalleryController::class, 'musicDestroy'])->name('music.destroy');
     });
+    
+    // Settings Routes
+    Route::prefix('admin/settings')->name('admin.settings.')->group(function () {
+        // Hero Section
+        Route::get('/hero', [App\Http\Controllers\Admin\SettingsController::class, 'hero'])->name('hero');
+        Route::post('/hero', [App\Http\Controllers\Admin\SettingsController::class, 'updateHero'])->name('hero.update');
+        
+        // Beranda
+        Route::get('/beranda', [App\Http\Controllers\Admin\SettingsController::class, 'beranda'])->name('beranda');
+        Route::post('/beranda', [App\Http\Controllers\Admin\SettingsController::class, 'updateBeranda'])->name('beranda.update');
+        
+        // Tentang
+        Route::get('/tentang', [App\Http\Controllers\Admin\SettingsController::class, 'tentang'])->name('tentang');
+        Route::post('/tentang', [App\Http\Controllers\Admin\SettingsController::class, 'updateTentang'])->name('tentang.update');
+    });
+    
+    // Teachers Resource Routes
+    Route::resource('admin/teachers', App\Http\Controllers\Admin\TeacherController::class)->names([
+        'index' => 'admin.teachers.index',
+        'create' => 'admin.teachers.create',
+        'store' => 'admin.teachers.store',
+        'edit' => 'admin.teachers.edit',
+        'update' => 'admin.teachers.update',
+        'destroy' => 'admin.teachers.destroy',
+    ]);
 });
 
 Route::middleware(['auth'])->group(function () {

@@ -12,10 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('dispensations', function (Blueprint $table) {
-    $table->integer('letter_number')->nullable();
-    $table->string('letter_code')->nullable(); // BN.11 atau BN.06
-});
-
+            if (!Schema::hasColumn('dispensations', 'letter_number')) {
+                $table->integer('letter_number')->nullable()->after('id');
+            }
+            if (!Schema::hasColumn('dispensations', 'letter_code')) {
+                $table->string('letter_code')->nullable()->after('letter_number');
+            }
+        });
     }
 
     /**
@@ -24,7 +27,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('dispensations', function (Blueprint $table) {
-            //
+            $table->dropColumn(['letter_number', 'letter_code']);
         });
     }
 };

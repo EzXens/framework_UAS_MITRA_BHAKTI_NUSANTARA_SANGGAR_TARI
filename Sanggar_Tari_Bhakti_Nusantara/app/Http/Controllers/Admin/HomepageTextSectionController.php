@@ -8,36 +8,21 @@ use Illuminate\Http\Request;
 
 class HomepageTextSectionController extends Controller
 {
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'key' => 'required|unique:homepage_text_sections|string',
-            'label' => 'required|string',
-            'content' => 'required|string',
-        ]);
-
-        HomepageTextSection::create($validated);
-
-        return redirect()->route('admin.dashboard')->with('show_section', 'homepage-texts');
-    }
-
+    /**
+     * Update existing text section (Edit only, no create/delete)
+     */
     public function update(Request $request, $id)
     {
         $text = HomepageTextSection::findOrFail($id);
         
         $validated = $request->validate([
-            'label' => 'required|string',
             'content' => 'required|string',
         ]);
 
         $text->update($validated);
 
-        return redirect()->route('admin.dashboard')->with('show_section', 'homepage-texts');
-    }
-
-    public function destroy($id)
-    {
-        HomepageTextSection::findOrFail($id)->delete();
-        return redirect()->route('admin.dashboard')->with('show_section', 'homepage-texts');
+        return redirect()->route('admin.dashboard', ['#' => 'homepage-texts'])
+            ->with('success', 'Teks homepage berhasil diperbarui!')
+            ->with('show_section', 'homepage-texts');
     }
 }

@@ -15,6 +15,7 @@ class HomepageCarouselController extends Controller
             'title' => 'required|string',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'link' => 'nullable|string',
+            'order' => 'nullable|integer',
         ]);
 
         if ($request->hasFile('image')) {
@@ -23,7 +24,9 @@ class HomepageCarouselController extends Controller
 
         HomepageCarousel::create($validated);
 
-        return redirect()->route('admin.dashboard')->with('show_section', 'homepage-carousel');
+        return redirect()->route('admin.dashboard', ['#' => 'homepage-carousel'])
+            ->with('success', 'Carousel berhasil ditambahkan!')
+            ->with('show_section', 'homepage-carousel');
     }
 
     public function update(Request $request, $id)
@@ -34,6 +37,7 @@ class HomepageCarouselController extends Controller
             'title' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'link' => 'nullable|string',
+            'order' => 'nullable|integer',
         ]);
 
         if ($request->hasFile('image')) {
@@ -45,7 +49,9 @@ class HomepageCarouselController extends Controller
 
         $carousel->update($validated);
 
-        return redirect()->route('admin.dashboard')->with('show_section', 'homepage-carousel');
+        return redirect()->route('admin.dashboard', ['#' => 'homepage-carousel'])
+            ->with('success', 'Carousel berhasil diperbarui!')
+            ->with('show_section', 'homepage-carousel');
     }
 
     public function destroy($id)
@@ -55,6 +61,9 @@ class HomepageCarouselController extends Controller
             Storage::disk('public')->delete($carousel->image);
         }
         $carousel->delete();
-        return redirect()->route('admin.dashboard')->with('show_section', 'homepage-carousel');
+        
+        return redirect()->route('admin.dashboard', ['#' => 'homepage-carousel'])
+            ->with('success', 'Carousel berhasil dihapus!')
+            ->with('show_section', 'homepage-carousel');
     }
 }
