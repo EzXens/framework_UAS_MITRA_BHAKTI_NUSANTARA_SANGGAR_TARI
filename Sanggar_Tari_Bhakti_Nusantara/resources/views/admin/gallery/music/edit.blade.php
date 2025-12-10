@@ -58,8 +58,8 @@
                 </audio>
                 <p class="text-sm text-gray-600 mb-4">File: {{ basename($music->audio_file) }}</p>
                 <label class="block text-sm font-semibold text-[#2E2E2E] mb-2">Ganti File Audio (Opsional)</label>
-                <input type="file" name="audio_file" accept="audio/*" class="w-full px-4 py-3 rounded-xl border @error('audio_file') border-red-500 @else border-gray-300 @enderror focus:border-[#FEDA60] text-gray-900 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#FEDA60] file:text-white hover:file:bg-[#F5B347]">
-                <p class="text-xs text-gray-500 mt-1">Format: MP3, WAV, OGG. Maksimal 10MB. Kosongkan jika tidak ingin mengubah file audio.</p>
+                <p class="text-xs text-gray-500 mb-4">Upload file audio baru dan gunakan tool di bawah untuk memotong bagian yang diinginkan. Kosongkan jika tidak ingin mengubah file audio.</p>
+                @include('components.audio-cutter', ['existingAudio' => $music->audio_file])
                 @error('audio_file')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror

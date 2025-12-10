@@ -150,6 +150,12 @@
                                 Login disini
                             </a>
                         </p>
+                        <p class="text-sm text-[#4F4F4F] mt-2">
+                            <a href="{{ route('password.forgot') }}"
+                                class="font-semibold text-[#8C6A08] hover:text-[#FEDA60] transition-colors">
+                                Lupa Password?
+                            </a>
+                        </p>
                     </div>
                 </div>
             </div>

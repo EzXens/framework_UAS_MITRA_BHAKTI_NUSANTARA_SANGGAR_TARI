@@ -106,12 +106,18 @@
                     </div>
 
 
-                        <div class="flex items-center">
-                            <input id="remember" name="remember" type="checkbox"
-                                class="h-4 w-4 text-[#FEDA60] focus:ring-[#FEDA60] border-[#E2B136]/30 rounded">
-                            <label for="remember" class="ml-2 block text-sm text-[#4F4F4F]">
-                                Ingat saya
-                            </label>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <input id="remember" name="remember" type="checkbox"
+                                    class="h-4 w-4 text-[#FEDA60] focus:ring-[#FEDA60] border-[#E2B136]/30 rounded">
+                                <label for="remember" class="ml-2 block text-sm text-[#4F4F4F]">
+                                    Ingat saya
+                                </label>
+                            </div>
+                            <a href="{{ route('password.forgot') }}"
+                                class="text-sm text-[#8C6A08] hover:text-[#FEDA60] transition-colors font-medium">
+                                Lupa Password?
+                            </a>
                         </div>
 
                         <button type="submit"
