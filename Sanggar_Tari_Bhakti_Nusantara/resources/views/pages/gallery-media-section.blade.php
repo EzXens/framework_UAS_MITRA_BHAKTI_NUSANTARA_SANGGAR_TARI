@@ -85,34 +85,56 @@
 
     <!-- Music Tab -->
     <div class="{{ $activeTab === 'music' ? '' : 'hidden' }}" data-tab-panel="music">
-        <div class="space-y-4">
+        <div class="space-y-5">
             @forelse ($musicTracks as $track)
-                <div class="relative flex flex-col gap-6 rounded-[28px] border border-[#FEDA60]/45 bg-[#FFF9E5] p-6 shadow-lg shadow-[#FEDA60]/15 transition duration-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#FEDA60]/25 sm:flex-row sm:items-center sm:justify-between" data-music-item>
-                    <div class="flex flex-col gap-2">
-                        <span class="inline-flex w-max items-center gap-2 rounded-full bg-white/70 px-3 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-[#C29C24]">
+                <div class="group relative flex flex-col gap-6 rounded-2xl border border-[#FEDA60]/40 bg-white shadow-lg shadow-[#FEDA60]/15 transition duration-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#FEDA60]/25 p-6 sm:flex-row sm:items-center sm:gap-8" data-music-item>
+                    <!-- Left Content Area -->
+                    <div class="flex flex-col gap-3 flex-grow">
+                        <!-- Category Badge -->
+                        <span class="inline-flex w-max items-center gap-1.5 rounded-full bg-gradient-to-r from-[#FEDA60]/20 to-[#FEDA60]/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.3em] text-[#C29C24] border border-[#FEDA60]/30">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-3 w-3">
+                                <path d="M12 2a10 10 0 100 20 10 10 0 000-20zM9 14.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm6-4a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm6 4a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
+                            </svg>
                             Musik
                         </span>
-                        <p class="text-lg font-semibold text-[#2E2E2E]">{{ $track->title }}</p>
-                        <p class="text-sm text-[#4F4F4F]">{{ $track->description }}</p>
-                    </div>
-                    <div class="flex w-full flex-col gap-4 sm:w-auto sm:flex-row sm:items-center">
-                        <div class="h-1 w-full rounded-full bg-[#FEDA60]/30 sm:w-32">
-                            <div class="h-full w-full rounded-full bg-[#FEDA60]"></div>
+                        
+                        <!-- Title -->
+                        <p class="text-lg font-bold text-[#2E2E2E] line-clamp-2">{{ $track->title }}</p>
+                        
+                        <!-- Description -->
+                        <p class="text-sm text-[#4F4F4F] line-clamp-2">{{ $track->description }}</p>
+                        
+                        <!-- Progress Bar -->
+                        <div class="space-y-2 pt-2">
+                            <div class="h-1.5 w-full rounded-full bg-[#FEDA60]/20 overflow-hidden cursor-pointer hover:h-2 transition-all" data-music-progress-container>
+                                <div class="h-full w-0 rounded-full bg-gradient-to-r from-[#FEDA60] to-[#FED84D] transition-all duration-300" data-music-progress></div>
+                            </div>
+                            <div class="flex justify-between text-xs font-medium text-[#4F4F4F]">
+                                <span data-music-current>0:00</span>
+                                <span data-music-duration>--:--</span>
+                            </div>
                         </div>
-                        <div class="flex items-center gap-3">
-                            <button type="button" class="music-toggle inline-flex items-center gap-2 rounded-full border border-[#FEDA60]/50 bg-white px-5 py-2 text-sm font-semibold uppercase tracking-wide text-[#8C6A08] transition hover:bg-[#FEDA60]/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FEDA60]" data-music-toggle>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5" data-music-icon-play>
-                                    <path d="M5.25 4.5a.75.75 0 0 1 1.14-.64l12 7.5a.75.75 0 0 1 0 1.28l-12 7.5A.75.75 0 0 1 5.25 19.5V4.5Z" />
-                                </svg>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="hidden h-5 w-5" data-music-icon-pause>
-                                    <path d="M6.75 5.25A.75.75 0 0 1 7.5 4.5h2.25a.75.75 0 0 1 .75.75v13.5a.75.75 0 0 1-.75.75H7.5a.75.75 0 0 1-.75-.75V5.25ZM13.5 4.5h2.25a.75.75 0 0 1 .75.75v13.5a.75.75 0 0 1-.75.75H13.5a.75.75 0 0 1-.75-.75V5.25a.75.75 0 0 1 .75-.75Z" />
-                                </svg>
-                                <span data-music-label>Play</span>
-                            </button>
-                            <audio src="{{ asset($track->audio_file) }}" preload="none"></audio>
-                        </div>
+                        
+                        <!-- Audio Player -->
+                        <audio src="{{ asset($track->audio_file) }}" preload="metadata" data-music-audio></audio>
                     </div>
-                    <div class="pointer-events-none absolute inset-y-0 left-0 hidden w-[6px] rounded-l-[28px] bg-gradient-to-b from-[#FEDA60] via-[#FEDA60]/60 to-[#FFF6D5] sm:block" aria-hidden="true"></div>
+                    
+                    <!-- Right Action Area -->
+                    <div class="flex w-full items-center gap-3 sm:w-auto sm:flex-col sm:gap-4">
+                        <!-- Play Button -->
+                        <button type="button" class="music-toggle flex-1 inline-flex items-center justify-center gap-2 rounded-lg border border-[#FEDA60]/50 bg-white px-5 py-3 text-sm font-semibold uppercase tracking-wide text-[#8C6A08] transition duration-300 hover:bg-[#FEDA60]/30 hover:border-[#FEDA60] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FEDA60] sm:w-auto sm:flex-none" data-music-toggle>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5" data-music-icon-play>
+                                <path d="M5.25 4.5a.75.75 0 0 1 1.14-.64l12 7.5a.75.75 0 0 1 0 1.28l-12 7.5A.75.75 0 0 1 5.25 19.5V4.5Z" />
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="hidden h-5 w-5" data-music-icon-pause>
+                                <path d="M6.75 5.25A.75.75 0 0 1 7.5 4.5h2.25a.75.75 0 0 1 .75.75v13.5a.75.75 0 0 1-.75.75H7.5a.75.75 0 0 1-.75-.75V5.25ZM13.5 4.5h2.25a.75.75 0 0 1 .75.75v13.5a.75.75 0 0 1-.75.75H13.5a.75.75 0 0 1-.75-.75V5.25a.75.75 0 0 1 .75-.75Z" />
+                            </svg>
+                            <span data-music-label>Play</span>
+                        </button>
+                    </div>
+
+                    <!-- Decorative Left Bar -->
+                    <div class="pointer-events-none absolute inset-y-0 left-0 hidden w-1 rounded-l-2xl bg-gradient-to-b from-[#FEDA60] via-[#FEDA60]/60 to-[#FFF6D5] sm:block" aria-hidden="true"></div>
                 </div>
             @empty
                 <div class="rounded-2xl bg-white border border-[#FEDA60]/30 p-12 text-center">

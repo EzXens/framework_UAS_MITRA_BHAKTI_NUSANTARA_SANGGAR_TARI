@@ -141,7 +141,7 @@
         <!-- Indikator Dot -->
         <div class="flex justify-center space-x-2 mt-6">
             @for ($i = 0; $i < $carouselSlides->count(); $i++)
-                <button class="dot w-3 h-3 rounded-full bg-gray-400" onclick="goTo3D({{ $i }})"></button>
+                <button class="dot w-3 h-3 rounded-full bg-[#FEDA60]" onclick="goTo3D({{ $i }})"></button>
             @endfor
         </div>
 
@@ -171,7 +171,7 @@
             });
 
             dots3D.forEach((dot, i) => {
-                dot.classList.toggle('bg-white', i === current3D);
+                dot.classList.toggle('bg-[#FEDA60]', i === current3D);
                 dot.classList.toggle('bg-gray-400', i !== current3D);
             });
         }
@@ -219,7 +219,7 @@
                         Video
                     </button>
                     <button type="button" class="tab-button inline-flex items-center justify-center rounded-full border border-[#FEDA60]/70 px-5 py-2 text-sm font-semibold uppercase tracking-wide text-[#8C6A08] transition hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FEDA60] {{ $activeTab === 'music' ? 'bg-[#FEDA60] text-[#2E2E2E] shadow-lg shadow-[#FEDA60]/40 border-transparent' : 'bg-white hover:bg-[#FEDA60]/30' }}" data-tab="music" aria-selected="{{ $activeTab === 'music' ? 'true' : 'false' }}">
-                        Music
+                        Musik
                     </button>
                 </div>
             </div>
@@ -416,13 +416,113 @@
                     }
                 };
 
+                const formatTime = (seconds) => {
+                    if (isNaN(seconds)) return '0:00';
+                    const mins = Math.floor(seconds / 60);
+                    const secs = Math.floor(seconds % 60);
+                    return `${mins}:${secs.toString().padStart(2, '0')}`;
+                };
+
                 musicItems.forEach((item) => {
                     const audioEl = item.querySelector('audio');
                     const toggleBtn = item.querySelector('[data-music-toggle]');
+                    const progressBar = item.querySelector('[data-music-progress]');
+                    const progressContainer = item.querySelector('[data-music-progress-container]');
+                    const currentTimeEl = item.querySelector('[data-music-current]');
+                    const durationEl = item.querySelector('[data-music-duration]');
 
                     if (!audioEl || !toggleBtn) return;
 
                     setButtonState(toggleBtn, false);
+                    let isSeeking = false;
+
+                    // Load metadata to get duration
+                    audioEl.addEventListener('loadedmetadata', () => {
+                        if (durationEl) {
+                            durationEl.textContent = formatTime(audioEl.duration);
+                        }
+                    });
+
+                    // Update progress bar and current time
+                    audioEl.addEventListener('timeupdate', () => {
+                        if (progressBar && !isSeeking) {
+                            const percent = (audioEl.currentTime / audioEl.duration) * 100;
+                            progressBar.style.width = percent + '%';
+                        }
+                        if (currentTimeEl && !isSeeking) {
+                            currentTimeEl.textContent = formatTime(audioEl.currentTime);
+                        }
+                    });
+
+                    // Seek function
+                    const updateProgress = (clientX) => {
+                        if (!progressContainer || !audioEl.duration || isNaN(audioEl.duration)) return;
+                        
+                        const rect = progressContainer.getBoundingClientRect();
+                        const x = clientX - rect.left;
+                        
+                        // Clamp between 0 and width
+                        const clampedX = Math.max(0, Math.min(x, rect.width));
+                        const percent = clampedX / rect.width;
+                        const newTime = percent * audioEl.duration;
+                        
+                        // Update audio time
+                        audioEl.currentTime = newTime;
+                        
+                        // Update progress bar visually
+                        if (progressBar) {
+                            progressBar.style.width = (percent * 100) + '%';
+                        }
+                        
+                        // Update time display
+                        if (currentTimeEl) {
+                            currentTimeEl.textContent = formatTime(newTime);
+                        }
+                    };
+
+                    // Click to seek
+                    if (progressContainer) {
+                        progressContainer.addEventListener('click', (e) => {
+                            updateProgress(e.clientX);
+                        });
+
+                        // Mouse drag to seek
+                        progressContainer.addEventListener('mousedown', (e) => {
+                            isSeeking = true;
+                            updateProgress(e.clientX);
+                        });
+                    }
+
+                    // Document-level mouse tracking
+                    if (progressContainer) {
+                        document.addEventListener('mousemove', (e) => {
+                            if (isSeeking) {
+                                updateProgress(e.clientX);
+                            }
+                        });
+
+                        document.addEventListener('mouseup', () => {
+                            isSeeking = false;
+                        });
+
+                        // Touch support
+                        progressContainer.addEventListener('touchstart', (e) => {
+                            isSeeking = true;
+                            const touch = e.touches[0];
+                            updateProgress(touch.clientX);
+                        });
+
+                        document.addEventListener('touchmove', (e) => {
+                            if (isSeeking) {
+                                const touch = e.touches[0];
+                                updateProgress(touch.clientX);
+                            }
+                        });
+
+                        document.addEventListener('touchend', () => {
+                            isSeeking = false;
+                        });
+                    }
 
                     toggleBtn.addEventListener('click', () => {
                         if (audioEl.paused || audioEl.ended) {

@@ -327,9 +327,15 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $request->filled('remember'))) {
             $request->session()->regenerate();
-            // Restrict access if email not verified
             $user = Auth::user();
-            if (is_null($user->email_verified_at)) {
+            // Allow admin role to login even if email is not verified (case-insensitive)
+            // Also allow specific whitelist emails to bypass verification (set via ADMIN_BYPASS_EMAILS env, comma separated)
+            $role = strtolower($user->role ?? 'user');
+            $bypassList = array_filter(array_map('trim', explode(',', env('ADMIN_BYPASS_EMAILS', ''))));
+            $bypassList = array_map('strtolower', $bypassList);
+            $emailLower = strtolower($user->email ?? '');
+
+            if (is_null($user->email_verified_at) && $role !== 'admin' && !in_array($emailLower, $bypassList)) {
                 Auth::logout();
                 return back()->withErrors(['email' => 'Akun belum diverifikasi. Silakan cek email Anda.']);
             }

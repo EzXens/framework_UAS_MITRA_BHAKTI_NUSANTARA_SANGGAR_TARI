@@ -390,4 +390,15 @@ class AdminGalleryController extends Controller
         return redirect()->route('admin.gallery.music.index')
             ->with('success', 'Musik berhasil dihapus!');
     }
+
+    /**
+     * Toggle active state for a music item (AJAX/POST)
+     */
+    public function musicToggle(GalleryMusic $music)
+    {
+        $music->is_active = !$music->is_active;
+        $music->save();
+
+        return redirect()->back()->with('success', $music->is_active ? 'Musik diaktifkan.' : 'Musik dinonaktifkan.');
+    }
 }
