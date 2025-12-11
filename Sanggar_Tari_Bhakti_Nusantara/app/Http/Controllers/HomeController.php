@@ -13,7 +13,8 @@ class HomeController extends Controller
     {
         // Ambil data dari database
         $homepageTexts = HomepageTextSection::all()->keyBy('key');
-        $homepageCarousels = HomepageCarousel::where('is_active', true)->orderBy('order')->get();
+        // Gunakan HomepageCarousel dari menu Pengaturan Hero Section
+        $homepageCarousels = HomepageCarousel::orderBy('order')->get();
         $homepageIcons = HomepageIcon::where('is_active', true)->orderBy('order')->get();
         $homepageSections = HomepageSection::where('is_active', true)->orderBy('order')->get();
 

@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('dispensations', function (Blueprint $table) {
-            $table->integer('letter_number')->nullable()->after('id');
+        Schema::table('homepage_icons', function (Blueprint $table) {
+            $table->text('icon_class')->change();
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('dispensations', function (Blueprint $table) {
-            //
+        Schema::table('homepage_icons', function (Blueprint $table) {
+            $table->string('icon_class')->change();
         });
     }
 };

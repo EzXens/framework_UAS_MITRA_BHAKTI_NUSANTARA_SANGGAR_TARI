@@ -19,7 +19,9 @@ class HomepageIconController extends Controller
 
         HomepageIcon::create($validated);
 
-        return redirect()->route('admin.dashboard')->with('show_section', 'homepage-icons');
+        return redirect()->route('admin.dashboard', ['#' => 'homepage-icons'])
+            ->with('success', 'Icon berhasil ditambahkan!')
+            ->with('show_section', 'homepage-icons');
     }
 
     public function update(Request $request, $id)
@@ -35,12 +37,17 @@ class HomepageIconController extends Controller
 
         $icon->update($validated);
 
-        return redirect()->route('admin.dashboard')->with('show_section', 'homepage-icons');
+        return redirect()->route('admin.dashboard', ['#' => 'homepage-icons'])
+            ->with('success', 'Icon berhasil diperbarui!')
+            ->with('show_section', 'homepage-icons');
     }
 
     public function destroy($id)
     {
         HomepageIcon::findOrFail($id)->delete();
-        return redirect()->route('admin.dashboard')->with('show_section', 'homepage-icons');
+        
+        return redirect()->route('admin.dashboard', ['#' => 'homepage-icons'])
+            ->with('success', 'Icon berhasil dihapus!')
+            ->with('show_section', 'homepage-icons');
     }
 }

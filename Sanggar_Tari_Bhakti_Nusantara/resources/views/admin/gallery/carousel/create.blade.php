@@ -1,7 +1,11 @@
 @extends('layouts.dashboard')
 
 @section('content')
-<div class="min-h-screen bg-gradient-to-br from-[#F5F5F5] via-[#FFF9E5] to-[#FFF6D5] p-6 lg:p-10">
+<div class="min-h-screen bg-gradient-to-br from-[#F5F5F5] via-[#FFF9E5] to-[#FFF6D5]">
+    <div class="flex">
+        @include('components.admin-sidebar')
+        
+        <main class="flex-1 p-6 lg:p-10">
     <div class="max-w-3xl mx-auto">
         <div class="mb-8">
             <a href="{{ route('admin.gallery.carousel.index') }}" class="inline-flex items-center gap-2 text-[#8C6A08] hover:text-[#FEDA60] mb-4">
@@ -91,6 +95,8 @@
                 </a>
             </div>
         </form>
+        </div>
+        </main>
     </div>
 </div>
 @endsection

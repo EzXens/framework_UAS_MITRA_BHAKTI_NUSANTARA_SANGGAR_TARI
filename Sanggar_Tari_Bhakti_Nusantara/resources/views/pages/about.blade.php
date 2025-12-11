@@ -30,8 +30,8 @@
                         </div>
                         <div class="flex-1">
                             <h3 class="text-2xl font-bold text-[#2E2E2E] mb-3">Visi</h3>
-                            <p class="text-base text-[#4F4F4F] leading-relaxed text-justify">
-                                Menjadi pusat pelestarian dan pengembangan seni di Kalimantan Timur yang kreatif, profesional, dan berdaya saing, serta mampu memperkenalkan kekayaan budaya Indonesia kepada generasi muda dan masyarakat luas.
+                            <p class="text-base text-[#4F4F4F] leading-relaxed">
+                                {{ $visi }}
                             </p>
                         </div>
                     </div>
@@ -48,30 +48,12 @@
                         <div class="flex-1">
                             <h3 class="text-2xl font-bold text-[#2E2E2E] mb-4">Misi</h3>
                             <ul class="space-y-3 text-base text-[#4F4F4F] leading-relaxed">
+                                @foreach($misi as $misiItem)
                                 <li class="flex items-start gap-3">
                                     <span class="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#FEDA60] mt-2"></span>
-                                    <span>Melestarikan dan mengembangkan seni tari tradisional, khususnya budaya Kalimantan Timur.</span>
+                                    <span>{{ $misiItem }}</span>
                                 </li>
-                                <li class="flex items-start gap-3">
-                                    <span class="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#FEDA60] mt-2"></span>
-                                    <span>Menyediakan ruang belajar yang profesional, inklusif, dan berkarakter bagi para penari untuk mengembangkan bakat dan kreativitas.</span>
-                                </li>
-                                <li class="flex items-start gap-3">
-                                    <span class="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#FEDA60] mt-2"></span>
-                                    <span>Menghadirkan pertunjukan tari yang berkualitas sebagai bentuk edukasi, apresiasi, dan promosi budaya Indonesia.</span>
-                                </li>
-                                <li class="flex items-start gap-3">
-                                    <span class="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#FEDA60] mt-2"></span>
-                                    <span>Mendorong kolaborasi antar komunitas seni untuk memperkaya karya dan memperluas jaringan pelestarian budaya.</span>
-                                </li>
-                                {{-- <li class="flex items-start gap-3">
-                                    <span class="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#FEDA60] mt-2"></span>
-                                    <span>Membentuk generasi muda yang berwawasan budaya, disiplin, kreatif, dan memiliki kecintaan terhadap seni tari.</span>
-                                </li>
-                                <li class="flex items-start gap-3">
-                                    <span class="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#FEDA60] mt-2"></span>
-                                    <span>Menjadi jembatan antara tradisi dan modernitas melalui karya tari yang inovatif tanpa meninggalkan nilai budaya.</span>
-                                </li> --}}
+                                @endforeach
                             </ul>
                         </div>
                     </div>
@@ -91,7 +73,7 @@
 
                     {{-- IMAGE --}}
                     <div class="relative rounded-2xl overflow-hidden group h-full">
-                        <img src="https://cdn.antaranews.com/cache/1200x800/2024/07/06/18_1.jpg" 
+                        <img src="{{ $aboutImage ? asset('storage/' . $aboutImage) : 'https://cdn.antaranews.com/cache/1200x800/2024/07/06/18_1.jpg' }}" 
                              alt="Festival Tari Kreasi" 
                              class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
 
@@ -105,7 +87,7 @@
 
                     {{-- ACCENT BADGE --}}
                     <div class="absolute top-4 right-4 px-4 py-2 rounded-full bg-[#FEDA60] text-[#2E2E2E] text-xs font-semibold shadow-lg backdrop-blur-sm">
-                        ✨ Sejak 2012
+                        ✨ Sejak {{ $sinceYear }}
                     </div>
 
                 </div>
@@ -175,29 +157,36 @@
             ])
             
             <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                @foreach ([
-                    ['name' => 'Ratna Widyasari', 'role' => 'Direktur Artistik', 'color' => 'from-[#FEDA60]'],
-                    ['name' => 'Taufik Nugraha', 'role' => 'Pelatih Koreografi', 'color' => 'from-[#F3B94A]'],
-                    ['name' => 'Mita Arindya', 'role' => 'Pelatih Teknik', 'color' => 'from-[#FFE9A9]'],
-                    ['name' => 'Adi Wibowo', 'role' => 'Pelatih Musik & Iringan', 'color' => 'from-[#F6B643]'],
-                ] as $coach)
+                @php
+                    $colors = ['from-[#FEDA60]', 'from-[#F3B94A]', 'from-[#FFE9A9]', 'from-[#F6B643]'];
+                @endphp
+                @forelse($teachers as $teacher)
                     <article class="group relative rounded-3xl bg-white/90 backdrop-blur-sm border-2 border-[#FEDA60]/40 p-6 space-y-4 shadow-lg hover:shadow-2xl hover:shadow-[#FEDA60]/30 transition-all duration-300 hover:-translate-y-2 overflow-hidden">
                         {{-- Gradient Accent --}}
-                        <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r {{ $coach['color'] }} to-[#FEDA60] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+                        <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r {{ $colors[$loop->index % 4] }} to-[#FEDA60] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
                         
-                        {{-- Avatar Placeholder --}}
-                        <div class="relative w-16 h-16 rounded-2xl bg-gradient-to-br {{ $coach['color'] }} to-[#F3B94A] flex items-center justify-center shadow-lg mx-auto transform group-hover:scale-110 transition-transform duration-300">
-                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                            </svg>
-                        </div>
+                        {{-- Avatar/Photo --}}
+                        @if($teacher->photo)
+                            <div class="relative w-16 h-16 rounded-2xl overflow-hidden shadow-lg mx-auto transform group-hover:scale-110 transition-transform duration-300">
+                                <img src="{{ asset('storage/' . $teacher->photo) }}" alt="{{ $teacher->name }}" class="w-full h-full object-cover">
+                            </div>
+                        @else
+                            <div class="relative w-16 h-16 rounded-2xl bg-gradient-to-br {{ $colors[$loop->index % 4] }} to-[#F3B94A] flex items-center justify-center shadow-lg mx-auto transform group-hover:scale-110 transition-transform duration-300">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                </svg>
+                            </div>
+                        @endif
                         
                         {{-- Content --}}
                         <div class="text-center space-y-2">
-                            <p class="text-lg font-bold text-[#2E2E2E]">{{ $coach['name'] }}</p>
-                            <p class="text-xs uppercase tracking-[0.3em] text-[#8C6A08] font-semibold">{{ $coach['role'] }}</p>
+                            <p class="text-lg font-bold text-[#2E2E2E]">{{ $teacher->name }}</p>
+                            <p class="text-xs uppercase tracking-[0.3em] text-[#8C6A08] font-semibold">{{ $teacher->position }}</p>
+                            @if($teacher->specialization)
+                                <p class="text-xs text-[#FEDA60] font-medium">{{ $teacher->specialization }}</p>
+                            @endif
                             <div class="pt-2 border-t border-[#FEDA60]/30">
-                                <p class="text-sm text-[#4F4F4F] leading-relaxed">Pengalaman 10+ tahun dalam pertunjukan dan pendidikan tari tradisi.</p>
+                                <p class="text-sm text-[#4F4F4F] leading-relaxed">{{ Str::limit($teacher->bio, 100) }}</p>
                             </div>
                         </div>
                         
@@ -206,7 +195,11 @@
                             10+ Tahun
                         </div>
                     </article>
-                @endforeach
+                @empty
+                    <div class="col-span-full text-center py-12">
+                        <p class="text-[#4F4F4F]">Belum ada data pengajar.</p>
+                    </div>
+                @endforelse
             </div>
         </div>
     </section>

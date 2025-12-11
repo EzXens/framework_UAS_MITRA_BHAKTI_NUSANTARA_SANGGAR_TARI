@@ -17,7 +17,6 @@ class ClassSeeder extends Seeder
                 'instructor' => 'Ibu Siti Rahmawati',
                 'schedule' => 'Senin & Rabu, 16:00-18:00',
                 'capacity' => 20,
-                'price' => 250000,
             ],
             [
                 'name' => 'Tari Pendet (Intermediate)',
@@ -25,7 +24,6 @@ class ClassSeeder extends Seeder
                 'instructor' => 'Ibu Ketut Ayu',
                 'schedule' => 'Selasa & Kamis, 15:00-17:00',
                 'capacity' => 15,
-                'price' => 300000,
             ],
             [
                 'name' => 'Tari Jaipong (Advanced)',
@@ -33,7 +31,6 @@ class ClassSeeder extends Seeder
                 'instructor' => 'Ibu Dewi Kusuma',
                 'schedule' => 'Rabu & Jumat, 18:00-20:00',
                 'capacity' => 12,
-                'price' => 350000,
             ],
             [
                 'name' => 'Tari Tradisional Anak',
@@ -41,7 +38,6 @@ class ClassSeeder extends Seeder
                 'instructor' => 'Ibu Rina Safitri',
                 'schedule' => 'Sabtu, 09:00-11:00',
                 'capacity' => 25,
-                'price' => 200000,
             ],
             [
                 'name' => 'Kelas Privat Tari',
@@ -49,7 +45,6 @@ class ClassSeeder extends Seeder
                 'instructor' => 'Berbagai Instruktur',
                 'schedule' => 'Fleksibel (by appointment)',
                 'capacity' => 1,
-                'price' => 500000,
             ],
         ];
 

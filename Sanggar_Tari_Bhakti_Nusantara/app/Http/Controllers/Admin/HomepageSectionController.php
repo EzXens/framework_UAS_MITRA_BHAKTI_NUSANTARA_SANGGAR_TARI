@@ -24,7 +24,9 @@ class HomepageSectionController extends Controller
 
         HomepageSection::create($validated);
 
-        return redirect()->route('admin.dashboard')->with('show_section', 'homepage-sections');
+        return redirect()->route('admin.dashboard', ['#' => 'homepage-sections'])
+            ->with('success', 'Section berhasil ditambahkan!')
+            ->with('show_section', 'homepage-sections');
     }
 
     public function update(Request $request, $id)
@@ -47,7 +49,9 @@ class HomepageSectionController extends Controller
 
         $section->update($validated);
 
-        return redirect()->route('admin.dashboard')->with('show_section', 'homepage-sections');
+        return redirect()->route('admin.dashboard', ['#' => 'homepage-sections'])
+            ->with('success', 'Section berhasil diperbarui!')
+            ->with('show_section', 'homepage-sections');
     }
 
     public function destroy($id)
@@ -57,6 +61,9 @@ class HomepageSectionController extends Controller
             Storage::disk('public')->delete($section->image);
         }
         $section->delete();
-        return redirect()->route('admin.dashboard')->with('show_section', 'homepage-sections');
+        
+        return redirect()->route('admin.dashboard', ['#' => 'homepage-sections'])
+            ->with('success', 'Section berhasil dihapus!')
+            ->with('show_section', 'homepage-sections');
     }
 }
