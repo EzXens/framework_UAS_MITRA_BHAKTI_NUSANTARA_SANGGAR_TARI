@@ -26,6 +26,7 @@ function loadPage(page) {
             contentContainer.innerHTML = data.html;
             contentContainer.style.opacity = '1';
             contentContainer.style.pointerEvents = 'auto';
+            document.dispatchEvent(new CustomEvent('ajaxPaginationLoaded'));
         }
         
         if (data.pagination && paginationContainer) {

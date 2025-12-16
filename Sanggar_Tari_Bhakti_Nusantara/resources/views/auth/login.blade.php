@@ -1,9 +1,21 @@
 @extends('layouts.app')
 
 @section('content')
-    <section class="min-h-screen relative flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        <!-- Background Gradient Soft -->
-        <div class="absolute inset-0 bg-gradient-to-br from-[#1E1E1E] via-[#2B2A26] to-[#1C1B19]"></div>
+    <section class="min-h-screen relative flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 overflow-hidden" style="background-image: url('{{ asset('images/bgbatikemas.png') }}'); background-size: cover; background-position: center;">
+
+        <!-- Radial vignette -->
+        <div
+        class="absolute inset-0"
+        style="
+            background: radial-gradient(
+            circle at center,
+            rgba(0,0,0,0) 0%,
+            rgba(0,0,0,0.25) 35%,
+            rgba(0,0,0,0.6) 65%,
+            rgba(0,0,0,0.9) 100%
+            );
+        ">
+        </div>
 
         <!-- Gold Soft Glow -->
         <div class="absolute inset-0 overflow-hidden pointer-events-none">
@@ -42,8 +54,8 @@
                 <div class="relative p-8 lg:p-10">
                     <div class="text-center mb-8">
                         <div class="flex justify-center mb-4">
-                            <img src="{{ asset('images/logo/logo.png') }}" alt="Bhakti Nusantara"
-                                class="h-16 w-16 object-contain drop-shadow-lg">
+                            <img src="{{ asset('images/logo/logo2.png') }}" alt="Bhakti Nusantara"
+                                class="h-20 w-20 object-contain drop-shadow-lg">
                         </div>
                         <h2 class="text-3xl font-bold text-[#2E2E2E]">Selamat Datang</h2>
                         <p class="mt-2 text-sm text-[#4F4F4F]">
@@ -121,7 +133,7 @@
                         </div>
 
                         <button type="submit"
-                            class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#FEDA60] to-[#F5B347] text-[#2E2E2E] font-semibold shadow-lg shadow-[#FEDA60]/30 hover:shadow-xl hover:shadow-[#FEDA60]/40 hover:scale-[1.02] transition-all">
+                            class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#FEDA60] to-[#F5B347] text-[#2E2E2E] font-semibold shadow-lg shadow-[#FEDA60]/30 hover:shadow-xl hover:shadow-[#FEDA60]/40 hover:scale-[1.02] transition-all cursor-pointer">
                             Masuk
                         </button>
                     </form>

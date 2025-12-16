@@ -31,6 +31,13 @@ Route::get('/tentang', function () {
 
     return view('pages.about', compact('visi', 'misi', 'aboutImage', 'sinceYear', 'teachers'));
 })->name('about');
+Route::get('/pengajar', function () {
+    $teachers = Teacher::where('is_active', true)->ordered()->get();
+    return view('pages.teachers', compact('teachers'));
+})->name('teachers');
+Route::get('/pengajar/{teacher}', function (Teacher $teacher) {
+    return view('pages.teacher', compact('teacher'));
+})->name('teacher.show');
 Route::get('/produk', [ProductController::class, 'publicIndex'])->name('products');
 Route::get('/galeri', [GalleryController::class, 'index'])->name('gallery');
 Route::get('/kontak', [ContactController::class, 'index'])->name('contact');
@@ -132,6 +139,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('admin/teachers', App\Http\Controllers\Admin\TeacherController::class)
         ->names('admin.teachers')
         ->except(['show']);
+    Route::post('/admin/teachers/reorder', [App\Http\Controllers\Admin\TeacherController::class, 'reorder'])->name('admin.teachers.reorder');
+    Route::put('/api/teachers/{teacher}/status', [App\Http\Controllers\Admin\TeacherController::class, 'updateStatus'])->name('admin.teachers.status');
 
     // Settings (homepage/about/hero) management
     Route::prefix('admin/settings')->name('admin.settings.')->group(function () {

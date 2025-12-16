@@ -23,4 +23,9 @@ class Teacher extends Model
     {
         return $query->orderBy('order', 'asc');
     }
+
+    public function classes()
+    {
+        return $this->belongsToMany(ClassModel::class, 'class_teacher', 'teacher_id', 'class_id')->withTimestamps();
+    }
 }

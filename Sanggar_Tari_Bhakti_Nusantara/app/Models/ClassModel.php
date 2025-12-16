@@ -16,4 +16,9 @@ class ClassModel extends Model
         'capacity',
         'image',
     ];
+
+    public function teachers()
+    {
+        return $this->belongsToMany(Teacher::class, 'class_teacher', 'class_id', 'teacher_id')->withTimestamps();
+    }
 }

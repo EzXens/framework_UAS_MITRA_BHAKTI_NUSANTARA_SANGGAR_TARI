@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\ClassModel;
 use App\Models\ClassEnrollment;
+use App\Models\Teacher;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 
@@ -93,7 +94,9 @@ class ClassController extends Controller
 
     public function create()
     {
-        return view('admin.classes.create');
+        $teachers = \App\Models\Teacher::where('is_active', true)->ordered()->get();
+        $selectedTeacherIds = [];
+        return view('admin.classes.create', compact('teachers', 'selectedTeacherIds'));
     }
 
     public function store(Request $request)
@@ -109,6 +112,8 @@ class ClassController extends Controller
             'capacity' => 'required|integer|min:1',
             // price removed from validation
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'teacher_ids' => 'nullable|array',
+            'teacher_ids.*' => 'integer|min:1',
         ]);
 
         $data = $request->except(['days', 'start_time', 'end_time']);
@@ -122,7 +127,21 @@ class ClassController extends Controller
             $data['image'] = $request->file('image')->store('classes', 'public');
         }
 
-        ClassModel::create($data);
+        $class = ClassModel::create($data);
+
+        $ids = collect($request->input('teacher_ids', []))
+            ->filter(fn($id) => is_numeric($id))
+            ->map(fn($id) => (int) $id)
+            ->unique()
+            ->values()
+            ->toArray();
+        if (!empty($ids)) {
+            $activeIds = \App\Models\Teacher::whereIn('id', $ids)->where('is_active', true)->pluck('id')->toArray();
+            if (count($activeIds) !== count($ids)) {
+                return back()->withErrors(['teacher_ids' => 'Terdapat pengajar yang tidak tersedia/aktif'])->withInput();
+            }
+            $class->teachers()->sync($activeIds);
+        }
 
         return redirect()->route('classes.index')->with('success', 'Kelas berhasil ditambahkan!');
     }
@@ -134,7 +153,9 @@ class ClassController extends Controller
 
     public function edit(ClassModel $class)
     {
-        return view('admin.classes.edit', compact('class'));
+        $teachers = Teacher::where('is_active', true)->ordered()->get();
+        $selectedTeacherIds = $class->teachers()->pluck('teachers.id')->toArray();
+        return view('admin.classes.edit', compact('class', 'teachers', 'selectedTeacherIds'));
     }
 
     public function update(Request $request, ClassModel $class)
@@ -150,6 +171,8 @@ class ClassController extends Controller
             'capacity' => 'required|integer|min:1',
             // price removed from validation
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'teacher_ids' => 'nullable|array',
+            'teacher_ids.*' => 'integer|min:1',
         ]);
 
         $data = $request->except(['days', 'start_time', 'end_time']);
@@ -167,6 +190,23 @@ class ClassController extends Controller
         }
 
         $class->update($data);
+        
+        // Validate and sync teachers team
+        $ids = collect($request->input('teacher_ids', []))
+            ->filter(fn($id) => is_numeric($id))
+            ->map(fn($id) => (int) $id)
+            ->unique()
+            ->values()
+            ->toArray();
+        if (!empty($ids)) {
+            $activeIds = Teacher::whereIn('id', $ids)->where('is_active', true)->pluck('id')->toArray();
+            if (count($activeIds) !== count($ids)) {
+                return back()->withErrors(['teacher_ids' => 'Terdapat pengajar yang tidak tersedia/aktif'])->withInput();
+            }
+            $class->teachers()->sync($activeIds);
+        } else {
+            $class->teachers()->sync([]);
+        }
 
         return redirect()->route('classes.index')->with('success', 'Kelas berhasil diupdate!');
     }

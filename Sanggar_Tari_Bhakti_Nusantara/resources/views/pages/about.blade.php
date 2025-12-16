@@ -156,17 +156,18 @@
                 'description' => 'Pelatih Bhakti Nusantara merupakan seniman aktif yang rutin tampil di festival Nusantara dan mendapat sertifikasi dari lembaga tari nasional.'
             ])
             
-            <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                @php
-                    $colors = ['from-[#FEDA60]', 'from-[#F3B94A]', 'from-[#FFE9A9]', 'from-[#F6B643]'];
-                @endphp
-                @forelse($teachers as $teacher)
-                    <article class="group relative rounded-3xl bg-white/90 backdrop-blur-sm border-2 border-[#FEDA60]/40 p-6 space-y-4 shadow-lg hover:shadow-2xl hover:shadow-[#FEDA60]/30 transition-all duration-300 hover:-translate-y-2 overflow-hidden">
-                        {{-- Gradient Accent --}}
-                        <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r {{ $colors[$loop->index % 4] }} to-[#FEDA60] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
-                        
-                        {{-- Avatar/Photo --}}
-                        @if($teacher->photo)
+                    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                        @php
+                            $colors = ['from-[#FEDA60]', 'from-[#F3B94A]', 'from-[#FFE9A9]', 'from-[#F6B643]'];
+                        @endphp
+                        @forelse($teachers as $teacher)
+                            <article class="group relative rounded-3xl bg-white/90 backdrop-blur-sm border-2 border-[#FEDA60]/40 p-6 space-y-4 shadow-lg hover:shadow-2xl hover:shadow-[#FEDA60]/30 transition-all duration-300 hover:-translate-y-2 overflow-hidden">
+                                <a href="{{ route('teacher.show', $teacher) }}" class="absolute inset-0 z-10"></a>
+                                {{-- Gradient Accent --}}
+                                <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r {{ $colors[$loop->index % 4] }} to-[#FEDA60] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+                                
+                                {{-- Avatar/Photo --}}
+                                @if($teacher->photo)
                             <div class="relative w-16 h-16 rounded-2xl overflow-hidden shadow-lg mx-auto transform group-hover:scale-110 transition-transform duration-300">
                                 <img src="{{ asset('storage/' . $teacher->photo) }}" alt="{{ $teacher->name }}" class="w-full h-full object-cover">
                             </div>

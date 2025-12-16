@@ -143,9 +143,23 @@
                                     placeholder="0"
                                 >
                                 <p class="text-xs text-[#4F4F4F] mt-1">Angka lebih kecil akan ditampilkan lebih dulu</p>
+                                <p id="order-status" class="text-xs mt-1"></p>
                                 @error('order')
                                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                 @enderror
+                                <div class="mt-2 p-4 bg-[#FFF9E5] border border-[#FEDA60]/40 rounded-xl">
+                                    <p class="text-xs text-[#8C6A08] font-semibold mb-2">Urutan yang sudah digunakan:</p>
+                                    <ul class="text-xs text-[#4F4F4F] space-y-1">
+                                        @forelse(($usedOrders ?? []) as $order => $teacherName)
+                                            <li class="flex items-center gap-2">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-[#FEDA60]"></span>
+                                                <span>Urutan {{ $order }}: {{ $teacherName }}</span>
+                                            </li>
+                                        @empty
+                                            <li>Belum ada urutan yang terpakai</li>
+                                        @endforelse
+                                    </ul>
+                                </div>
                             </div>
 
                             <!-- Actions -->
@@ -164,4 +178,21 @@
         </main>
     </div>
 </div>
+<script>
+    const usedOrders = @json($usedOrders ?? []);
+    const orderInput = document.getElementById('order');
+    const orderStatus = document.getElementById('order-status');
+    function updateOrderStatus() {
+        const val = orderInput.value;
+        if (val !== '' && usedOrders[val]) {
+            orderStatus.textContent = `Urutan ${val} dipakai oleh ${usedOrders[val]}`;
+            orderStatus.className = 'text-xs mt-1 text-red-600';
+        } else {
+            orderStatus.textContent = val !== '' ? 'Urutan tersedia' : '';
+            orderStatus.className = 'text-xs mt-1 text-green-600';
+        }
+    }
+    orderInput.addEventListener('input', updateOrderStatus);
+    updateOrderStatus();
+</script>
 @endsection

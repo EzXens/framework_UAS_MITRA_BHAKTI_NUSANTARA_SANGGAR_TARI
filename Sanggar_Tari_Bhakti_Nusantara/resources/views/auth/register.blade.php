@@ -1,9 +1,21 @@
 @extends('layouts.app')
 
 @section('content')
-    <section class="min-h-screen relative flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        <!-- Background Gradient Soft -->
-        <div class="absolute inset-0 bg-gradient-to-br from-[#1E1E1E] via-[#2B2A26] to-[#1C1B19]"></div>
+    <section class="min-h-screen relative flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 overflow-hidden" style="background-image: url('{{ asset('images/bgbatikemas.png') }}'); background-size: cover; background-position: center;">
+
+        <!-- Radial vignette -->
+        <div
+        class="absolute inset-0"
+        style="
+            background: radial-gradient(
+            circle at center,
+            rgba(0,0,0,0) 0%,
+            rgba(0,0,0,0.25) 35%,
+            rgba(0,0,0,0.6) 65%,
+            rgba(0,0,0,0.9) 100%
+            );
+        ">
+        </div>
 
         <!-- Gold Soft Glow -->
         <div class="absolute inset-0 overflow-hidden pointer-events-none">
@@ -29,137 +41,160 @@
                 background-size: 45px 45px;">
         </div>
 
-        <div class="relative max-w-md w-full">
-            <div
-                class="rounded-[32px] border border-[#FEDA60]/30 bg-white/95 backdrop-blur-xl shadow-2xl shadow-[#FEDA60]/20 overflow-hidden">
-                <div
-                    class="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-gradient-to-br from-[#FFE184] via-[#FEDA60] to-[#F5B347] opacity-20">
-                </div>
-                <div
-                    class="absolute -bottom-16 -left-16 w-32 h-32 rounded-full bg-gradient-to-br from-[#FEDA60] to-[#F4BD4D] opacity-20">
-                </div>
+        <div class="relative w-full max-w-md lg:max-w-2xl">
+    <div
+        class="relative rounded-[28px] border border-[#FEDA60]/30 bg-white/95 backdrop-blur-xl
+        shadow-2xl shadow-[#FEDA60]/20 overflow-hidden">
 
-                <div class="relative p-8 lg:p-10">
-                    <div class="text-center mb-8">
-                        <div class="flex justify-center mb-4">
-                            <img src="{{ asset('images/logo/logo.png') }}" alt="Bhakti Nusantara"
-                                class="h-16 w-16 object-contain drop-shadow-lg">
-                        </div>
-                        <h2 class="text-3xl font-bold text-[#2E2E2E]">Daftar Akun</h2>
-                        <p class="mt-2 text-sm text-[#4F4F4F]">
-                            Bergabung dengan Bhakti Nusantara
-                        </p>
-                    </div>
+        <!-- Ornament -->
+        <div class="absolute -top-24 -right-24 w-56 h-56 rounded-full
+            bg-gradient-to-br from-[#FFE184]/30 via-[#FEDA60]/20 to-transparent blur-2xl"></div>
+        <div class="absolute -bottom-24 -left-24 w-56 h-56 rounded-full
+            bg-gradient-to-tr from-[#FEDA60]/20 to-transparent blur-2xl"></div>
 
-                    @if ($errors->any())
-                        <div class="mb-6 rounded-2xl bg-red-50 border border-red-200 p-4">
-                            <ul class="text-sm text-red-700 space-y-1">
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
+        <div class="relative p-6 lg:p-8">
 
-                    <form action="{{ route('register.post') }}" method="POST" class="space-y-5">
-                        @csrf
-                        <div>
-                            <label for="name" class="block text-sm font-semibold text-[#2E2E2E] mb-2">Nama Lengkap</label>
-                            <input id="name" name="name" type="text" required
-                                class="w-full px-4 py-3 rounded-xl border-2 border-[#E2B136]/30 bg-white/80 focus:outline-none focus:border-[#FEDA60] focus:ring-2 focus:ring-[#FEDA60]/20 transition-all"
-                                value="{{ old('name') }}" placeholder="Nama lengkap Anda">
-                        </div>
-
-                        <div>
-                            <label for="email" class="block text-sm font-semibold text-[#2E2E2E] mb-2">Email</label>
-                            <input id="email" name="email" type="email" required
-                                class="w-full px-4 py-3 rounded-xl border-2 border-[#E2B136]/30 bg-white/80 focus:outline-none focus:border-[#FEDA60] focus:ring-2 focus:ring-[#FEDA60]/20 transition-all"
-                                value="{{ old('email') }}" placeholder="nama@email.com">
-                        </div>
-
-                        <div>
-                        <label for="password" class="block text-sm font-semibold text-[#2E2E2E] mb-2">Password</label>
-
-                        <div class="relative w-full">
-                            <input id="password" name="password" type="password" required
-                                class="w-full px-4 pr-12 py-3 rounded-xl border-2 border-[#E2B136]/30 bg-white/80 
-                                    focus:outline-none focus:border-[#FEDA60] focus:ring-2 focus:ring-[#FEDA60]/20 transition-all"
-                                placeholder="Minimal 8 karakter">
-
-                            <!-- Eye Button -->
-                            <button type="button"
-                                onclick="togglePassword('password','eyeIcon1')"
-                                class="flex items-center justify-center absolute right-4 top-0 h-full">
-
-                                <svg id="eyeIcon1" xmlns="http://www.w3.org/2000/svg"
-                                    class="h-6 w-6 text-[#6F6F6F] hover:text-[#2E2E2E]"
-                                    fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 
-                                        2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 
-                                        0-8.268-2.943-9.542-7z" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-
-
-                    <div>
-                        <label for="password_confirmation" class="block text-sm font-semibold text-[#2E2E2E] mb-2">
-                            Konfirmasi Password
-                        </label>
-
-                        <div class="relative w-full">
-                            <input id="password_confirmation" name="password_confirmation" type="password" required
-                                class="w-full px-4 pr-12 py-3 rounded-xl border-2 border-[#E2B136]/30 bg-white/80 
-                                    focus:outline-none focus:border-[#FEDA60] focus:ring-2 focus:ring-[#FEDA60]/20 transition-all"
-                                placeholder="Ulangi password Anda">
-
-                            <!-- Eye Button -->
-                            <button type="button"
-                                onclick="togglePassword('password_confirmation','eyeIcon2')"
-                                class="flex items-center justify-center absolute right-4 top-0 h-full">
-
-                                <svg id="eyeIcon2" xmlns="http://www.w3.org/2000/svg"
-                                    class="h-6 w-6 text-[#6F6F6F] hover:text-[#2E2E2E]"
-                                    fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 
-                                        2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 
-                                        0-8.268-2.943-9.542-7z" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-
-                        <button type="submit"
-                            class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#FEDA60] to-[#F5B347] text-[#2E2E2E] font-semibold shadow-lg shadow-[#FEDA60]/30 hover:shadow-xl hover:shadow-[#FEDA60]/40 hover:scale-[1.02] transition-all">
-                            Daftar Sekarang
-                        </button>
-                    </form>
-
-                    <div class="mt-6 text-center">
-                        <p class="text-sm text-[#4F4F4F]">
-                            Sudah punya akun?
-                            <a href="{{ route('login') }}"
-                                class="font-semibold text-[#8C6A08] hover:text-[#FEDA60] transition-colors">
-                                Login disini
-                            </a>
-                        </p>
-                        <p class="text-sm text-[#4F4F4F] mt-2">
-                            <a href="{{ route('password.forgot') }}"
-                                class="font-semibold text-[#8C6A08] hover:text-[#FEDA60] transition-colors">
-                                Lupa Password?
-                            </a>
-                        </p>
-                    </div>
-                </div>
+            <!-- Header (compact) -->
+            <div class="text-center mb-6">
+                <img src="{{ asset('images/logo/logo2.png') }}"
+                    class="h-20 w-20 mx-auto mb-3 object-contain drop-shadow-lg">
+                <h2 class="text-3xl font-bold text-[#2E2E2E]">Daftar Akun</h2>
+                <p class="text-sm text-[#4F4F4F] mt-1">
+                    Bergabung dengan Bhakti Nusantara
+                </p>
             </div>
+
+            @if ($errors->any())
+                <div class="mb-4 rounded-xl bg-red-50 border border-red-200 p-3">
+                    <ul class="text-sm text-red-700 space-y-1">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <!-- FORM -->
+            <form action="{{ route('register.post') }}" method="POST"
+                  class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                @csrf
+
+                <!-- Nama -->
+                <div class="lg:col-span-2">
+                    <label class="block text-sm font-semibold text-[#2E2E2E] mb-1">
+                        Nama Lengkap
+                    </label>
+                    <input type="text" name="name" required
+                        value="{{ old('name') }}"
+                        placeholder="Nama lengkap Anda"
+                        class="w-full px-4 py-2.5 rounded-xl border-2 border-[#E2B136]/30 bg-white/80
+                        focus:outline-none focus:border-[#FEDA60]
+                        focus:ring-2 focus:ring-[#FEDA60]/20 transition-all">
+                </div>
+
+                <!-- Email -->
+                <div class="lg:col-span-2">
+                    <label class="block text-sm font-semibold text-[#2E2E2E] mb-1">
+                        Email
+                    </label>
+                    <input type="email" name="email" required
+                        value="{{ old('email') }}"
+                        placeholder="nama@email.com"
+                        class="w-full px-4 py-2.5 rounded-xl border-2 border-[#E2B136]/30 bg-white/80
+                        focus:outline-none focus:border-[#FEDA60]
+                        focus:ring-2 focus:ring-[#FEDA60]/20 transition-all">
+                </div>
+
+                <!-- Password -->
+                <div>
+                    <label class="block text-sm font-semibold text-[#2E2E2E] mb-1">
+                        Password
+                    </label>
+                    <div class="relative">
+                        <input id="password" name="password" type="password" required
+                            placeholder="Min. 8 karakter"
+                            class="w-full px-4 pr-12 py-2.5 rounded-xl border-2 border-[#E2B136]/30 bg-white/80
+                            focus:outline-none focus:border-[#FEDA60]
+                            focus:ring-2 focus:ring-[#FEDA60]/20 transition-all">
+                        <button type="button"
+                            onclick="togglePassword('password','eye1')"
+                            class="absolute right-4 top-0 h-full flex items-center">
+                            <svg id="eye1" xmlns="http://www.w3.org/2000/svg"
+                                class="h-5 w-5 text-[#6F6F6F]"
+                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M2.458 12C3.732 7.943 7.523 5 12 5
+                                    c4.477 0 8.268 2.943 9.542 7
+                                    -1.274 4.057-5.065 7-9.542 7
+                                    -4.477 0-8.268-2.943-9.542-7z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Konfirmasi -->
+                <div>
+                    <label class="block text-sm font-semibold text-[#2E2E2E] mb-1">
+                        Konfirmasi Password
+                    </label>
+                    <div class="relative">
+                        <input id="password_confirmation" name="password_confirmation" type="password" required
+                            placeholder="Ulangi password"
+                            class="w-full px-4 pr-12 py-2.5 rounded-xl border-2 border-[#E2B136]/30 bg-white/80
+                            focus:outline-none focus:border-[#FEDA60]
+                            focus:ring-2 focus:ring-[#FEDA60]/20 transition-all">
+                        <button type="button"
+                            onclick="togglePassword('password_confirmation','eye2')"
+                            class="absolute right-4 top-0 h-full flex items-center">
+                            <svg id="eye2" xmlns="http://www.w3.org/2000/svg"
+                                class="h-5 w-5 text-[#6F6F6F]"
+                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M2.458 12C3.732 7.943 7.523 5 12 5
+                                    c4.477 0 8.268 2.943 9.542 7
+                                    -1.274 4.057-5.065 7-9.542 7
+                                    -4.477 0-8.268-2.943-9.542-7z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Button -->
+                <div class="lg:col-span-2 mt-2">
+                    <button type="submit"
+                        class="w-full py-3 rounded-xl bg-gradient-to-r from-[#FEDA60] to-[#F5B347]
+                        text-[#2E2E2E] font-semibold shadow-lg shadow-[#FEDA60]/30 cursor-pointer
+                        hover:shadow-xl hover:scale-[1.02] transition-all">
+                        Daftar Sekarang
+                    </button>
+                </div>
+            </form>
+
+            <!-- Footer -->
+            <div class="mt-4 text-center">
+                <p class="text-sm text-[#4F4F4F]">
+                    Sudah punya akun?
+                    <a href="{{ route('login') }}"
+                        class="font-semibold text-[#8C6A08] hover:text-[#FEDA60]">
+                        Login disini
+                    </a>
+                </p>
+                <p class="text-sm mt-1">
+                    <a href="{{ route('password.forgot') }}"
+                        class="font-semibold text-[#8C6A08] hover:text-[#FEDA60]">
+                        Lupa Password?
+                    </a>
+                </p>
+            </div>
+
         </div>
+    </div>
+</div>
+
     </section>
 
     <script>
