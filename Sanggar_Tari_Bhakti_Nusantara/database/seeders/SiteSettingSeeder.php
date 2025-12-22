@@ -27,7 +27,7 @@ class SiteSettingSeeder extends Seeder
             ],
             [
                 'key' => 'since_year',
-                'value' => '2012',
+                'value' => '2024',
                 'type' => 'text',
                 'description' => 'Year when sanggar was established'
             ],

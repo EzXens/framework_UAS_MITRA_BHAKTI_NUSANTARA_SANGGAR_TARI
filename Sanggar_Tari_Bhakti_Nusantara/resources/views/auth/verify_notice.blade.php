@@ -22,15 +22,6 @@
                 @if(session('success'))<div class="mb-4 p-3 rounded-lg bg-green-50 border border-green-200 text-sm text-green-700">{{ session('success') }}</div>@endif
                 @if(session('warning'))<div class="mb-4 p-3 rounded-lg bg-yellow-50 border border-yellow-200 text-sm text-yellow-700">{{ session('warning') }}</div>@endif
 
-                <!-- Dev Helper: Show token if debug is on -->
-                @if(config('app.debug') && session('verification_token'))
-                    <div class="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                        <p class="text-xs font-semibold text-blue-700 mb-2">🔧 DEVELOPMENT MODE</p>
-                        <p class="text-xs text-blue-600 mb-2">Kode verifikasi Anda (copy & paste di bawah):</p>
-                        <div class="font-mono text-sm bg-white p-2 rounded border border-blue-300 break-all">{{ session('verification_token') }}</div>
-                    </div>
-                @endif
-
                 <!-- Manual Token Input Form -->
                 <form method="POST" action="{{ route('verification.verifyCode') }}" class="space-y-4">
                     @csrf
@@ -45,7 +36,7 @@
                         ✓ Verifikasi Email
                     </button>
                 </form>
-
+{{-- 
                 <div class="mt-6 border-t border-gray-200 pt-4">
                     <p class="text-sm text-[#4F4F4F] mb-3">Belum menerima kode?</p>
                     <form method="POST" action="{{ route('verification.resend') }}" class="space-y-3">
@@ -58,7 +49,7 @@
                             📧 Kirim Ulang Kode
                         </button>
                     </form>
-                </div>
+                </div> --}}
 
                 <div class="mt-4 text-center">
                     <a href="{{ route('home') }}" class="text-sm text-gray-500 hover:text-[#FEDA60] transition-colors">← Kembali ke beranda</a>

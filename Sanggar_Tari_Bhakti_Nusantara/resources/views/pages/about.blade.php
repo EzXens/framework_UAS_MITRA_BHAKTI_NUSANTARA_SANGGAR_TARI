@@ -10,7 +10,7 @@
         @include('components.ui.section-heading', [
             'subtitle' => 'Profil Sanggar',
             'title' => 'Bhakti Nusantara, Rumah Bagi Pecinta Tari Tradisional',
-            'description' => 'Sejak 2012 kami mewadahi generasi muda untuk mempelajari dan menampilkan tari-tari Nusantara dengan standar pertunjukan profesional.'
+            'description' => 'Sejak 2024 kami mewadahi generasi muda untuk mempelajari dan menampilkan tari-tari Nusantara dengan standar pertunjukan profesional.'
         ])
         
         {{-- GRID (SYNC HEIGHT) --}}
@@ -181,19 +181,16 @@
                         
                         {{-- Content --}}
                         <div class="text-center space-y-2">
-                            <p class="text-lg font-bold text-[#2E2E2E]">{{ $teacher->name }}</p>
+                            <div class="rounded-full bg-[#FFF0C2] text-[#8C6A08] text-xs font-semibold">
+                                <p class="text-lg font-bold text-[#2E2E2E]">{{ $teacher->name }}</p>
+                            </div>
                             <p class="text-xs uppercase tracking-[0.3em] text-[#8C6A08] font-semibold">{{ $teacher->position }}</p>
                             @if($teacher->specialization)
-                                <p class="text-xs text-[#FEDA60] font-medium">{{ $teacher->specialization }}</p>
+                                <p class="text-xs text-[#343434] font-medium">{{ $teacher->specialization }}</p>
                             @endif
                             <div class="pt-2 border-t border-[#FEDA60]/30">
-                                <p class="text-sm text-[#4F4F4F] leading-relaxed">{{ Str::limit($teacher->bio, 100) }}</p>
+                                <p class="text-sm text-[#4F4F4F] leading-relaxed">{{ Str::limit($teacher->bio, 20) }}</p>
                             </div>
-                        </div>
-                        
-                        {{-- Experience Badge --}}
-                        <div class="absolute bottom-4 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-[#FFF0C2] text-[#8C6A08] text-xs font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            10+ Tahun
                         </div>
                     </article>
                 @empty
