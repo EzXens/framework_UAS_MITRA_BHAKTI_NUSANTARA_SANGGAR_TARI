@@ -203,7 +203,10 @@ class AuthController extends Controller
 
         DB::table('email_verification_tokens')->where('id', $row->id)->update(['used_at' => Carbon::now()]);
 
-        return redirect()->route('home')->with('success', 'Email berhasil diverifikasi! Anda sekarang dapat login.');
+        // Login user otomatis setelah verifikasi
+        Auth::login($user);
+
+        return redirect()->route('home')->with('success', 'Berhasil verifikasi email dan login otomatis!');
     }
 
     // Show forgot password form

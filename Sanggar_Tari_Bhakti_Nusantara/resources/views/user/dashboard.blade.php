@@ -507,7 +507,10 @@
                                 <label class="block text-sm font-semibold text-black mb-1">Nama Kegiatan</label>
                                 <input type="text" name="event_name" class="mhs-input w-full rounded-md border-gray-200 bg-black/10 p-2 text-black mb-3" required oninput="this.value = this.value.replace(/[^a-zA-Z0-9\s]/g,'')" maxlength="150">
 
-                                <label class="block text-sm font-semibold text-black mb-1">Hari</label>
+                                <label class="block text-sm font-semibold text-black mb-1">Penyelenggara Acara</label>
+                                <input type="text" name="penyelenggara_acara" class="mhs-input w-full rounded-md border-gray-200 bg-black/10 p-2 text-black mb-3" oninput="this.value = this.value.replace(/[^a-zA-Z0-9\s]/g,'')" maxlength="150">
+
+                                <label class="block text-sm font-semibold text-black mb-1"></label>Hari</label>
                                 <select name="day" class="mhs-input w-full rounded-md border-gray-200 bg-black/10 p-2 text-black mb-3" required>
                                     <option value="Senin">Senin</option>
                                     <option value="Selasa">Selasa</option>
@@ -573,6 +576,9 @@
 
                                 <label class="block text-sm font-semibold text-black mb-1">Nama Kegiatan</label>
                                 <input type="text" name="event_name_siswa" class="siswa-input w-full rounded-md border-gray-200 bg-black/10 p-2 text-black mb-3" required oninput="this.value = this.value.replace(/[^a-zA-Z0-9\s]/g,'')" maxlength="150">
+
+                                <label class="block text-sm font-semibold text-black mb-1">Penyelenggara Acara</label>
+                                <input type="text" name="penyelenggara_acara_siswa" class="siswa-input w-full rounded-md border-gray-200 bg-black/10 p-2 text-black mb-3" oninput="this.value = this.value.replace(/[^a-zA-Z0-9\s]/g,'')" maxlength="150">
 
                                 <label class="block text-sm font-semibold text-black mb-1">Hari</label>
                                 <select name="day_siswa" class="siswa-input w-full rounded-md border-gray-200 bg-black/10 p-2 text-black mb-3" required>

@@ -695,4 +695,26 @@
         });
         window.addEventListener('resize', adjustForHeader);
     </script>
+
+{{-- popup sukses --}}
+@if(session('success'))
+<div id="success-popup" class="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+    <div class="bg-white rounded-xl p-6 shadow-xl w-80 text-center animate-fadeIn">
+        
+        <div class="mx-auto mb-3 w-16 h-16 bg-green-500 rounded-full flex items-center justify-center animate-bounce">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+            </svg>
+        </div>
+
+        <p class="font-semibold text-green-700">{{ session('success') }}</p>
+
+        <button onclick="document.getElementById('success-popup').remove()"
+                class="mt-4 px-4 py-2 rounded-lg bg-green-600 text-white">
+            OK
+        </button>
+    </div>
+</div>
+@endif
+
 @endsection

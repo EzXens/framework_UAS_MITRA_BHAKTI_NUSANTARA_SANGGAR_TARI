@@ -26,6 +26,7 @@ class DispensationController extends Controller
                 'school_or_program' => 'required|string|max:255',
                 'program' => 'nullable|string|max:255',
                 'event_name' => 'required|string|max:255',
+                'penyelenggara_acara' => 'nullable|string|max:255',
                 'day' => 'required|string|max:50',
                 'date_from' => 'required|date',
                 'date_to' => 'nullable|date',
@@ -40,6 +41,7 @@ class DispensationController extends Controller
                 'school_or_program' => $v['school_or_program'],
                 'program' => $v['program'] ?? null,
                 'event_name' => $v['event_name'],
+                'penyelenggara_acara' => $v['penyelenggara_acara'] ?? null,
                 'day' => $v['day'],
                 'date_from' => $v['date_from'],
                 'date_to' => $v['date_to'] ?? null,
@@ -55,6 +57,7 @@ class DispensationController extends Controller
                 'student_class' => 'nullable|string|max:100',
                 'school_or_program_siswa' => 'required|string|max:255',
                 'event_name_siswa' => 'required|string|max:255',
+                'penyelenggara_acara_siswa' => 'nullable|string|max:255',
                 'day_siswa' => 'required|string|max:50',
                 'date_from_siswa' => 'required|date',
                 'date_to_siswa' => 'nullable|date',
@@ -69,6 +72,7 @@ class DispensationController extends Controller
                 'student_class' => $v['student_class'] ?? null,
                 'school_or_program' => $v['school_or_program_siswa'],
                 'event_name' => $v['event_name_siswa'],
+                'penyelenggara_acara' => $v['penyelenggara_acara_siswa'] ?? null,
                 'day' => $v['day_siswa'],
                 'date_from' => $v['date_from_siswa'],
                 'date_to' => $v['date_to_siswa'] ?? null,
@@ -337,6 +341,7 @@ function tanggalIndo($date)
             'Waktu'                  => $p['time'] ?? '—',
             'Nama_Tempat'            => $p['place'] ?? '—',
             'Kota_Atau_Provinsi'     => $p['city_province'] ?? '—',
+            'Penyelenggara_Acara'    => $p['penyelenggara_acara'] ?? '—',
         ];
 
         if ($dispensation->type === 'mahasiswa') {

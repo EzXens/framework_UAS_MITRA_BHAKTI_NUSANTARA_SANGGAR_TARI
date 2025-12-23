@@ -144,26 +144,12 @@
     }
 
     /* Mobile hamburger */
-    #main-header .nav-toggle-line {
-      display: block;
-      width: 20px;
-      height: 2px;
-      margin: 4px auto;
-      background: var(--accent);
-      border-radius: 999px;
-      transition: transform .2s ease, opacity .2s ease;
+    #main-header .nav-toggle svg {
+      transition: transform 0.3s ease;
     }
 
-    #main-header .nav-toggle.is-active .nav-toggle-line:nth-child(1) {
-      transform: translateY(6px) rotate(45deg);
-    }
-
-    #main-header .nav-toggle.is-active .nav-toggle-line:nth-child(2) {
-      opacity: 0;
-    }
-
-    #main-header .nav-toggle.is-active .nav-toggle-line:nth-child(3) {
-      transform: translateY(-6px) rotate(-45deg);
+    #main-header .nav-toggle.is-active svg {
+      transform: rotate(45deg);
     }
     
     #main-header .btn-login-gold {
@@ -353,12 +339,12 @@
 
         <!-- Mobile toggle -->
         <button id="nav-toggle"
-          class="nav-toggle lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-full btn-sign"
+          class="nav-toggle lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-2xl btn-sign"
           aria-label="Toggle navigation" aria-expanded="false">
           <span class="sr-only">Toggle navigation</span>
-          <span class="nav-toggle-line"></span>
-          <span class="nav-toggle-line"></span>
-          <span class="nav-toggle-line"></span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-black">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          </svg>
         </button>
       </div>
     </div>
