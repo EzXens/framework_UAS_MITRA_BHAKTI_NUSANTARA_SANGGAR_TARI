@@ -20,22 +20,34 @@
                 </div>
 
                 @if(session('success'))<div class="mb-4 p-3 rounded-lg bg-green-50 border border-green-200 text-sm text-green-700">{{ session('success') }}</div>@endif
+                @if(session('verification_success'))<div class="mb-4 p-3 rounded-lg bg-green-50 border border-green-200 text-sm text-green-700">{{ session('verification_success') }}</div>@endif
                 @if(session('warning'))<div class="mb-4 p-3 rounded-lg bg-yellow-50 border border-yellow-200 text-sm text-yellow-700">{{ session('warning') }}</div>@endif
 
-                <!-- Manual Token Input Form -->
-                <form method="POST" action="{{ route('verification.verifyCode') }}" class="space-y-4">
-                    @csrf
-                    <div>
-                        <label for="code" class="block text-sm font-semibold text-[#2E2E2E] mb-2">Masukkan Kode Verifikasi</label>
-                        <input id="code" name="code" type="text" required 
-                            class="w-full px-4 py-3 rounded-xl border-2 border-[#E2B136]/30 bg-white/80 focus:outline-none focus:border-[#FEDA60] focus:ring-2 focus:ring-[#FEDA60]/20 transition-all font-mono text-center"
-                            placeholder="Paste kode dari email di sini" autocomplete="off">
-                        @if($errors->has('code'))<p class="text-red-600 text-sm mt-2">{{ $errors->first('code') }}</p>@endif
+                @if(session('verification_success'))
+                    <div class="mt-6 text-center">
+                        <a href="{{ route('login') }}" class="inline-flex items-center justify-center gap-2 text-sm font-semibold text-[#2E2E2E] bg-gradient-to-r from-[#FEDA60] to-[#F5B347] px-6 py-3 rounded-xl shadow-lg shadow-[#FEDA60]/30 hover:shadow-xl hover:scale-[1.02] transition-all">
+                            Login Sekarang
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0-6.75 6.75M19.5 12l-6.75-6.75" />
+                            </svg>
+                        </a>
                     </div>
-                    <button type="submit" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#FEDA60] to-[#F5B347] text-[#2E2E2E] font-semibold shadow-lg shadow-[#FEDA60]/30 hover:shadow-xl hover:shadow-[#FEDA60]/40 hover:scale-[1.02] transition-all">
-                        ✓ Verifikasi Email
-                    </button>
-                </form>
+                @else
+                    <!-- Manual Token Input Form -->
+                    <form method="POST" action="{{ route('verification.verifyCode') }}" class="space-y-4">
+                        @csrf
+                        <div>
+                            <label for="code" class="block text-sm font-semibold text-[#2E2E2E] mb-2">Masukkan Kode Verifikasi</label>
+                            <input id="code" name="code" type="text" required 
+                                class="w-full px-4 py-3 rounded-xl border-2 border-[#E2B136]/30 bg-white/80 focus:outline-none focus:border-[#FEDA60] focus:ring-2 focus:ring-[#FEDA60]/20 transition-all font-mono text-center"
+                                placeholder="Paste kode dari email di sini" autocomplete="off">
+                            @if($errors->has('code'))<p class="text-red-600 text-sm mt-2">{{ $errors->first('code') }}</p>@endif
+                        </div>
+                        <button type="submit" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#FEDA60] to-[#F5B347] text-[#2E2E2E] font-semibold shadow-lg shadow-[#FEDA60]/30 hover:shadow-xl hover:shadow-[#FEDA60]/40 hover:scale-[1.02] transition-all">
+                            ✓ Verifikasi Email
+                        </button>
+                    </form>
+                @endif
 {{-- 
                 <div class="mt-6 border-t border-gray-200 pt-4">
                     <p class="text-sm text-[#4F4F4F] mb-3">Belum menerima kode?</p>

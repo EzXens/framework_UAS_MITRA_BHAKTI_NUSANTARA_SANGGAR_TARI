@@ -29,7 +29,7 @@
                                 {{-- <span class="text-2xl font-bold text-[#8C6A08]">Rp {{ number_format($product->price, 0, ',', '.') }}</span> --}}
                                 <span class="text-sm text-[#4F4F4F]">Stok: <strong>{{ $product->stock }}</strong></span>
                             </div>
-                            <a href="mailto:info@bhaktinusantara.id?subject=Inquiry about {{ $product->name }}" class="inline-flex items-center justify-center gap-2 text-sm font-semibold text-[#2E2E2E] bg-gradient-to-r from-[#FEDA60] to-[#F5B347] px-6 py-3 rounded-xl shadow-lg shadow-[#FEDA60]/30 hover:shadow-xl hover:scale-[1.02] transition-all mt-4">
+                            <a href="https://wa.me/628125818180?text=Saya%20ingin%20menanyakan%20informasi%20terkait%20harga%20dan%20lain-lain%20tentang%20produk%20{{ urlencode($product->name) }}" class="inline-flex items-center justify-center gap-2 text-sm font-semibold text-[#2E2E2E] bg-gradient-to-r from-[#FEDA60] to-[#F5B347] px-6 py-3 rounded-xl shadow-lg shadow-[#FEDA60]/30 hover:shadow-xl hover:scale-[1.02] transition-all mt-4">
                                 Hubungi Kami
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0-6.75 6.75M19.5 12l-6.75-6.75" />

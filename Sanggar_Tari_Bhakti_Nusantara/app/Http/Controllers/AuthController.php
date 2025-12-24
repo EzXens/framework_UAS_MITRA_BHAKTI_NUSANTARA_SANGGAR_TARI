@@ -123,7 +123,7 @@ class AuthController extends Controller
 
         DB::table('email_verification_tokens')->where('id', $row->id)->update(['used_at' => Carbon::now()]);
 
-        return redirect()->route('home')->with('success', 'Email berhasil diverifikasi. Anda sekarang dapat login.');
+        return redirect()->route('verification.notice')->with('verification_success', 'Verifikasi berhasil! Silakan login kembali.');
     }
 
     // Show a notice page after registration asking user to verify
