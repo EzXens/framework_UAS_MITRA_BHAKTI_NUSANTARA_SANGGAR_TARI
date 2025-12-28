@@ -144,15 +144,6 @@
 </div>
 
 <script>
-    // Sidebar toggle
-    const sidebar = document.getElementById('sidebar');
-    const sidebarToggle = document.getElementById('sidebar-toggle');
-    
-    if (sidebarToggle) {
-        sidebarToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('-translate-x-full');
-        });
-    }
 
     // Music player initialization
     const initializeMusicPlayers = () => {
