@@ -8,12 +8,12 @@
         <!-- main content -->
         <main class="flex-1 p-6 lg:p-10 lg:ml-0">
             <div class="max-w-6xl mx-auto">
-                <div class="flex items-center justify-between mb-8">
+                <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
                     <div>
-                        <h1 class="text-3xl font-bold text-[#2E2E2E]">Kelola Carousel/Sorotan</h1>
+                        <h1 class="text-2xl md:text-3xl font-bold text-[#2E2E2E]">Kelola Carousel/Sorotan</h1>
                         <p class="text-[#4F4F4F] mt-2">Atur urutan dan konten carousel di halaman galeri</p>
                     </div>
-                    <a href="{{ route('admin.gallery.carousel.create') }}" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[#FEDA60] to-[#F5B347] text-white font-semibold hover:shadow-xl transition-all">
+                    <a href="{{ route('admin.gallery.carousel.create') }}" class="inline-flex items-center gap-2 px-4 md:px-6 py-3 rounded-xl bg-gradient-to-r from-[#FEDA60] to-[#F5B347] text-white font-semibold hover:shadow-xl transition-all text-sm md:text-base">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                         </svg>
@@ -27,22 +27,22 @@
                     </div>
                 @endif
 
-                <div class="grid gap-6">
+                <div class="grid gap-6 grid-cols-1 md:grid-cols-2">
                     @forelse($carousels as $carousel)
-                        <div class="rounded-2xl bg-white border border-[#FEDA60]/30 p-6 shadow-lg hover:shadow-xl transition-all">
-                            <div class="flex gap-6">
-                                <div class="flex-shrink-0 w-48 h-32 rounded-xl overflow-hidden bg-gray-100">
+                        <div class="rounded-2xl bg-white border border-[#FEDA60]/30 p-4 md:p-6 shadow-lg hover:shadow-xl transition-all">
+                            <div class="flex flex-col md:flex-row gap-4 md:gap-6">
+                                <div class="flex-shrink-0 w-full md:w-48 h-32 rounded-xl overflow-hidden bg-gray-100">
                                     <img src="{{ asset($carousel->image) }}" alt="{{ $carousel->title }}" class="w-full h-full object-cover">
                                 </div>
                                 <div class="flex-1">
-                                    <div class="flex items-start justify-between">
-                                        <div>
-                                            <div class="flex items-center gap-3 mb-2">
-                                                <h3 class="text-xl font-bold text-[#2E2E2E]">{{ $carousel->title }}</h3>
-                                                <span class="px-3 py-1 rounded-full text-xs font-semibold {{ $carousel->is_active ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700' }}">
+                                    <div class="flex flex-col md:flex-row md:items-start justify-between gap-4">
+                                        <div class="flex-1">
+                                            <div class="flex flex-wrap items-center gap-2 md:gap-3 mb-2">
+                                                <h3 class="text-lg md:text-xl font-bold text-[#2E2E2E]">{{ $carousel->title }}</h3>
+                                                <span class="px-2 md:px-3 py-1 rounded-full text-xs font-semibold {{ $carousel->is_active ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700' }}">
                                                     {{ $carousel->is_active ? 'Aktif' : 'Tidak Aktif' }}
                                                 </span>
-                                                <span class="px-3 py-1 rounded-full bg-[#FEDA60]/20 text-[#8C6A08] text-xs font-semibold">
+                                                <span class="px-2 md:px-3 py-1 rounded-full bg-[#FEDA60]/20 text-[#8C6A08] text-xs font-semibold">
                                                     Urutan: {{ $carousel->order }}
                                                 </span>
                                             </div>
