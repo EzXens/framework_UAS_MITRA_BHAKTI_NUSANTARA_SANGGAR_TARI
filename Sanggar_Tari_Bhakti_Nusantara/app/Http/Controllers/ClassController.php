@@ -8,6 +8,7 @@ use App\Models\ClassEnrollment;
 use App\Models\Teacher;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class ClassController extends Controller
 {
@@ -94,7 +95,7 @@ class ClassController extends Controller
 
     public function create()
     {
-        $teachers = \App\Models\Teacher::where('is_active', true)->ordered()->get();
+        $teachers = Teacher::where('is_active', true)->ordered()->get();
         $selectedTeacherIds = [];
         return view('admin.classes.create', compact('teachers', 'selectedTeacherIds'));
     }
@@ -104,19 +105,43 @@ class ClassController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
-            'instructor' => 'required|string|max:255',
+
+            // accept either instructor_ids (new name) or teacher_ids (older name) or single instructor_id
+            'instructor_ids' => ['nullable', 'array'],
+            'instructor_ids.*' => [
+                'integer',
+                'distinct',
+                Rule::exists('teachers', 'id')->where('is_active', true),
+            ],
+            'teacher_ids' => ['nullable', 'array'],
+            'teacher_ids.*' => [
+                'integer',
+                'distinct',
+                Rule::exists('teachers', 'id')->where('is_active', true),
+            ],
+
+            'instructor_id' => 'nullable|integer|exists:teachers,id',
+            'instructor' => 'nullable|string|max:255',
+
             'days' => 'required|array|min:1',
             'days.*' => 'in:Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu',
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i|after:start_time',
             'capacity' => 'required|integer|min:1',
-            // price removed from validation
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'teacher_ids' => 'nullable|array',
-            'teacher_ids.*' => 'integer|min:1',
         ]);
 
-        $data = $request->except(['days', 'start_time', 'end_time']);
+        // require at least one of the instructor sources
+        if (
+            !$request->filled('instructor')
+            && !$request->filled('instructor_id')
+            && !$request->has('instructor_ids')
+            && !$request->has('teacher_ids')
+        ) {
+            return back()->withErrors(['instructor' => 'Mohon isi instructor (nama) atau pilih setidaknya satu pengajar aktif.'])->withInput();
+        }
+
+        $data = $request->except(['days', 'start_time', 'end_time', 'instructor_id', 'instructor_ids', 'teacher_ids']);
         
         // format schedule: "Senin & Rabu, 16:00-18:00"
         $daysString = implode(' & ', $request->days);
@@ -127,18 +152,44 @@ class ClassController extends Controller
             $data['image'] = $request->file('image')->store('classes', 'public');
         }
 
+        // Collect ids from possible fields (merge instructor_ids and teacher_ids if both provided)
+        $ids = [];
+        if ($request->has('instructor_ids')) {
+            $ids = array_merge($ids, (array) $request->input('instructor_ids', []));
+        }
+        if ($request->has('teacher_ids')) {
+            $ids = array_merge($ids, (array) $request->input('teacher_ids', []));
+        }
+        // if still empty, fallback to single instructor_id
+        if (empty($ids) && $request->filled('instructor_id')) {
+            $ids = [(int) $request->input('instructor_id')];
+        }
+
+        // normalize ids to ints and unique
+        $ids = collect($ids)->filter(fn($id) => is_numeric($id))->map(fn($id) => (int) $id)->unique()->values()->toArray();
+
+        // Build instructor display string from selected teacher names, if any
+        if (!empty($ids)) {
+            $selectedNames = Teacher::where('is_active', true)
+                ->whereIn('id', $ids)
+                ->ordered()
+                ->pluck('name')
+                ->toArray();
+            $data['instructor'] = implode(', ', $selectedNames);
+        } else {
+            // fallback to provided freeform instructor string
+            $data['instructor'] = $request->input('instructor', '');
+        }
+
         $class = ClassModel::create($data);
 
-        $ids = collect($request->input('teacher_ids', []))
-            ->filter(fn($id) => is_numeric($id))
-            ->map(fn($id) => (int) $id)
-            ->unique()
-            ->values()
-            ->toArray();
+        // Sync many-to-many relation if there are ids (otherwise leave as-is)
         if (!empty($ids)) {
-            $activeIds = \App\Models\Teacher::whereIn('id', $ids)->where('is_active', true)->pluck('id')->toArray();
+            $activeIds = Teacher::whereIn('id', $ids)->where('is_active', true)->pluck('id')->toArray();
             if (count($activeIds) !== count($ids)) {
-                return back()->withErrors(['teacher_ids' => 'Terdapat pengajar yang tidak tersedia/aktif'])->withInput();
+                // rollback created class to avoid orphan
+                $class->delete();
+                return back()->withErrors(['instructor_ids' => 'Terdapat pengajar yang tidak tersedia/aktif'])->withInput();
             }
             $class->teachers()->sync($activeIds);
         }
@@ -154,7 +205,10 @@ class ClassController extends Controller
     public function edit(ClassModel $class)
     {
         $teachers = Teacher::where('is_active', true)->ordered()->get();
-        $selectedTeacherIds = $class->teachers()->pluck('teachers.id')->toArray();
+        $selectedTeacherIds = [];
+        if (method_exists($class, 'teachers')) {
+            $selectedTeacherIds = $class->teachers()->pluck('teachers.id')->toArray();
+        }
         return view('admin.classes.edit', compact('class', 'teachers', 'selectedTeacherIds'));
     }
 
@@ -163,19 +217,32 @@ class ClassController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
-            'instructor' => 'required|string|max:255',
+
+            'instructor_ids' => ['nullable', 'array'],
+            'instructor_ids.*' => [
+                'integer',
+                'distinct',
+                Rule::exists('teachers', 'id')->where('is_active', true),
+            ],
+            'teacher_ids' => ['nullable', 'array'],
+            'teacher_ids.*' => [
+                'integer',
+                'distinct',
+                Rule::exists('teachers', 'id')->where('is_active', true),
+            ],
+
+            'instructor_id' => 'nullable|integer|exists:teachers,id',
+            'instructor' => 'nullable|string|max:255',
+
             'days' => 'required|array|min:1',
             'days.*' => 'in:Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu',
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i|after:start_time',
             'capacity' => 'required|integer|min:1',
-            // price removed from validation
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'teacher_ids' => 'nullable|array',
-            'teacher_ids.*' => 'integer|min:1',
         ]);
 
-        $data = $request->except(['days', 'start_time', 'end_time']);
+        $data = $request->except(['days', 'start_time', 'end_time', 'instructor_id', 'instructor_ids', 'teacher_ids']);
         
         // Format schedule: "Senin & Rabu, 16:00-18:00"
         $daysString = implode(' & ', $request->days);
@@ -189,23 +256,46 @@ class ClassController extends Controller
             $data['image'] = $request->file('image')->store('classes', 'public');
         }
 
+        // Collect ids from possible fields (merge instructor_ids and teacher_ids if both provided)
+        $ids = [];
+        if ($request->has('instructor_ids')) {
+            $ids = array_merge($ids, (array) $request->input('instructor_ids', []));
+        }
+        if ($request->has('teacher_ids')) {
+            $ids = array_merge($ids, (array) $request->input('teacher_ids', []));
+        }
+        if (empty($ids) && $request->filled('instructor_id')) {
+            $ids = [(int) $request->input('instructor_id')];
+        }
+        // normalize ids
+        $ids = collect($ids)->filter(fn($id) => is_numeric($id))->map(fn($id) => (int) $id)->unique()->values()->toArray();
+
+        // Build instructor display string
+        if (!empty($ids)) {
+            $selectedNames = Teacher::where('is_active', true)
+                ->whereIn('id', $ids)
+                ->ordered()
+                ->pluck('name')
+                ->toArray();
+            $data['instructor'] = implode(', ', $selectedNames);
+        } elseif ($request->filled('instructor')) {
+            $data['instructor'] = $request->input('instructor');
+        }
+
         $class->update($data);
         
-        // Validate and sync teachers team
-        $ids = collect($request->input('teacher_ids', []))
-            ->filter(fn($id) => is_numeric($id))
-            ->map(fn($id) => (int) $id)
-            ->unique()
-            ->values()
-            ->toArray();
-        if (!empty($ids)) {
-            $activeIds = Teacher::whereIn('id', $ids)->where('is_active', true)->pluck('id')->toArray();
-            if (count($activeIds) !== count($ids)) {
-                return back()->withErrors(['teacher_ids' => 'Terdapat pengajar yang tidak tersedia/aktif'])->withInput();
+        // Sync teachers relation if ids were provided (or clear if explicit empty array)
+        if ($request->has('instructor_ids') || $request->has('teacher_ids') || $request->filled('instructor_id')) {
+            if (!empty($ids)) {
+                $activeIds = Teacher::whereIn('id', $ids)->where('is_active', true)->pluck('id')->toArray();
+                if (count($activeIds) !== count($ids)) {
+                    return back()->withErrors(['instructor_ids' => 'Terdapat pengajar yang tidak tersedia/aktif'])->withInput();
+                }
+                $class->teachers()->sync($activeIds);
+            } else {
+                // explicit empty array provided -> clear relations
+                $class->teachers()->sync([]);
             }
-            $class->teachers()->sync($activeIds);
-        } else {
-            $class->teachers()->sync([]);
         }
 
         return redirect()->route('classes.index')->with('success', 'Kelas berhasil diupdate!');
