@@ -13,6 +13,13 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-[#2E2E2E] text-[#2E2E2E] font-sans">
+    <!-- Helper to reset tutorial for testing -->
+    <script>
+        if(window.location.search.includes('reset-tutorial')) {
+            console.log('Resetting tutorial status...');
+            localStorage.clear();
+        }
+    </script>
     <div class="min-h-screen flex flex-col">
         @include('components.layout.navbar')
         <main class="flex-1">

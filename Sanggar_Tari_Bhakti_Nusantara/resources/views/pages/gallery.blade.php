@@ -3,7 +3,7 @@
 @section('content')
     <section class="bg-gradient-to-b from-white via-[#FFF9E5] to-[#FFF6D5] py-6">
         <div class="relative mx-auto max-w-7xl px-6 pb-12 pt-16 text-center">
-            <span class="inline-flex items-center gap-2 rounded-full border border-[#FEDA60]/60 bg-white/80 px-4 py-1 text-sm font-semibold uppercase tracking-[0.35em] text-[#8C6A08] shadow-sm shadow-[#FEDA60]/30">
+            <span id="galeri-sanggar" class="inline-flex items-center gap-2 rounded-full border border-[#FEDA60]/60 bg-white/80 px-4 py-1 text-sm font-semibold uppercase tracking-[0.35em] text-[#8C6A08] shadow-sm shadow-[#FEDA60]/30">
                 Galeri Sanggar
             </span>
             <h1 class="mt-6 text-3xl font-semibold text-[#2E2E2E] md:text-5xl md:leading-tight">
@@ -396,6 +396,10 @@
                 
                 // Re-initialize music players
                 initializeMusicPlayers();
+
+                if (window.tutorialSystem && window.tutorialSystem.currentTutorial) {
+                    window.tutorialSystem.showStep(false);
+                }
             };
             
             const initializeMusicPlayers = () => {
