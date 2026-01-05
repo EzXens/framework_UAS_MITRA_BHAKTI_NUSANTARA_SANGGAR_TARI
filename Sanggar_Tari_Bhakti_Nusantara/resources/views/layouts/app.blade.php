@@ -28,6 +28,7 @@
         </main>
         @include('components.layout.footer')
         <x-layout.fab/>
+        <x-layout.fab-left/>
     </div>
 
 

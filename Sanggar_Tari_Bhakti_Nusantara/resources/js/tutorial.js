@@ -77,6 +77,8 @@ export class TutorialSystem {
                     border-left: none !important;
                     border-radius: 28px !important;
                     box-shadow: 0 10px 32px rgba(254, 218, 96, 0.20) !important;
+                    max-height: calc(100vh - 2rem);
+                    overflow-y: auto;
                 }
                 #tutorial-progress {
                     position: relative;
@@ -450,8 +452,11 @@ export class TutorialSystem {
 
         // 3. Viewport Boundary Detection (Prevent overflow)
         const windowWidth = window.innerWidth;
+        const windowHeight = window.innerHeight;
         const sidePadding = 20;
+        const verticalPadding = 20;
 
+        // Horizontal adjustment
         if (left < sidePadding) {
             left = sidePadding;
             // Adjust arrow if popup shifted
@@ -472,6 +477,21 @@ export class TutorialSystem {
              // Reset arrow inline style if centered
              arrow.style.left = '';
         }
+
+        // Vertical adjustment
+        if (top < verticalPadding) {
+            // Switch to bottom if would overflow top
+            top = rect.bottom + window.scrollY + gap;
+            arrow.className = 'hidden md:block absolute w-4 h-4 bg-white transform rotate-45 -z-10 shadow-sm border-gray-100 top-[-8px] left-1/2 -translate-x-1/2 border-t border-l';
+        } else if (top + popupRect.height > windowHeight - verticalPadding) {
+            // Switch to top if would overflow bottom
+            top = rect.top + window.scrollY - popupRect.height - gap;
+            arrow.className = 'hidden md:block absolute w-4 h-4 bg-white transform rotate-45 -z-10 shadow-sm border-gray-100 bottom-[-8px] left-1/2 -translate-x-1/2 border-b border-r';
+        }
+
+        // Final clamp to ensure popup stays within viewport
+        top = Math.max(verticalPadding, Math.min(top, windowHeight - popupRect.height - verticalPadding));
+        left = Math.max(sidePadding, Math.min(left, windowWidth - popupRect.width - sidePadding));
 
         this.popup.style.top = `${top}px`;
         this.popup.style.left = `${left}px`;
@@ -553,6 +573,20 @@ export class TutorialSystem {
         }
         localStorage.removeItem(`tutorial_progress_${this.currentTutorialKey}`);
         this.close();
+    }
+
+    resetTutorial() {
+        console.log('Resetting all tutorials...');
+        Object.keys(this.tutorials).forEach(key => {
+            localStorage.removeItem(`tutorial_completed_${key}`);
+            localStorage.removeItem(`tutorial_dont_show_${key}`);
+            localStorage.removeItem(`tutorial_progress_${key}`);
+        });
+        localStorage.removeItem('tutorial_resume_key');
+        localStorage.removeItem('tutorial_resume_index');
+        this.close();
+        // Optionally restart the current tutorial
+        setTimeout(() => this.checkAutoStart(), 100);
     }
 
     close() {
