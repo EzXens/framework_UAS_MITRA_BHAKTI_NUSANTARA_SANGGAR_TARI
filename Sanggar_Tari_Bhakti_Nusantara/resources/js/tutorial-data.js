@@ -24,7 +24,7 @@ export const tutorialData = {
                 route: '/produk',
                 target: 'h1, h2',
                 title: 'Produk',
-                description: 'Katalog produk dengan fitur filter, sort, dan pencarian.',
+                description: 'Menampilkan Beberapa Katalog produk',
                 position: 'bottom',
                 icon: 'products'
             },
@@ -40,7 +40,7 @@ export const tutorialData = {
                 route: '/galeri',
                 target: 'h1, h2',
                 title: 'Galeri',
-                description: 'Koleksi media dengan zoom, slideshow, dan opsi unduh.',
+                description: 'Koleksi media dengan zoom, slideshow, dan hal menarik lainnya',
                 position: 'bottom',
                 icon: 'gallery'
             },
@@ -48,7 +48,7 @@ export const tutorialData = {
                 route: '/kontak',
                 target: 'h1, h2',
                 title: 'Kontak',
-                description: 'Hubungi support via live chat, email, atau media sosial melalui form dibawah ini.',
+                description: 'Hubungi support via  email, atau media sosial melalui form dibawah ini.',
                 position: 'bottom',
                 icon: 'contact'
             }
@@ -74,7 +74,7 @@ export const tutorialData = {
             {
                 target: '#main-header nav ul a[href="/produk"]',
                 title: 'Produk',
-                description: 'Katalog produk dengan fitur filter, sort, dan pencarian.',
+                description: 'Menampilkan Beberapa Katalog produk',
                 position: 'bottom',
                 icon: 'products'
             },
@@ -88,14 +88,14 @@ export const tutorialData = {
             {
                 target: '#main-header nav ul a[href="/galeri"]',
                 title: 'Galeri',
-                description: 'Koleksi media dengan zoom, slideshow, dan opsi unduh.',
+                description: 'Koleksi media dengan zoom, slideshow, dan hal menarik lainnya.',
                 position: 'bottom',
                 icon: 'gallery'
             },
             {
                 target: '#main-header nav ul a[href="/kontak"]',
                 title: 'Kontak',
-                description: 'Hubungi support via live chat, email, atau media sosial.',
+                description: 'Hubungi support via email, atau media sosial.',
                 position: 'bottom',
                 icon: 'contact'
             },
@@ -248,7 +248,7 @@ export const tutorialData = {
                 position: 'bottom',
                 icon: 'login',
                 actions: [
-                    { label: 'Login', variant: 'primary', href: '/login' },
+                    // { label: 'Login', variant: 'primary', href: '/login' },
                     { label: 'Explore Demo', variant: 'secondary', href: '/?reset-tutorial' }
                 ]
             },
@@ -256,7 +256,7 @@ export const tutorialData = {
                 target: 'section form button[type="submit"]',
                 title: 'Login',
                 description: 'Tekan tombol ini untuk masuk sebagai user dan membuka semua fitur.',
-                position: 'top',
+                position: 'bottom',
                 icon: 'login'
             }
         ]

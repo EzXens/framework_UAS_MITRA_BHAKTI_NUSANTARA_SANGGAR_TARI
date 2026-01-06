@@ -240,7 +240,7 @@ export class TutorialSystem {
         // Prefer global onboarding when available and not completed
         const global = this.tutorials['onboarding'];
         if (global) {
-            const isOnboardingMatch = global.routes.some(r => path === r || path.startsWith(r));
+            const isOnboardingMatch = global.routes.some(r => path === r);
             const isOnboardingCompleted = localStorage.getItem('tutorial_completed_onboarding');
             const isOnboardingDontShow = localStorage.getItem('tutorial_dont_show_onboarding');
             if (isOnboardingMatch && !isOnboardingCompleted && !isOnboardingDontShow) {
@@ -251,7 +251,7 @@ export class TutorialSystem {
         }
         
         for (const [key, tutorial] of Object.entries(this.tutorials)) {
-            const isMatch = tutorial.routes.some(r => path === r || path.startsWith(r));
+            const isMatch = tutorial.routes.some(r => path === r);
             if (!isMatch) continue;
             const isCompleted = localStorage.getItem(`tutorial_completed_${key}`);
             const dontShow = localStorage.getItem(`tutorial_dont_show_${key}`);
