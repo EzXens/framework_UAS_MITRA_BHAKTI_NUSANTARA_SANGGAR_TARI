@@ -51,6 +51,13 @@
                 Surat Dispensasi
             </a>
             
+            <a href="{{ route('admin.place-rentals.index') }}" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#FEDA60]/10 hover:text-[#FEDA60] transition-all text-sm {{ request()->routeIs('admin.place-rentals.*') ? 'bg-[#FEDA60]/10 text-[#FEDA60]' : '' }}">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 7.5A2.25 2.25 0 015.25 5.25h13.5A2.25 2.25 0 0121 7.5v9a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 16.5v-9zM7.5 8.25h9M7.5 12h9M7.5 15.75h4.5" />
+                </svg>
+                Surat Peminjaman Tempat
+            </a>
+            
             <!-- Gallery Management -->
             <div class="pt-4 pb-2">
                 <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Galeri Media</p>

@@ -7,6 +7,7 @@ use App\Http\Controllers\ClassController;
 use App\Http\Controllers\UserDashboardController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DispensationController;
+use App\Http\Controllers\PlaceRentalController;
 use App\Http\Controllers\AdminGalleryController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HomeController;
@@ -77,6 +78,15 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/admin/dispensations/{dispensation}/approve', [DispensationController::class, 'approve'])->name('admin.dispensations.approve');
     Route::post('/admin/dispensations/{dispensation}/reject', [DispensationController::class, 'reject'])->name('admin.dispensations.reject');
     Route::post('/admin/dispensations/{dispensation}/generate', [DispensationController::class, 'generate'])->name('admin.dispensations.generate');
+    
+    // Place Rentals management
+    Route::get('/admin/place-rentals', [PlaceRentalController::class, 'adminIndex'])->name('admin.place-rentals.index');
+    Route::get('/admin/place-rentals/create', [PlaceRentalController::class, 'create'])->name('admin.place-rentals.create');
+    Route::post('/admin/place-rentals', [PlaceRentalController::class, 'store'])->name('admin.place-rentals.store');
+    Route::get('/admin/place-rentals/{placeRental}', [PlaceRentalController::class, 'show'])->name('admin.place-rentals.show');
+    Route::post('/admin/place-rentals/{placeRental}/generate', [PlaceRentalController::class, 'generate'])->name('admin.place-rentals.generate');
+    Route::get('/admin/place-rentals/{placeRental}/download-docx', [PlaceRentalController::class, 'downloadDocx'])->name('admin.place-rentals.download-docx');
+    
     Route::resource('products', ProductController::class)->except(['show']);
     Route::resource('classes', ClassController::class)->except(['show']);
     
