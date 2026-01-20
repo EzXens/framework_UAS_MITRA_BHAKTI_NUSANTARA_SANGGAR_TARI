@@ -17,47 +17,6 @@
 
             @php
                 // Data now comes from the controller via database
-                // Fallback data if database is empty
-                if ($carouselSlides->isEmpty()) {
-                    $carouselSlides = collect([
-                        (object)[
-                            'image' => asset('images/bgtari.jpg'),
-                            'title' => 'Parade Tari Nusantara',
-                            'description' => 'Sorotan kolaborasi tari tradisional yang mempertemukan ragam budaya Nusantara di satu panggung.',
-                        ],
-                    ]);
-                }
-                
-                if ($imageGallery->isEmpty()) {
-                    $imageGallery = collect([
-                        (object)[
-                            'image' => asset('images/galeri/FOTO/1.jpg'),
-                            'title' => 'Pentas Akhir Tahun',
-                            'description' => 'Perpaduan tari tradisi Jawa Barat dan musik kontemporer.',
-                        ],
-                    ]);
-                }
-                
-                if ($videoGallery->isEmpty()) {
-                    $videoGallery = collect([
-                        (object)[
-                            'thumbnail' => asset('images/contoh/home.png'),
-                            'title' => 'Latihan Tari Kontemporer',
-                            'description' => 'Cuplikan sesi latihan intensif di studio Bhakti Nusantara.',
-                            'video_url' => 'https://www.youtube.com/embed/5z5Lft3T2m8?autoplay=1&rel=0',
-                        ],
-                    ]);
-                }
-                
-                if ($musicTracks->isEmpty()) {
-                    $musicTracks = collect([
-                        (object)[
-                            'title' => 'Gending Pembuka Nusantara',
-                            'description' => 'Aransemen gamelan modern yang mengiringi pembuka pentas.',
-                            'audio_file' => 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
-                        ],
-                    ]);
-                }
             @endphp
 
             {{-- carousel lama --}}
@@ -228,16 +187,16 @@
         </div>
     </section>
 
-    <div id="gallery-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center px-4 py-10 opacity-0 transition-opacity duration-200 ease-out pointer-events-none">
+    <div id="gallery-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 md:px-4 md:py-10 opacity-0 transition-opacity duration-200 ease-out pointer-events-none">
         <div class="absolute inset-0 opacity-0 transition-opacity duration-200" data-modal-overlay>
-            <div class="absolute inset-0 bg-black/60"></div>
+            <div class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
             <div class="absolute inset-0 opacity-65 mix-blend-soft-light bg-[url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 160 160%22 fill=%22none%22%3E%3Cpath d=%22M80 0L160 80L80 160L0 80Z%22 stroke=%23FEDA60 stroke-width=%221.1%22 opacity=%220.32%22/%3E%3Cpath d=%22M0 0L80 80L0 160%22 stroke=%23F4C453 stroke-width=%220.8%22 opacity=%220.24%22/%3E%3Cpath d=%22M160 0L80 80L160 160%22 stroke=%23F4C453 stroke-width=%220.8%22 opacity=%220.24%22/%3E%3Ccircle cx=%2280%22 cy=%2280%22 r=%226%22 fill=%23FEDA60 opacity=%220.18%22/%3E%3C/svg%3E')] bg-[length:180px_180px]"></div>
         </div>
-        <div class="relative z-10 w-full max-w-3xl transform overflow-hidden rounded-xl border border-white/35 bg-white/95 shadow-xl shadow-black/30 transition-all duration-200 ease-out translate-y-4 scale-95 opacity-0" data-modal-content>
+        <div class="relative z-10 w-full max-w-5xl transform overflow-hidden rounded-xl border border-white/35 bg-white/95 shadow-xl shadow-black/30 transition-all duration-200 ease-out translate-y-4 scale-95 opacity-0 flex flex-col max-h-[90vh]" data-modal-content>
             <div class="pointer-events-none absolute inset-0 opacity-85 mix-blend-soft-light bg-[url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 120 120%22 fill=%22none%22%3E%3Cpath d=%22M60 0L120 60L60 120L0 60Z%22 stroke=%23FEDA60 stroke-width=%221%22 opacity=%220.35%22/%3E%3Cpath d=%22M0 0L60 60L0 120%22 stroke=%23F4C453 stroke-width=%220.7%22 opacity=%220.25%22/%3E%3Cpath d=%22M120 0L60 60L120 120%22 stroke=%23F4C453 stroke-width=%220.7%22 opacity=%220.25%22/%3E%3Ccircle cx=%2260%22 cy=%2260%22 r=%225%22 fill=%23FEDA60 opacity=%220.2%22/%3E%3C/svg%3E')] bg-[length:140px_140px]" aria-hidden="true"></div>
-            <div class="grid gap-5 p-5 md:grid-cols-[5fr,4fr] md:p-8">
-                <div class="flex items-center justify-center">
-                    <div class="relative flex w-full max-h-[65vh] min-h-[200px] items-center justify-center overflow-hidden rounded-lg border border-[#FEDA60]/25 bg-[#FFF9E5]" data-modal-media>
+            <div class="grid gap-5 p-5 md:grid-cols-[3fr,2fr] md:p-8 overflow-y-auto flex-1 w-full">
+                <div class="flex items-center justify-center bg-black/5 rounded-lg">
+                    <div class="relative flex w-full h-full max-h-[40vh] md:max-h-[70vh] min-h-[250px] items-center justify-center overflow-hidden rounded-lg" data-modal-media>
                         <div class="pointer-events-none absolute inset-0 opacity-75 mix-blend-multiply bg-[url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 120 120%22 fill=%22none%22%3E%3Cpath d=%22M60 0L120 60L60 120L0 60Z%22 stroke=%23FEDA60 stroke-width=%221%22 opacity=%220.35%22/%3E%3Cpath d=%22M0 0L60 60L0 120%22 stroke=%23F4C453 stroke-width=%220.7%22 opacity=%220.25%22/%3E%3Cpath d=%22M120 0L60 60L120 120%22 stroke=%23F4C453 stroke-width=%220.7%22 opacity=%220.25%22/%3E%3Ccircle cx=%2260%22 cy=%2260%22 r=%225%22 fill=%23FEDA60 opacity=%220.18%22/%3E%3C/svg%3E')] bg-[length:120px_120px]" aria-hidden="true"></div>
                         <div class="absolute inset-0 flex items-center justify-center bg-white/80" data-modal-loading hidden>
                             <div class="flex items-center gap-2 rounded-full border border-[#FEDA60]/50 bg-white px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.25em] text-[#8C6A08]">
@@ -255,7 +214,7 @@
                         <h3 class="text-lg font-semibold text-[#2E2E2E] md:text-xl" data-modal-title></h3>
                         <p class="text-[13px] leading-relaxed text-[#4F4F4F]" data-modal-description></p>
                     </div>
-                    <div class="mt-auto flex flex-wrap items-center gap-2" data-modal-actions>
+                    <div class="mt-4 md:mt-auto flex flex-wrap items-center gap-2" data-modal-actions>
                         <button type="button" class="inline-flex items-center gap-2 rounded-full border border-[#FEDA60]/60 bg-white px-4 py-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#8C6A08] transition hover:bg-[#FEDA60]/30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FEDA60]" data-modal-open>
                             <span data-modal-open-label>Buka Asli</span>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4">

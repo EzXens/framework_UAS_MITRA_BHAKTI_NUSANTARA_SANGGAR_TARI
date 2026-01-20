@@ -74,8 +74,9 @@
                                     <span class="text-yellow-300 text-2xl">📍</span>
                                 </div>
                                 <p class="text-lg leading-relaxed">
-                                    Jl. Budaya Raya No. 12<br>
-                                    Jakarta Selatan
+                                    Jl. PM. Noor Perum Bumi Sempaja<br>
+                                    Blok AB No.17 RT.001 Kec. Samarinda Utara<br>
+                                    Samarinda Kalimantan Timur
                                 </p>
                             </div>
 
@@ -83,14 +84,14 @@
                                 <div class="w-12 h-12 rounded-xl bg-yellow-400/20 border border-yellow-400/30 flex items-center justify-center">
                                     <span class="text-yellow-300 text-2xl">📞</span>
                                 </div>
-                                <p class="text-lg">0851-2345-6789</p>
+                                <p class="text-lg">081-2581-8180</p>
                             </div>
 
                             <div class="flex items-center gap-4">
                                 <div class="w-12 h-12 rounded-xl bg-yellow-400/20 border border-yellow-400/30 flex items-center justify-center">
                                     <span class="text-yellow-300 text-2xl">📧</span>
                                 </div>
-                                <p class="text-lg">support@bhaktinusantara.com</p>
+                                <p class="text-lg">bhaktimahakam@gmail.com</p>
                             </div>
 
                         </div>

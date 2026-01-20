@@ -56,47 +56,68 @@ export const tutorialData = {
     },
     'home': {
         routes: ['/'],
-        nextRoute: '/login',
+        nextRoute: '/produk',
         steps: [
             {
-                target: '#main-header nav ul',
-                title: 'Menu Utama',
-                description: 'Area navigasi utama untuk berpindah antar halaman inti.',
+                target: '#hero, main',
+                title: 'Beranda Interaktif',
+                description: 'Ini adalah halaman beranda yang menampilkan ringkasan utama sanggar: informasi, highlight kegiatan, dan akses cepat ke fitur penting.',
                 position: 'bottom'
             },
             {
-                target: '#main-header nav ul a[href="/"]',
-                title: 'Beranda',
-                description: 'Halaman utama dengan ringkasan aktivitas, notifikasi, dan akses cepat.',
+                target: '#hero h1, #hero',
+                title: 'Hero & Identitas Sanggar',
+                description: 'Bagian utama yang memperkenalkan Sanggar Tari Bhakti Nusantara, lengkap dengan tagline dan penjelasan singkat untuk pengguna baru.',
                 position: 'bottom',
                 icon: 'home'
             },
             {
-                target: '#main-header nav ul a[href="/produk"]',
-                title: 'Produk',
-                description: 'Menampilkan Beberapa Katalog produk',
-                position: 'bottom',
-                icon: 'products'
-            },
-            {
-                target: '#main-header nav ul a[href="/kelas"]',
-                title: 'Kelas',
-                description: 'Daftar kelas dan materi dengan progress tracking dan badge.',
-                position: 'bottom',
+                target: '#btn-daftar-kelas, #hero a[href*="/kelas"]',
+                title: 'Daftar Kelas Sekarang',
+                description: 'Tombol aksi utama untuk langsung melihat dan mendaftar kelas. Cocok untuk pengguna yang ingin mulai latihan tanpa perlu mencari menu terlebih dahulu.',
+                position: 'right',
                 icon: 'classes'
             },
             {
-                target: '#main-header nav ul a[href="/galeri"]',
-                title: 'Galeri',
-                description: 'Koleksi media dengan zoom, slideshow, dan hal menarik lainnya.',
+                target: '#btn-lihat-produk, #hero a[href*="/produk"]',
+                title: 'Lihat Produk Unggulan',
+                description: 'Akses cepat menuju katalog produk sanggar seperti kostum, aksesoris, atau kebutuhan latihan yang tersedia.',
+                position: 'right',
+                icon: 'products'
+            },
+            {
+                target: '#heroCarousel, .carousel-container, #hero',
+                title: 'Carousel Highlight',
+                description: 'Slider gambar yang menampilkan momen dan dokumentasi pilihan. Gunakan panah atau indikator dot untuk berpindah slide.',
+                position: 'left',
+                icon: 'gallery'
+            },
+            {
+                target: '#tentang .grid, #tentang',
+                title: 'Fitur Unggulan Sanggar',
+                description: 'Kartu-kartu fitur yang menjelaskan keunggulan utama: kurasi materi, pelatih profesional, fasilitas, dan komunitas. Arahkan perhatian Anda pada poin yang paling relevan.',
+                position: 'top',
+                icon: 'home'
+            },
+            {
+                target: '#jadwal .glass-dark-strong, #jadwal',
+                title: 'Jadwal Latihan',
+                description: 'Ringkasan jadwal latihan mingguan berdasarkan hari dan level. Ini membantu Anda memilih waktu latihan yang paling sesuai.',
+                position: 'top',
+                icon: 'classes'
+            },
+            {
+                target: '#galeri_kegiatan, #galeri_kegiatan .grid, section#galeri_kegiatan',
+                title: 'Galeri Kegiatan',
+                description: 'Highlight kegiatan terbaru di studio maupun di panggung. Cocok untuk melihat gaya penampilan, suasana latihan, dan dokumentasi acara.',
                 position: 'bottom',
                 icon: 'gallery'
             },
             {
-                target: '#main-header nav ul a[href="/kontak"]',
-                title: 'Kontak',
-                description: 'Hubungi support via email, atau media sosial.',
-                position: 'bottom',
+                target: '#cta a[href*="wa.me"], #cta',
+                title: 'Aksi Cepat: Hubungi Admin',
+                description: 'Ingin bertanya atau booking trial? Tombol ini akan membuka WhatsApp agar Anda bisa menghubungi admin dengan cepat.',
+                position: 'top',
                 icon: 'contact'
             },
         ]
@@ -244,13 +265,9 @@ export const tutorialData = {
             {
                 target: '#auth-card',
                 title: 'Login diperlukan',
-                description: 'Login diperlukan untuk mengakses fitur lengkap. Anda dapat mencoba demo terlebih dahulu.',
+                description: 'Login diperlukan untuk mengakses fitur lengkap.',
                 position: 'bottom',
                 icon: 'login',
-                actions: [
-                    // { label: 'Login', variant: 'primary', href: '/login' },
-                    { label: 'Explore Demo', variant: 'secondary', href: '/?reset-tutorial' }
-                ]
             },
             {
                 target: 'section form button[type="submit"]',

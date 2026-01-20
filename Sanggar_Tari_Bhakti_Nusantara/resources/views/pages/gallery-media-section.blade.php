@@ -89,7 +89,7 @@
             @forelse ($musicTracks as $track)
                 <div class="group relative flex flex-col gap-6 rounded-2xl border border-[#FEDA60]/40 bg-white shadow-lg shadow-[#FEDA60]/15 transition duration-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#FEDA60]/25 p-6 sm:flex-row sm:items-center sm:gap-8" data-music-item>
                     <!-- Left Content Area -->
-                    <div class="flex flex-col gap-3 flex-grow">
+                    <div class="flex flex-col gap-3 flex-grow min-w-0">
                         <!-- Category Badge -->
                         <span class="inline-flex w-max items-center gap-1.5 rounded-full bg-gradient-to-r from-[#FEDA60]/20 to-[#FEDA60]/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.3em] text-[#C29C24] border border-[#FEDA60]/30">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-3 w-3">
@@ -99,15 +99,17 @@
                         </span>
                         
                         <!-- Title -->
-                        <p class="text-lg font-bold text-[#2E2E2E] line-clamp-2">{{ $track->title }}</p>
+                        <p class="text-lg font-bold text-[#2E2E2E] line-clamp-2" title="{{ $track->title }}">{{ $track->title }}</p>
                         
                         <!-- Description -->
                         <p class="text-sm text-[#4F4F4F] line-clamp-2">{{ $track->description }}</p>
                         
                         <!-- Progress Bar -->
-                        <div class="space-y-2 pt-2">
-                            <div class="h-1.5 w-full rounded-full bg-[#FEDA60]/20 overflow-hidden cursor-pointer hover:h-2 transition-all" data-music-progress-container>
-                                <div class="h-full w-0 rounded-full bg-gradient-to-r from-[#FEDA60] to-[#FED84D] transition-all duration-300" data-music-progress></div>
+                        <div class="space-y-1 pt-1">
+                            <div class="py-2 cursor-pointer group/progress" data-music-progress-container>
+                                <div class="h-1.5 w-full rounded-full bg-[#FEDA60]/20 overflow-hidden transition-all group-hover/progress:h-2">
+                                    <div class="h-full w-0 rounded-full bg-gradient-to-r from-[#FEDA60] to-[#FED84D] transition-all duration-300" data-music-progress></div>
+                                </div>
                             </div>
                             <div class="flex justify-between text-xs font-medium text-[#4F4F4F]">
                                 <span data-music-current>0:00</span>

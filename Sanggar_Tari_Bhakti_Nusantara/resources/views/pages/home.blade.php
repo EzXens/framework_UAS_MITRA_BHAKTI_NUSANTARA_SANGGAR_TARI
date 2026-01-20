@@ -154,9 +154,7 @@
         <button class="section-nav-dot" data-section="jadwal" onclick="scrollToSection('jadwal')">
             <span class="tooltip">Jadwal</span>
         </button>
-        <button class="section-nav-dot" data-section="testimoni" onclick="scrollToSection('testimoni')">
-            <span class="tooltip">Testimoni</span>
-        </button>
+
         <button class="section-nav-dot" data-section="cta" onclick="scrollToSection('cta')">
             <span class="tooltip">Gabung</span>
         </button>
@@ -182,8 +180,8 @@
                 </p>
 
                 <div class="flex flex-col sm:flex-row gap-4">
-                    <a href="{{ route('classes.public') }}" class="px-6 py-3 rounded-full bg-gradient-to-r from-[#FEDA60] to-[#F5B347] text-[#2E2E2E] text-sm font-bold shadow-lg shadow-[#FEDA60]/40 hover:shadow-xl hover:scale-[1.05] transition-all">{{ $homepageTexts->get('hero_btn_primary')?->content ?? 'Daftar Kelas Sekarang' }}</a>
-                    <a href="{{ route('products') }}" class="px-6 py-3 rounded-full text-on-glass border-2 border-[#FEDA60] text-sm font-semibold hover:bg-[#FEDA60]/10 transition-all">{{ $homepageTexts->get('hero_btn_secondary')?->content ?? 'Lihat Produk' }}</a>
+                    <a id="btn-daftar-kelas" href="{{ route('classes.public') }}" class="px-6 py-3 rounded-full bg-gradient-to-r from-[#FEDA60] to-[#F5B347] text-[#2E2E2E] text-sm font-bold shadow-lg shadow-[#FEDA60]/40 hover:shadow-xl hover:scale-[1.05] transition-all">{{ $homepageTexts->get('hero_btn_primary')?->content ?? 'Daftar Kelas Sekarang' }}</a>
+                    <a id="btn-lihat-produk" href="{{ route('products') }}" class="px-6 py-3 rounded-full text-on-glass border-2 border-[#FEDA60] text-sm font-semibold hover:bg-[#FEDA60]/10 transition-all">{{ $homepageTexts->get('hero_btn_secondary')?->content ?? 'Lihat Produk' }}</a>
                 </div>
             </div>
 
@@ -445,6 +443,8 @@
         </div>
     </section>
 
+    <section id="cta" class="bg-white  pb-20">
+        <div class="max-w-7xl mx-auto px-8">
     <section id="testimoni" class="bg-white py-16 lg:py-15">
         <div class="max-w-7xl mx-auto px-8 space-y-10">
         @include('components.ui.section-heading', [
@@ -472,8 +472,6 @@
         </div>
     </section>
 
-    <section id="cta" class="bg-white  pb-20">
-        <div class="max-w-7xl mx-auto px-8">
         <div class="rounded-[32px] bg-gradient-to-br from-[#2E2E2E] via-[#1a1a1a] to-[#2E2E2E] text-white px-8 py-12 lg:px-16 lg:py-16 flex flex-col lg:flex-row items-start lg:items-center gap-8 shadow-2xl border border-[#FEDA60]/20 relative overflow-hidden">
             <!-- Efek cahaya -->
             <div class="absolute top-0 right-0 w-64 h-64 bg-[#FEDA60]/10 rounded-full blur-3xl"></div>
@@ -594,7 +592,7 @@
         // Section Navigation
         const sections = ['hero', 'tentang', 'program', 'jadwal', 'galeri', 'testimoni', 'cta'];
 
-        function scrollToSection(sectionId) {
+        const sections = ['hero', 'tentang', 'program', 'jadwal', 'galeri', 'testimoni', 'cta'];
             const section = document.getElementById(sectionId);
             if (section) {
                 const headerHeight = document.getElementById('main-header')?.offsetHeight || 0;

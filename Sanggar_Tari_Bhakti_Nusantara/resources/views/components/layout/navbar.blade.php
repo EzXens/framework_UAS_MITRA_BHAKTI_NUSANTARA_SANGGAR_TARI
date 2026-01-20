@@ -198,8 +198,10 @@
         </a>
 
         <!-- Desktop Nav - Center -->
-        <nav aria-label="Primary navigation" class="hidden lg:flex justify-center font-medium text-sm">
-          <ul class="flex items-center gap-8">
+        <nav aria-label="Primary navigation" class="hidden lg:flex justify-center font-medium text-sm relative">
+          <!-- Highlight Pill Removed -->
+
+          <ul class="flex items-center gap-2 relative z-10" id="nav-links-container">
             @foreach ($menu as $item)
               <li>
                 @if(isset($item['anchor']))
@@ -214,6 +216,55 @@
             @endforeach
           </ul>
         </nav>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const navContainer = document.querySelector('nav[aria-label="Primary navigation"]');
+                const highlight = document.getElementById('nav-highlight');
+                const links = document.querySelectorAll('#nav-links-container .nav-link');
+                const activeLink = document.querySelector('#nav-links-container .nav-link.active');
+
+                function updateHighlight(target) {
+                    if (!target) {
+                        highlight.style.opacity = '0';
+                        return;
+                    }
+                    
+                    const rect = target.getBoundingClientRect();
+                    const navRect = navContainer.getBoundingClientRect();
+                    
+                    highlight.style.width = `${rect.width}px`;
+                    highlight.style.height = `${rect.height}px`;
+                    highlight.style.transform = `translate(${rect.left - navRect.left}px, ${rect.top - navRect.top}px)`;
+                    highlight.style.opacity = '1';
+                }
+
+                if (activeLink) {
+                    // Initial position without transition
+                    const rect = activeLink.getBoundingClientRect();
+                    const navRect = navContainer.getBoundingClientRect();
+                    highlight.style.width = `${rect.width}px`;
+                    highlight.style.height = `${rect.height}px`;
+                    highlight.style.transform = `translate(${rect.left - navRect.left}px, ${rect.top - navRect.top}px)`;
+                    highlight.style.opacity = '1';
+                    
+                    // Force reflow to apply initial position immediately
+                    highlight.offsetHeight; 
+                }
+
+                links.forEach(link => {
+                    link.addEventListener('mouseenter', (e) => updateHighlight(e.target));
+                });
+
+                navContainer.addEventListener('mouseleave', () => {
+                    if (activeLink) {
+                        updateHighlight(activeLink);
+                    } else {
+                        highlight.style.opacity = '0';
+                    }
+                });
+            });
+        </script>
 
         <!-- User menu untuk yang sudah login -->
         @auth
