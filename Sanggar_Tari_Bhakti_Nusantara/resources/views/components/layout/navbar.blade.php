@@ -201,7 +201,7 @@
         <nav aria-label="Primary navigation" class="hidden lg:flex justify-center font-medium text-sm relative">
           <!-- Highlight Pill Removed -->
 
-          <ul class="flex items-center gap-2 relative z-10" id="nav-links-container">
+          <ul class="flex items-center gap-2 relative z-10 text-base font-semibold" id="nav-links-container">
             @foreach ($menu as $item)
               <li>
                 @if(isset($item['anchor']))
@@ -268,7 +268,7 @@
 
         <!-- User menu untuk yang sudah login -->
         @auth
-          <div class="hidden lg:flex items-center justify-end gap-4 font-medium text-sm">
+          <div class="hidden lg:flex items-center justify-end gap-4 font-medium text-lg">
             <div class="relative group">
               <button class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 transition-all">
                 @if(auth()->user()->profile_picture)

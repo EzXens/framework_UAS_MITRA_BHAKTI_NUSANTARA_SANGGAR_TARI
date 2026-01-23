@@ -123,6 +123,10 @@
                     <h2 class="text-2xl font-bold text-[#2E2E2E] mb-6">Aksi Cepat</h2>
                     <div class="grid gap-6 lg:grid-cols-4 md:grid-cols-2">
 
+                        <a href="{{ route('admin.users.index') }}"  class="p-6 rounded-2xl bg-gradient-to-br from-[#FEDA60] to-[#F5B347] text-black text-center hover:shadow-xl hover:scale-[1.05] transition-all">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 mx-auto mb-3" viewBox="0 0 24 24"><path fill="#none" d="M12 4a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7ZM6.5 7.5a5.5 5.5 0 1 1 11 0a5.5 5.5 0 0 1-11 0ZM3 19a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v3H3v-3Zm5-3a3 3 0 0 0-3 3v1h14v-1a3 3 0 0 0-3-3H8Z"/></svg>
+                            <p class="font-semibold text-lg">Kelola User</p>
+                        </a>
                         <a href="{{ route('products.index') }}" class="p-6 rounded-2xl bg-gradient-to-br from-[#FEDA60] to-[#F5B347] text-black text-center hover:shadow-xl hover:scale-[1.05] transition-all">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-12 h-12 mx-auto mb-3">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />

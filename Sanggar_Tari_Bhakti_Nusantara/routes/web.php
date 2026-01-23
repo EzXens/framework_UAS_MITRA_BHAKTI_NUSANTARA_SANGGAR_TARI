@@ -68,6 +68,13 @@ Route::post('/password/reset', [AuthController::class, 'resetPassword'])->name('
 
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('admin.dashboard');
+    
+    // User management
+    Route::get('/admin/users', [App\Http\Controllers\Admin\UserController::class, 'index'])->name('admin.users.index');
+    Route::post('/admin/users/{user}/schedule-delete', [App\Http\Controllers\Admin\UserController::class, 'scheduleDelete'])->name('admin.users.schedule-delete');
+    Route::post('/admin/users/{user}/cancel-delete', [App\Http\Controllers\Admin\UserController::class, 'cancelDelete'])->name('admin.users.cancel-delete');
+    Route::delete('/admin/users/{user}', [App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('admin.users.destroy');
+    
     // Enrollment approval/rejection for admin
     Route::post('/admin/enrollments/{id}/approve', [App\Http\Controllers\Admin\EnrollmentController::class, 'approve'])->name('admin.enrollments.approve');
     Route::post('/admin/enrollments/{id}/reject', [App\Http\Controllers\Admin\EnrollmentController::class, 'reject'])->name('admin.enrollments.reject');

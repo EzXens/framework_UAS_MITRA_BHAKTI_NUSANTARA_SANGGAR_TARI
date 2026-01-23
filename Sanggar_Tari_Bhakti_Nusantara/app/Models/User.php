@@ -4,13 +4,14 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -23,6 +24,8 @@ class User extends Authenticatable
         'password',
         'role',
         'profile_picture',
+        'scheduled_deletion_at',
+        'deletion_days',
     ];
 
     /**
@@ -45,6 +48,37 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'scheduled_deletion_at' => 'datetime',
         ];
     }
+
+    /**
+     * Check if user is scheduled for deletion
+     */
+    public function isScheduledForDeletion(): bool
+    {
+        return $this->scheduled_deletion_at !== null;
+    }
+
+    /**
+     * Check if deletion deadline has passed
+     */
+    public function isDeletionDeadlinePassed(): bool
+    {
+        return $this->isScheduledForDeletion() && now()->isAfter($this->scheduled_deletion_at);
+    }
+
+    /**
+     * Get days remaining until deletion
+     */
+    public function getDaysUntilDeletion(): ?int
+    {
+        if (!$this->isScheduledForDeletion()) {
+            return null;
+        }
+
+        $days = now()->diffInDays($this->scheduled_deletion_at, absolute: false);
+        return max(0, $days);
+    }
 }
+
