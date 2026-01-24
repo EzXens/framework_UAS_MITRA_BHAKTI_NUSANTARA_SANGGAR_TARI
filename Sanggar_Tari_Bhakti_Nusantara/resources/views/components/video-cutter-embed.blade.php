@@ -35,6 +35,7 @@
         <button id="vc_playSel" type="button" class="px-4 py-2 rounded bg-emerald-500 text-black font-medium">▶️ Play Sel</button>
 
         <button id="vc_cutBtn" type="button" class="px-4 py-2 rounded bg-amber-400 text-black font-medium">✂ Potong</button>
+        <button id="vc_uploadOriginalBtn" type="button" class="px-4 py-2 rounded bg-blue-500 text-white font-medium">📤 Upload Asli</button>
         <button id="vc_resetBtn" type="button" class="px-4 py-2 rounded bg-gray-500 text-white">↩ Reset</button>
       </div>
     </div>
@@ -46,6 +47,36 @@
 
 <!-- Load MediaRecorder for video capture -->
 <script src="https://cdn.jsdelivr.net/npm/mp4-box@0.2.5/dist/index.umd.js"></script>
+
+<style>
+  #videoCutter .timeline-canvas {
+    display: block;
+    width: 100%;
+    height: 96px;
+    cursor: pointer;
+  }
+
+  #videoCutter .selection-area {
+    position: absolute;
+    background: rgba(250, 204, 21, 0.15);
+    border: 2px solid rgba(250, 204, 21, 0.4);
+    top: 0;
+    pointer-events: none;
+  }
+
+  #videoCutter .selection-handle {
+    position: absolute;
+    width: 12px;
+    background: rgba(250, 204, 21, 0.6);
+    cursor: ew-resize;
+    border-radius: 2px;
+    top: 0;
+  }
+
+  #videoCutter .selection-handle:hover {
+    background: rgba(250, 204, 21, 0.9);
+  }
+</style>
 
 <script>
 (function(){
@@ -63,6 +94,7 @@
   const endText = document.getElementById('vc_endText');
   const playSelBtn = document.getElementById('vc_playSel');
   const cutBtn = document.getElementById('vc_cutBtn');
+  const uploadOriginalBtn = document.getElementById('vc_uploadOriginalBtn');
   const resetBtn = document.getElementById('vc_resetBtn');
   const status = document.getElementById('vc_status');
 
@@ -172,125 +204,231 @@
       return null;
     }
 
+    // Validate selection
+    if (startSec >= endSec) {
+      setStatus('❌ Waktu awal harus lebih kecil dari waktu akhir.');
+      return null;
+    }
+
+    const clipDuration = endSec - startSec;
+    if (clipDuration < 0.1) {
+      setStatus('❌ Durasi terlalu pendek. Pilih minimal 0.1 detik.');
+      return null;
+    }
+
     setStatus('✂ Mulai pemotongan video (ini membutuhkan waktu)...');
     
     try {
       const srcFile = currentBlob || originalFile;
-      const FPS = 24; // Frame per second (lower = faster)
-      const frameInterval = 1000 / FPS;
       
-      // Create temporary video element for frame extraction
+      // Use a more reliable approach: extract video segment using Blob slicing
+      // and HTML5 video element capabilities
+      
+      // Create temporary video element for loading
       const tempVideo = document.createElement('video');
       tempVideo.src = URL.createObjectURL(srcFile);
       tempVideo.crossOrigin = 'anonymous';
+      tempVideo.preload = 'metadata';
       
       // Wait for video to load metadata
-      await new Promise(r => { tempVideo.onloadedmetadata = r; });
+      await new Promise((resolve, reject) => {
+        const timeout = setTimeout(() => reject(new Error('Video loading timeout')), 10000);
+        tempVideo.onloadedmetadata = () => {
+          clearTimeout(timeout);
+          resolve();
+        };
+        tempVideo.onerror = () => {
+          clearTimeout(timeout);
+          reject(new Error('Failed to load video'));
+        };
+      });
       
-      setStatus(`⏳ Mengekstrak frame (${startSec}s - ${endSec}s)...`);
+      const videoDuration = tempVideo.duration;
+      if (isNaN(videoDuration) || videoDuration === Infinity) {
+        setStatus('❌ Tidak dapat membaca durasi video.');
+        return null;
+      }
+
+      setStatus(`⏳ Mengekstrak frame (${startSec.toFixed(1)}s - ${endSec.toFixed(1)}s, durasi ${clipDuration.toFixed(1)}s)...`);
       
-      // Create canvas for frame capture
+      // Create canvas for recording
       const canvas = document.createElement('canvas');
       canvas.width = tempVideo.videoWidth;
       canvas.height = tempVideo.videoHeight;
-      const ctx = canvas.getContext('2d', { willReadFrequently: true });
       
-      // Collect frames
+      if (canvas.width === 0 || canvas.height === 0) {
+        setStatus('❌ Tidak dapat membaca dimensi video.');
+        return null;
+      }
+
+      // Collect frames with precise timing
+      const FPS = 24;
       const frames = [];
-      let currentTime = startSec;
-      let frameCount = 0;
+      const frameTimestamps = [];
       
-      while (currentTime < endSec) {
+      let frameCount = 0;
+      let currentTime = startSec;
+      const totalFramesNeeded = Math.ceil(clipDuration * FPS);
+
+      while (currentTime < endSec && frameCount < totalFramesNeeded * 1.2) {
         tempVideo.currentTime = currentTime;
         
         // Wait for frame to be ready
-        await new Promise(r => {
-          tempVideo.onseeked = r;
-          setTimeout(r, 100);
+        await new Promise(resolve => {
+          let seeked = false;
+          const onSeeked = () => {
+            if (!seeked) {
+              seeked = true;
+              tempVideo.removeEventListener('seeked', onSeeked);
+              resolve();
+            }
+          };
+          tempVideo.addEventListener('seeked', onSeeked);
+          // Timeout fallback
+          setTimeout(() => {
+            if (!seeked) {
+              seeked = true;
+              tempVideo.removeEventListener('seeked', onSeeked);
+              resolve();
+            }
+          }, 150);
         });
         
-        // Draw frame to canvas
-        ctx.drawImage(tempVideo, 0, 0);
-        
-        // Convert canvas to blob and store
-        const canvasBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.8));
-        frames.push(canvasBlob);
+        // Draw frame to canvas and capture
+        const ctx = canvas.getContext('2d');
+        try {
+          ctx.drawImage(tempVideo, 0, 0);
+          
+          // Get image data
+          canvas.toBlob((blob) => {
+            if (blob) {
+              frames.push(blob);
+              frameTimestamps.push(currentTime);
+            }
+          }, 'image/jpeg', 0.85);
+          
+          // Wait a moment for blob capture
+          await new Promise(r => setTimeout(r, 20));
+        } catch (e) {
+          console.warn('Could not draw frame at', currentTime);
+        }
         
         frameCount++;
-        currentTime += frameInterval;
+        currentTime += (1 / FPS);
         
         // Show progress
-        if (frameCount % 10 === 0) {
-          const progress = ((currentTime - startSec) / (endSec - startSec) * 100).toFixed(0);
-          setStatus(`⏳ Mengekstrak frame... ${progress}%`);
+        if (frameCount % 8 === 0) {
+          const progress = Math.round((frameCount / totalFramesNeeded) * 100);
+          setStatus(`⏳ Mengekstrak frame... ${frameCount} (${progress}%)`);
         }
       }
       
-      setStatus(`⏳ Membuat video dari ${frames.length} frame...`);
+      if (frames.length < 2) {
+        setStatus('❌ Tidak dapat mengekstrak frame dari video. Coba durasi yang lebih panjang.');
+        return null;
+      }
+
+      // Ensure we have collected enough frames
+      await new Promise(r => setTimeout(r, 200));
+
+      setStatus(`⏳ Membuat video dari ${frames.length} frame (${(frames.length / FPS).toFixed(1)}s)...`);
       
-      // Create video from frames using MediaRecorder
-      const recordedChunks = [];
-      const canvasRecord = document.createElement('canvas');
-      canvasRecord.width = tempVideo.videoWidth;
-      canvasRecord.height = tempVideo.videoHeight;
-      const ctxRecord = canvasRecord.getContext('2d');
+      // Use a canvas-based approach with proper timing
+      const outputCanvas = document.createElement('canvas');
+      outputCanvas.width = tempVideo.videoWidth;
+      outputCanvas.height = tempVideo.videoHeight;
       
-      const stream = canvasRecord.captureStream(FPS);
+      const stream = outputCanvas.captureStream(FPS);
       const mediaRecorder = new MediaRecorder(stream, {
         mimeType: 'video/webm'
       });
       
-      mediaRecorder.ondataavailable = (e) => recordedChunks.push(e.data);
+      const recordedChunks = [];
+      mediaRecorder.ondataavailable = (e) => {
+        if (e.data.size > 0) {
+          recordedChunks.push(e.data);
+        }
+      };
+      
       mediaRecorder.start();
       
-      // Draw frames to canvas at FPS rate - SEQUENTIAL with proper waiting
-      for (let frameIndex = 0; frameIndex < frames.length; frameIndex++) {
-        const frameBlob = frames[frameIndex];
+      // Draw frames with proper timing using timestamps
+      const outputCtx = outputCanvas.getContext('2d');
+      const startTime = performance.now();
+      
+      for (let i = 0; i < frames.length; i++) {
         const img = new Image();
         
-        // Wait for image to load
-        await new Promise(r => {
+        await new Promise((resolve) => {
           img.onload = () => {
-            ctxRecord.drawImage(img, 0, 0);
-            r();
+            try {
+              outputCtx.drawImage(img, 0, 0);
+            } catch (e) {
+              console.warn('Could not draw frame', i);
+            }
+            resolve();
           };
           img.onerror = () => {
-            console.error('Failed to load frame', frameIndex);
-            r();
+            console.error('Failed to load frame', i);
+            resolve();
           };
-          img.src = URL.createObjectURL(frameBlob);
+          img.src = URL.createObjectURL(frames[i]);
         });
         
-        // Wait for frame interval before drawing next frame
-        await new Promise(r => setTimeout(r, frameInterval));
+        // Wait proper frame interval - this ensures correct playback speed
+        const frameDelay = 1000 / FPS; // milliseconds per frame
+        await new Promise(resolve => setTimeout(resolve, frameDelay));
         
-        if (frameIndex % 10 === 0) {
-          const progress = (frameIndex / frames.length * 100).toFixed(0);
-          setStatus(`⏳ Encoding... ${progress}%`);
+        if ((i + 1) % 12 === 0) {
+          const progress = Math.round(((i + 1) / frames.length) * 100);
+          setStatus(`⏳ Encoding... ${i + 1}/${frames.length} (${progress}%)`);
         }
       }
       
-      // Stop recording after all frames are drawn
+      // Stop recording
       mediaRecorder.stop();
       
       // Wait for MediaRecorder to finish
-      await new Promise(r => {
-        mediaRecorder.onstop = r;
+      await new Promise(resolve => {
+        const timeout = setTimeout(resolve, 2000);
+        mediaRecorder.onstop = () => {
+          clearTimeout(timeout);
+          resolve();
+        };
       });
+      
+      if (recordedChunks.length === 0) {
+        setStatus('❌ Gagal membuat video dari frame.');
+        return null;
+      }
       
       // Create blob from recorded video
       const outputBlob = new Blob(recordedChunks, { type: 'video/webm' });
+      
+      if (outputBlob.size === 0) {
+        setStatus('❌ Video output kosong. Coba durasi yang lebih panjang.');
+        return null;
+      }
+
       currentBlob = outputBlob;
+      
+      // Clean up stream
+      stream.getTracks().forEach(track => {
+        try { track.stop(); } catch (e) {}
+      });
       
       // Preview result
       const url = URL.createObjectURL(outputBlob);
       videoPreview.src = url;
-      videoPreview.play().catch(() => {});
+      try {
+        videoPreview.play().catch(() => {});
+      } catch (e) {}
       
       // Attach to form
-      const duration = (endSec - startSec).toFixed(1);
-      setStatus(`✅ Berhasil! (${duration}s). Siap upload.`);
-      attachBlobToForm(outputBlob, originalFile ? originalFile.name.replace(/\.[^/.]+$/, '') + '_trim.webm' : 'trimmed.webm');
+      const filename = originalFile ? originalFile.name.replace(/\.[^/.]+$/, '') + '_trim.webm' : 'trimmed.webm';
+      const finalDuration = (frames.length / FPS).toFixed(1);
+      setStatus(`✅ Berhasil! (${finalDuration}s, ${frames.length} frame). Siap upload.`);
+      attachBlobToForm(outputBlob, filename);
       
       return outputBlob;
     } catch (err) {
@@ -300,18 +438,65 @@
     }
   }
 
-  function attachBlobToForm(blob, filename){ // find closest form ancestor
-    const parentForm = document.querySelector('form');
-    if(!parentForm){ setStatus('⚠️ Tidak menemukan formulir untuk melampirkan file.'); return; }
+  function attachBlobToForm(blob, filename){ 
+    // Find parent form
+    let parentForm = document.querySelector('form');
+    if (!parentForm) {
+      // Try to find form by traversing up from the cutter div
+      const cutterDiv = document.getElementById('videoCutter');
+      if (cutterDiv) {
+        parentForm = cutterDiv.closest('form');
+      }
+    }
+    
+    if (!parentForm) {
+      setStatus('⚠️ Tidak menemukan formulir untuk melampirkan file.');
+      return;
+    }
+    
+    // Find or create input
     let input = parentForm.querySelector('input[name="video_file"]');
-    if(!input){ input = document.createElement('input'); input.type = 'file'; input.name = 'video_file'; input.style.display='none'; parentForm.appendChild(input); }
-    // create File and set to input via DataTransfer
-    const file = new File([blob], filename, { type: blob.type });
-    const dt = new DataTransfer(); dt.items.add(file); input.files = dt.files;
-    setStatus('📎 File trim siap di-upload ('+filename+'). Pastikan menyimpan formulir untuk mengirim.');
+    if (!input) {
+      input = document.createElement('input');
+      input.type = 'file';
+      input.name = 'video_file';
+      input.id = 'video_file_input';
+      input.style.display = 'none';
+      parentForm.appendChild(input);
+    }
+    
+    // Create File object with correct MIME type
+    let file;
+    if (blob instanceof File) {
+      // Already a File, use as-is
+      file = blob;
+    } else {
+      // It's a Blob, convert to File
+      const mimeType = blob.type || 'video/webm';
+      file = new File([blob], filename, { type: mimeType });
+    }
+    
+    // Use DataTransfer to set file to input
+    const dataTransfer = new DataTransfer();
+    dataTransfer.items.add(file);
+    input.files = dataTransfer.files;
+    
+    // Trigger change event to notify any listeners
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+    
+    setStatus('📎 File video siap di-upload (' + filename + '). Pastikan menyimpan formulir untuk mengirim.');
   }
 
   cutBtn.addEventListener('click', async ()=>{ await cutVideoWithCanvas(); });
+
+  uploadOriginalBtn.addEventListener('click', ()=>{ 
+    if (!originalFile) { 
+      setStatus('❌ Tidak ada file asli untuk diupload.'); 
+      return; 
+    }
+    attachBlobToForm(originalFile, originalFile.name);
+    setStatus('✅ File video asli siap di-upload. Pastikan menyimpan formulir untuk mengirim.');
+  });
 
   resetBtn.addEventListener('click', async ()=>{ if(!originalFile){ setStatus('❌ Tidak ada file asli.'); return; } if(currentBlob) try{ URL.revokeObjectURL(videoPreview.src); }catch{} currentBlob=null; await loadVideo(originalFile); setStatus('↩ Reset: kembali ke video asli.'); });
 

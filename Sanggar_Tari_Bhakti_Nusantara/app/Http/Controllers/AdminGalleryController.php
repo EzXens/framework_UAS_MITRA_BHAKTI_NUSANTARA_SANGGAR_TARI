@@ -211,13 +211,34 @@ class AdminGalleryController extends Controller
 
     public function videoStore(Request $request)
     {
-        $validated = $request->validate([
+        // Check if we have either video_url or video_file
+        $hasVideoUrl = !empty($request->input('video_url'));
+        $hasVideoFile = $request->hasFile('video_file') && $request->file('video_file')->isValid();
+
+        $rules = [
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'video_url' => 'nullable|url|required_without:video_file',
-            'video_file' => 'nullable|mimes:mp4,mov,avi,webm|max:51200|required_without:video_url'
-        ]);
+        ];
+
+        // Either video_url or video_file must be provided
+        if (!$hasVideoUrl && !$hasVideoFile) {
+            return back()->withErrors(['video_url' => 'Silakan berikan URL YouTube atau upload video lokal.'])->withInput();
+        }
+
+        if ($hasVideoUrl) {
+            $rules['video_url'] = 'required|url';
+        }
+
+        if ($hasVideoFile) {
+            $rules['video_file'] = 'required|mimes:mp4,mov,avi,webm,flv|max:51200';
+        }
+
+        $validated = $request->validate($rules);
+
+        // Ensure directories exist
+        @mkdir(public_path('images/galeri/video'), 0755, true);
+        @mkdir(public_path('videos/galeri'), 0755, true);
 
         if ($request->hasFile('thumbnail')) {
             $thumbnail = $request->file('thumbnail');
@@ -233,6 +254,8 @@ class AdminGalleryController extends Controller
             $videoFile->move(public_path('videos/galeri'), $videoName);
             // store relative path so views can use asset() when needed
             $validated['video_url'] = 'videos/galeri/' . $videoName;
+            // unset video_file from validated since we moved it to video_url
+            unset($validated['video_file']);
         }
 
         $validated['is_active'] = $request->input('is_active', 0) == 1;
@@ -250,13 +273,35 @@ class AdminGalleryController extends Controller
 
     public function videoUpdate(Request $request, GalleryVideo $video)
     {
-        $validated = $request->validate([
+        // Check if we have either video_url or video_file
+        $hasVideoUrl = !empty($request->input('video_url'));
+        $hasVideoFile = $request->hasFile('video_file') && $request->file('video_file')->isValid();
+        $hasExistingVideo = !empty($video->video_url);
+
+        $rules = [
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'video_url' => 'nullable|url|required_without:video_file',
-            'video_file' => 'nullable|mimes:mp4,mov,avi,webm|max:51200|required_without:video_url'
-        ]);
+        ];
+
+        // If no new video_url and no video_file, existing video must exist
+        if (!$hasVideoUrl && !$hasVideoFile && !$hasExistingVideo) {
+            return back()->withErrors(['video_url' => 'Silakan berikan URL YouTube atau upload video lokal.'])->withInput();
+        }
+
+        if ($hasVideoUrl) {
+            $rules['video_url'] = 'required|url';
+        }
+
+        if ($hasVideoFile) {
+            $rules['video_file'] = 'required|mimes:mp4,mov,avi,webm,flv|max:51200';
+        }
+
+        $validated = $request->validate($rules);
+
+        // Ensure directories exist
+        @mkdir(public_path('images/galeri/video'), 0755, true);
+        @mkdir(public_path('videos/galeri'), 0755, true);
 
         if ($request->hasFile('thumbnail')) {
             // Delete old thumbnail
@@ -273,7 +318,7 @@ class AdminGalleryController extends Controller
         // handle uploaded video file (from cutter) if provided
         if ($request->hasFile('video_file')) {
             // delete previous local file when appropriate
-            if ($video->video_url && file_exists(public_path($video->video_url))) {
+            if ($video->video_url && file_exists(public_path($video->video_url)) && strpos($video->video_url, 'videos/galeri') === 0) {
                 try { unlink(public_path($video->video_url)); } catch (\Exception $e) { }
             }
 
@@ -281,6 +326,8 @@ class AdminGalleryController extends Controller
             $videoName = time() . '_video_' . $videoFile->getClientOriginalName();
             $videoFile->move(public_path('videos/galeri'), $videoName);
             $validated['video_url'] = 'videos/galeri/' . $videoName;
+            // unset video_file from validated
+            unset($validated['video_file']);
         }
 
         $validated['is_active'] = $request->input('is_active', 0) == 1;

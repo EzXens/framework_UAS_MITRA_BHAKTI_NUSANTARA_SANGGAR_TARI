@@ -306,6 +306,11 @@
                       </svg>
                       Dashboard Admin
                     </a>
+                    <a href="{{ route('admin.users.index') }}" 
+                      class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm text-gray-300 hover:bg-[#FEDA60]/10 hover:text-[#FEDA60] transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 " viewBox="0 0 24 24"><path fill="#ffffff" d="M12 4a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7ZM6.5 7.5a5.5 5.5 0 1 1 11 0a5.5 5.5 0 0 1-11 0ZM3 19a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v3H3v-3Zm5-3a3 3 0 0 0-3 3v1h14v-1a3 3 0 0 0-3-3H8Z"/></svg>
+                      Kelola User
+                    </a>
                     <a href="{{ route('products.index') }}"
                       class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm text-gray-300 hover:bg-[#FEDA60]/10 hover:text-[#FEDA60] transition-all">
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"

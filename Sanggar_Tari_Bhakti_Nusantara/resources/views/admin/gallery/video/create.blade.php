@@ -51,7 +51,7 @@
             </div>
 
             <div>
-                <label class="block text-sm font-semibold text-[#2E2E2E] mb-2">Video (YouTube embed atau Upload Lokal)</label>
+                <label class="block text-sm font-semibold text-[#2E2E2E] mb-2">Video (YouTube embed atau Upload Lokal) <span class="text-red-500">*</span></label>
                 <p class="text-xs text-gray-500 mb-2">Anda dapat memasukkan URL embed YouTube atau upload video lokal dan memotongnya di tempat.</p>
 
                 <label class="block text-sm font-medium text-gray-700 mb-1">URL Embed YouTube</label>
@@ -61,20 +61,22 @@
                 @enderror
 
                 <div class="my-4">
-                    <div class="text-sm font-medium text-gray-200 mb-2">Atau: Upload Lokal & Potong</div>
+                    <div class="text-sm font-medium text-gray-600 mb-2">Atau: Upload Lokal & Potong</div>
                     @include('components.video-cutter-embed')
                     {{-- Hidden input to receive trimmed video file from cutter component --}}
-                    <input type="file" name="video_file" id="video_file_input" style="display:none;" />
+                    <input type="file" name="video_file" id="video_file_input" style="display:none;" accept="video/mp4,video/webm,video/avi,video/quicktime" />
                 </div>
             </div>
 
             <div>
                 <label class="block text-sm font-semibold text-[#2E2E2E] mb-2">Thumbnail <span class="text-red-500">*</span></label>
-                <input type="file" name="thumbnail" accept="image/*" required class="w-full px-4 py-3 rounded-xl border @error('thumbnail') border-red-500 @else border-gray-300 @enderror focus:border-[#FEDA60] text-gray-900 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#FEDA60] file:text-white hover:file:bg-[#F5B347]">
-                <p class="text-xs text-gray-500 mt-1">Format: JPG, PNG, GIF. Maksimal 2MB.</p>
-                @error('thumbnail')
-                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                @enderror
+                <div id="thumbnailSection">
+                    <input type="file" name="thumbnail" id="thumbnail_input" accept="image/*" class="w-full px-4 py-3 rounded-xl border @error('thumbnail') border-red-500 @else border-gray-300 @enderror focus:border-[#FEDA60] text-gray-900 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#FEDA60] file:text-white hover:file:bg-[#F5B347]">
+                    <p class="text-xs text-gray-500 mt-1">Format: JPG, PNG, GIF. Maksimal 2MB.</p>
+                    @error('thumbnail')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
             </div>
 
             <div class="flex items-center gap-3">

@@ -443,9 +443,9 @@
         </div>
     </section>
 
-    <section id="cta" class="bg-white  pb-20">
+    <section id="cta" class="bg-white pt-20  pb-20">
         <div class="max-w-7xl mx-auto px-8">
-    <section id="testimoni" class="bg-white py-16 lg:py-15">
+    {{-- <section id="testimoni" class="bg-white py-16 lg:py-15">
         <div class="max-w-7xl mx-auto px-8 space-y-10">
         @include('components.ui.section-heading', [
             'subtitle' => $homepageTexts->get('testimonial_subtitle')?->content ?? 'Testimoni',
@@ -470,7 +470,7 @@
             @endforeach
         </div>
         </div>
-    </section>
+    </section> --}}
 
         <div class="rounded-[32px] bg-gradient-to-br from-[#2E2E2E] via-[#1a1a1a] to-[#2E2E2E] text-white px-8 py-12 lg:px-16 lg:py-16 flex flex-col lg:flex-row items-start lg:items-center gap-8 shadow-2xl border border-[#FEDA60]/20 relative overflow-hidden">
             <!-- Efek cahaya -->

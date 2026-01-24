@@ -52,7 +52,7 @@
             </div>
 
             <div>
-                <label class="block text-sm font-semibold text-[#2E2E2E] mb-2">Video (YouTube embed atau Upload Lokal)</label>
+                <label class="block text-sm font-semibold text-[#2E2E2E] mb-2">Video (YouTube embed atau Upload Lokal) <span class="text-red-500">*</span></label>
                 <p class="text-xs text-gray-500 mb-2">Anda dapat memasukkan URL embed YouTube atau upload video lokal dan memotongnya di tempat.</p>
 
                 <label class="block text-sm font-medium text-gray-700 mb-1">URL Embed YouTube</label>
@@ -62,10 +62,10 @@
                 @enderror
 
                 <div class="my-4">
-                    <div class="text-sm font-medium text-gray-200 mb-2">Atau: Upload Lokal & Potong</div>
+                    <div class="text-sm font-medium text-gray-600 mb-2">Atau: Upload Lokal & Potong</div>
                     @include('components.video-cutter-embed')
                     {{-- Hidden input to receive trimmed video file from cutter component --}}
-                    <input type="file" name="video_file" id="video_file_input" style="display:none;" />
+                    <input type="file" name="video_file" id="video_file_input" style="display:none;" accept="video/mp4,video/webm,video/avi,video/quicktime" />
                 </div>
             </div>
 
